@@ -1,0 +1,11 @@
+{
+    "env": {
+        "JSONWEB_TOKEN": "supervenom_toxic",
+        "AUTH_EMAIL": "corporateacc701@gmail.com",
+        "AUTH_PASSWORD": "sasycajcmhmiegdd",
+        "CURRENTURL": "http://localhost:7000/"
+
+   }
+}
+
+   
