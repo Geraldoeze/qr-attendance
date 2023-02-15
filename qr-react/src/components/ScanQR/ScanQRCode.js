@@ -1,16 +1,39 @@
 import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import QrReader from 'react-qr-scanner';
 import { Stack, Button, Typography, Container } from '@mui/material';
 
 
 export default function ScanQRCode({getQR}) {
 
-    const [data, setData] = useState('No result');
+    const [scan, setScan] = useState({
+      delay: 900,
+      result: 'No result'
+    });
+
+
+    const handleScan = (data) => {
+      console.log(data?.text)
+      if(data?.text?.length > 8) {
+        getQR(result?.text)
+      }
+      
+    };
+
+    const handleError = (err) => {
+      console.log(err)
+    };
 
   return (
     <>
     <Container>
-      <QrReader
+    <QrReader
+          delay={scan.delay}
+          style={{width: '100%'}}
+          onError={(err) => handleError(err)}
+          onScan={(data) => handleScan(data)}
+          />
+        <p>{scan.result}</p>
+      {/* <QrReader
         onResult={(result, error) => {
           if (!!result) {
             setData(result?.text);
@@ -22,7 +45,7 @@ export default function ScanQRCode({getQR}) {
           }
         }}
         style={{ width: '100%' }}
-      />
+      /> */}
       <Typography>Place QR Code close to the camera.</Typography>
       </Container>
     </>
