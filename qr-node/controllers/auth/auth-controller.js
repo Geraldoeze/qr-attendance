@@ -11,12 +11,12 @@ const transporter = sendMailHandler();
 // SUPER ADMIN signUp
 exports.createSuperAdmin = async (req, res, next) => {
   const db = await getDb();
-  const { email, password, name } = req.body;
+  const { email, password, firstName, lastName } = req.body;
   try {
     // check if super admin already exist with email and username.
     const oldUser = await db
       .collection("superAdmin")
-      .find({ $or: [{ email: email }, { name: name }] });
+      .find({ $or: [{ email: email }, { lastName: lastName }] });
     const _inValidReg = await oldUser.toArray();
     if (_inValidReg.length > 0) {
       let message;
@@ -27,8 +27,8 @@ exports.createSuperAdmin = async (req, res, next) => {
         ) {
           message = "Email already used";
           return false;
-        } else if (elem.name === name) {
-          message = "Username already used";
+        } else if (elem.lastName === lastName) {
+          message = "LastName already used";
           return false;
         }
       });
@@ -41,7 +41,8 @@ exports.createSuperAdmin = async (req, res, next) => {
       const data = {
         email: email,
         password: hashedPassword,
-        name: name,
+        firstName: firstName,
+        lastName: lastName,
         type: 'superAdmin'
       };
       const result = await db.collection("superAdmin").insertOne(data);

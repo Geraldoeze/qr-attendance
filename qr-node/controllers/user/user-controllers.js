@@ -30,12 +30,14 @@ exports.createUser = async (req, res, next) => {
     }
     // bcrypt password
     const hashedPassword = await bcrypt.hash(password, 12);
+    // get image from path
+    const image = req.file.path;
     // save user data to user database model
-    const UserData = new User( firstName, lastName, email, gender, id, origin, address, contact, area, hashedPassword, status, dob);
+    const UserData = new User( firstName, lastName, email, gender, id, origin, address, contact, area, hashedPassword, status, dob, image);
     const saveUserData = await UserData.saveToDB();
     const userId = saveUserData?.insertedId.toString();
     
-    // await generateQRCodeImage(userId, email, res);
+    await generateQRCodeImage(userId, email, res);
     res.status(201).json({ message: "Users Created, Kindly Check Email address", response: saveUserData });
   } catch (err) {
     console.log("Something went wrong. Please try again");

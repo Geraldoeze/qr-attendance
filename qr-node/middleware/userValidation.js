@@ -40,7 +40,7 @@ exports.validateUserUpdate = (req, res, next) => {
     let data = req.body;
 
     const data_Types = ['firstName', 'lastName', 'email', 'gender', 'id', 'origin', 'dob',
-                 'area', 'address', 'contact', 'password', 'status', 'type'
+                 'area', 'address', 'contact', 'password', 'status', 'image', 'type'
     ]
 
     if (data?.firstName?.length < 0) {
@@ -74,6 +74,10 @@ exports.validateUserUpdate = (req, res, next) => {
     
     if (data?.contact?.length < 5) {
         return res.status(400).json({message: "Contact  must be a provided", statusId:'FAILED'})
+    }
+
+    if (!!data?.image) {
+        return res.status(400).json({message: "Kindly Upload a Passport Image", statusId:'FAILED'})
     }
     
 

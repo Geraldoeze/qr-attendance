@@ -4,7 +4,7 @@ const { getDb } = require('../database/mongoConnect');
 
 class Users {
     constructor(
-        firstName, lastName, email, gender, id, origin, address, contact, area, password, status, dob
+        firstName, lastName, email, gender, id, origin, address, contact, area, password, status, dob, image
     ) {
         this.firstName = firstName;  
         this.lastName = lastName;
@@ -18,7 +18,9 @@ class Users {
         this.password = password;
         this.status = status;
         this.dob = dob;
+        this.image = image;
         this.type = "users";
+        
     }
 
 
