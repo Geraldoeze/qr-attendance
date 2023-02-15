@@ -3,7 +3,7 @@ const authControllers = require('../../controllers/auth/auth-controller')
 
 const router = express.Router();
 
-router.post("/create/super", authControllers.createSuperAdmin);
+router.post("/:id/create/:id/super", authControllers.createSuperAdmin);
 
 router.post("/login", authControllers.loginAccount);
 

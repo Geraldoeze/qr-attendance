@@ -3,7 +3,7 @@
         "JSONWEB_TOKEN": "supervenom_toxic",
         "AUTH_EMAIL": "corporateacc701@gmail.com",
         "AUTH_PASSWORD": "sasycajcmhmiegdd",
-        "CURRENTURL": "http://localhost:7000/",
+        "CURRENTURL": "https://qr-node.onrender.com/",
         "MONGODB_NAME" : "geraldoeze",
         "MONGODB_DB" : "qr-attendance",
         "MONGODB_PASS" : "dzsqH2N578ghKxC0"
