@@ -38,6 +38,7 @@ export default function ResetPasswordPage() {
             <Typography sx={{color: '#000080'}} variant="subtitle1" gutterBottom>
               Enter new password
             </Typography>
+            {/* reset form */}
             <ResetPasswordForm />
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
               <Link href="/auth/login" variant="subtitle2" underline="hover">

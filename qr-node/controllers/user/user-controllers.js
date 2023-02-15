@@ -19,15 +19,30 @@ exports.createUser = async (req, res, next) => {
   try {                 
     const { firstName, lastName, email, gender, id, origin, address, contact, area, password, status, dob } = req.body;
 
-    //   Check if Email  exist
-    const user_Email = await db.collection("users").findOne({ email: email });
-    if (user_Email) {
-      //  A user exists with this email,
-      return res.status(400).json({
-        statusId: "Email Exists",
-        message: "Email Address exists on a User's account, Kindly login. !!!",
-      });
-    }
+   // check if user already exist with email and username.
+   const oldUser = await db
+   .collection("users")
+   .find({ $or: [{ email: email }, { lastName: lastName }] });
+ const _inValidReg = await oldUser.toArray();
+ if (_inValidReg.length > 0) {
+   let message;
+   _inValidReg.every((elem) => {
+     if (
+       elem.email.toString().trim().toLowerCase() ===
+       email.toString().trim().toLowerCase()
+     ) {
+       message = "Email already used";
+       return false;
+     } else if (elem.lastName === lastName) {
+       message = "Lastname already used";
+       return false;
+     }
+   });
+   if (message.length != 0)
+     return res.status(400).json({ message, statusId: "FAILED!!" });
+ }
+
+
     // bcrypt password
     const hashedPassword = await bcrypt.hash(password, 12);
     // get image from path

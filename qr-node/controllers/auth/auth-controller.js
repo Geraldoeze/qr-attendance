@@ -7,6 +7,8 @@ require("dotenv").config();
 const mongodb = require("mongodb");
 const ObjectId = mongodb.ObjectId;
 const transporter = sendMailHandler();
+const User = require("../../models/user");
+const Admin = require("../../models/admin");
 
 // SUPER ADMIN signUp
 exports.createSuperAdmin = async (req, res, next) => {
@@ -35,95 +37,21 @@ exports.createSuperAdmin = async (req, res, next) => {
       if (message.length != 0)
         return res.status(400).json({ message, statusId: "FAILED!!" });
     }
-      // creating new superAdmin
-      const hashedPassword = await bcrypt.hash(password, 12);
-
-      const data = {
-        email: email,
-        password: hashedPassword,
-        firstName: firstName,
-        lastName: lastName,
-        type: 'superAdmin'
-      };
-      const result = await db.collection("superAdmin").insertOne(data);
-      console.log(result);
-      res.status(200).json({message: "Created Super"})
-  } catch (err) {
-    console.log("Super Admin Something went wrong. Please try again");
-  }
-};
-
-// use some contents f
-exports.signupAdmin = async (req, res, next) => {
-  const db = await getDb();
-  try {
-    const { email, password, name, adminNumber } = req.body;
-    console.log(email, name, password);
-
-    //  adminNumber Verification
-
-    const signUpCode = 100000 + Math.floor(Math.random() * 900000);
-    const code = signUpCode.toString();
-    await db.collection("signUpToken").insertOne({ adminNumber: code });
-    // return res.json({message: "inserted"})
-
-    const signUpToken = await db
-      .collection("signUpToken")
-      .findOne({ adminNumber: adminNumber });
-
-    if (!signUpToken) {
-      return res
-        .status(400)
-        .json({
-          message: "Admin Number is not correct. Contact Administrator!",
-        });
-    }
-    await db.collection("signUpToken").deleteOne({ adminNumber: adminNumber });
-
-    // Validate user input
-    if (!(email && password && name)) {
-      return res.status(403).json({
-        message: "All input fields are required!",
-        statusId: "CHECK INPUTS",
-      });
-    }
-
-    // check if user already exist with email and username.
-    const oldUser = await db
-      .collection("admin")
-      .find({ $or: [{ email: email }, { name: name }] });
-    const _inValidReg = await oldUser.toArray();
-    if (_inValidReg.length > 0) {
-      let message;
-      _inValidReg.every((elem) => {
-        if (
-          elem.email.toString().trim().toLowerCase() ===
-          email.toString().trim().toLowerCase()
-        ) {
-          message = "Email already used";
-          return false;
-        } else if (elem.name === name) {
-          message = "Username already used";
-          return false;
-        }
-      });
-      if (message.length != 0)
-        return res.status(400).json({ message, statusId: "FAILED!!" });
-    }
-
-    // creating new userAdmin
+    // creating new superAdmin
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const data = {
       email: email,
       password: hashedPassword,
-      name: name,
-      emailVerified: false,
+      firstName: firstName,
+      lastName: lastName,
+      type: "superAdmin",
     };
-    const result = await db.collection("admin").insertOne(data);
+    const result = await db.collection("superAdmin").insertOne(data);
     console.log(result);
+    res.status(200).json({ message: "Created Super" });
   } catch (err) {
-    console.log("Something went wrong. Please try again");
+    console.log("Super Admin Something went wrong. Please try again");
   }
 };
 
@@ -262,30 +190,27 @@ exports.forgotPassword = async (req, res, next) => {
   // add email and redirect so that when a user clicks the email, he will be redirected to the page
   const { email, redirectUrl } = req.body;
 
-  const adminContent = await db
-    .collection("userAdmin")
-    .findOne({ email: email });
-  const _regUser = await adminContent;
-
-  if (_regUser) {
-    // userAdmin exist
-
-    // check if userAdmin is verified
-    if (!_regUser.emailVerified) {
-      return res.status(400).json({
-        statusId: "FAILED",
-        message: "Email has not been Verified. Check your inbox!!!",
-      });
-    } else {
-      // proceed with email to reset password
-
+  const userContent = await db.collection("users").findOne({ email: email });
+  const _regUser = await userContent;
+  try {
+    if (_regUser) {
+      // user exist
       sendResetEmail(_regUser, redirectUrl, res);
     }
-  } else {
-    return res.status(400).json({
-      message: "Email does not exist on any Account.",
-      statusId: "TRY AGAIN",
-    });
+    const adminContent = await db.collection("admin").findOne({ email: email });
+    const reg_Admin = await adminContent;
+    if (reg_Admin) {
+      // admin exist
+      sendResetEmail(reg_Admin, redirectUrl, res);
+    }
+    if (!_regUser && !reg_Admin) {
+      return res.status(400).json({
+        message: "Email does not exist on any Account. Kindly sign Up",
+        statusId: "TRY AGAIN",
+      });
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -302,7 +227,7 @@ const sendResetEmail = async ({ _id, email }, redirectUrl, res) => {
 
   // redirectUrl is gotten from the frontend, sent along with body
   const mailOptions = {
-    from: "flickyfeiveur7@gmail.com", // sender address
+    from: "corporateacc701@gmail.com", // sender address
     to: email, // list of receivers
     subject: "Password Reset", // Subject line
     html: `<p>We heard you lost the password</p>
@@ -385,29 +310,56 @@ exports.resetPassword = async (req, res) => {
             // strings matched
             // hash password again
 
-            const saltRounds = 10;
+            const saltRounds = 12;
             let newHashedPassword;
             try {
               newHashedPassword = await bcrypt.hash(newPassword, saltRounds);
-              const result = await db
-                .collection("userAdmin")
-                .updateOne(
-                  { _id: new ObjectId(userId) },
-                  { $set: { password: newHashedPassword } }
-                );
+              // search id in users db
+              const user = await User.findById(userId);
+              if (user) {
+                const result = await db
+                  .collection("users")
+                  .updateOne(
+                    { _id: new ObjectId(userId) },
+                    { $set: { password: newHashedPassword } }
+                  );
+                // update complete
+                await db
+                  .collection("passwordReset")
+                  .deleteOne({ userId: userId });
 
-              // update complete
-              await db
-                .collection("passwordReset")
-                .deleteOne({ userId: userId });
+                // both user record and reset record updated..
+                res.status(200).json({
+                  statusId: "SUCCESS",
+                  message:
+                    "User Password has been reset successfully!.. Kindly Log In.",
+                });
+                console.log(result);
+              }
 
-              // both user record and reset record updated..
-              res.status(200).json({
-                statusId: "SUCCESS",
-                message:
-                  "Password has been reset successfully!.. Kindly Log In.",
-              });
-              console.log(result);
+              // search id in admin db
+              const adminData = await Admin.findById(userId);
+              if (adminData) {
+                const result = await db
+                  .collection("admin")
+                  .updateOne(
+                    { _id: new ObjectId(userId) },
+                    { $set: { password: newHashedPassword } }
+                  );
+
+                // update complete
+                await db
+                  .collection("passwordReset")
+                  .deleteOne({ userId: userId });
+
+                // both admin record and reset record updated..
+                res.status(200).json({
+                  statusId: "SUCCESS",
+                  message:
+                    "Admin Password has been reset successfully!.. Kindly Log In.",
+                });
+                console.log(result);
+              }
             } catch (err) {
               res.status(501).json({
                 statusId: "STRANGE",
