@@ -1,57 +1,53 @@
 import { Helmet } from 'react-helmet-async';
-import {useState, useEffect, useContext} from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import { Container, Typography, Stack } from '@mui/material';
 
-import  EditUser  from '../sections/admin/newUser/EditUser'
+import EditUser from '../sections/profile/EditUser';
+import { AuthContext } from '../context/auth-context';
 import { useHttpClient } from '../hooks/http-hook';
 
 const EditUserPage = () => {
-    const [ response, setResponse ] = useState(); 
-    const [ responseData, setResponseData ] = useState(); 
-    const { isLoading, error, sendRequest } = useHttpClient();
-    const  getUserId = window.location.pathname.split('/');
-    const userId = getUserId[getUserId.length - 1];
-     
-      // fetch student data
+  const auth = useContext(AuthContext);
+  const [response, setResponse] = useState();
+  const [responseData, setResponseData] = useState();
+  const { isLoading, error, sendRequest } = useHttpClient();
+  const getUserId = window.location.pathname.split('/');
+  const userId = getUserId[getUserId.length - 1];
+
+  // fetch user data
   useEffect(() => {
     const getData = async () => {
-    try {
-     const send = await sendRequest(`https://biometric-node.vercel.app/users/getUser/${userId}`)
-     setResponse(send.response[0])
-     console.log(send.response);
-    } catch (err) {
-      console.log(err)
-    }
-    try {
-        const sendReq = await sendRequest(`https://biometric-node.vercel.app/admin/getDept`)
-     setResponseData(sendReq.response)
-     console.log(sendReq.response);
-    } catch (err) {
-        console.log(err)
-    }
-  }
-  getData();
- },[])
+      if (!!auth.token) {
+        try {
+          const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/getuser/${userId}`, 'GET', null, {
+            Authorization: 'Bearer ' + auth.token,
+          });
+          setResponse(send.response[0]);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    getData();
+  }, [auth.token]);
 
-    return ( 
-        <>
-          <Helmet>
-        <title> Edit Student </title>
+  return (
+    <>
+      <Helmet>
+        <title> Edit User </title>
       </Helmet>
 
       <Container maxWidth="xl">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-          <Typography sx={{color: '#000080'}} variant="h4" gutterBottom>
-            Edit Student Info
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
+          <Typography sx={{ color: '#2065D1' }} variant="h4" gutterBottom>
+            Edit User Information
           </Typography>
         </Stack>
-       { !!response && <EditUser user={response} dept={responseData} />}
+        {!!response && <EditUser user={response} />}
       </Container>
-        
-        </>
+    </>
+  );
+};
 
-     );
-}
- 
 export default EditUserPage;

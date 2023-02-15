@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
+import env from 'react-dotenv';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Container, Checkbox, Typography, Stack } from '@mui/material';
@@ -65,7 +66,7 @@ export default function LoginPage() {
      
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography sx={{color: '#000080'}} variant="h4" gutterBottom>
+            <Typography sx={{color: '#2065D1'}} variant="h4" gutterBottom>
               {switchPage ? 'Signup' : 'Login'}
             </Typography>
 

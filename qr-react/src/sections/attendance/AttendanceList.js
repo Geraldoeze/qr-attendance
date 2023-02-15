@@ -36,7 +36,7 @@ const AttendanceList = () => {
   useEffect(() => {
     const getAttendance = async () => {
       try {
-        const send = await sendRequest(`https://biometric-node.vercel.app/users/attendanceList`);
+        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/attendanceList`);
         setResponse(send.response);
         console.log(send);
       } catch (err) {

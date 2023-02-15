@@ -41,7 +41,7 @@ import LoadingSpinner from '../../../UIElement/LoadingSpinner';
     const onSubmitHandler = async (values) => {
       const data = {...values, redirectUrl: `${window.location.origin}/auth/resetPassword`}
       try {
-        await sendRequest(`https://biometric-node.vercel.app/auth/passwordReset`, 'POST', data);
+        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/passwordReset`, 'POST', data);
           
         } catch (err) {
           console.log(err.message, err.response)
@@ -91,84 +91,3 @@ import LoadingSpinner from '../../../UIElement/LoadingSpinner';
   
 
 
-
-// import { useState, useReducer } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// // @mui
-// import { Link, Stack, TextField } from '@mui/material';
-// import { LoadingButton } from '@mui/lab';
-// // components
-// import { useHttpClient } from '../../../hooks/http-hook';
-
-// // UIElement
-// import LoadingSpinner from '../../../UIElement/LoadingSpinner'
-// import Modal from '../../../UIElement/Modal/Modal';
-
-
-// // ----------------------------------------------------------------------
-
-
-// // initial reducer state
-// const inputReducer = (state, action) => {
-//   switch (action.type) {
-//     case 'HANDLE_INPUT':
-//       return {
-//         ...state,
-//         [action.field]: action.payload,
-        
-//       };
-//     default:
-//       return state;
-//   }
-// };
-// export default function LoginForm() {
-  
-//   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-//   const [inputState, dispatch] = useReducer(inputReducer, {
-//     email: ''
-//   });
-  
-//   const changeHandler = e => {
-//     dispatch({
-//       type: 'HANDLE_INPUT',
-//       field: e.target.name,
-//       payload: e.target.value
-//     });
-//   };
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [ response,setResponse] = useState();
-//   const handleClick = async () => {
-//     const data = {...inputState, redirectUrl: `${window.location.origin}/auth/resetPassword`}
-  
-//     try {
-//       const send = await sendRequest(`http://localhost:7000/auth/passwordReset`, 'POST', data);
-//       setResponse(send)
-//     } catch (err) {
-//       console.log(err.message, err.response)
-//     }
-
-//   };
-//   const closeRes = () => {
-//     setResponse(null);
-//   }
-
-//   return (
-//     <>
-//      {isLoading && <LoadingSpinner asOverlay />}
-//      <Modal error={error} onClose={clearError } res={response} closeRes={closeRes}/>
-//       <Stack spacing={1}>
-//         <TextField name="email" label="Email address" onChange={(e) => changeHandler(e)} value={inputState.email} />
-//       </Stack>
-//       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
-//         <Link href='login' variant="subtitle2" underline="hover">
-//           Login
-//         </Link>
-//       </Stack>
-//       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
-//         <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
-//         Submit
-//       </LoadingButton> 
-//         </Stack>
-//     </>
-//   );
-// }

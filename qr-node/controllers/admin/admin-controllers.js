@@ -1,236 +1,175 @@
 const qr = require("qrcode");
-
-// const bcrypt = require("bcryptjs/dist/bcrypt");
+const bcrypt = require("bcryptjs/dist/bcrypt");
 // const jwt = require("jsonwebtoken");
 const { getDb } = require("../../database/mongoConnect");
-const nodemailer = require("nodemailer");
+
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 const mongodb = require("mongodb");
+const Admin = require("../../models/admin");
 const ObjectId = mongodb.ObjectId;
-const ejs = require("ejs");
-const res = require("express/lib/response");
-
-// nodemailer Treans
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.AUTH_EMAIL,
-    pass: process.env.AUTH_PASSWORD,
-  },
-});
-
-// test
-transporter.verify((error, success) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(success);
-    console.log("Ready for message");
-  }
-});
-
 
 const UniqueCode = 100000 + Math.floor(Math.random() * 900000).toString();
-exports.createMember = async (req, res, next) => {
-  const db = await getDb();
-  try {
-    const { firstName, lastName, email } = req.body;
-    
 
-    const data = {
-      firstName,
-      email,
-      lastName
-    }
-    const result = await db.collection("membersList").insertOne(data);
-    console.log(result);
-    const userId = result?.insertedId.toString()
-    console.log(userId)
-    generateQRCode(userId, email, res)
-  } catch (err) {
-    console.log("Something went wrong. Please try again");
-  }
-};
-
-// Generate QR code
-
-const generateQRCode = async (urlId, receiver, res) => {
-  // const url = req.body.url;
-  // If the input is null return "Empty Data" error
-  if (urlId.length === 0) res.send("Empty Data!");
-
-  // Let us convert the input stored in the url and return it as a representation of the QR Code image contained in the Data URI(Uniform Resource Identifier)
-  // It shall be returned as a png image format
-  // In case of an error, it will save the error inside the "err" variable and display it
-
-  var opts = {
-    errorCorrectionLevel: "H",
-    type: "image/jpeg",
-    quality: 0.3,
-    margin: 1,
-    color: {
-      dark: "#010599FF",
-      light: "#FFBF60FF",
-    },
-    width: "300",
-    height: "300",
-  };
-  qr.toDataURL(urlId, opts, (err, src) => {
-    if (err) res.send("Error occured");
-    // Let us return the QR code image as our response and set it to be the source used in the webpage
-    // res.render("scan", { src });
-    sendEmail(receiver, src, res);
-  });
-};
-
-// send QR code as email
-const sendEmail = async (receiver, src, res) => {
-  
-  ejs.renderFile("views/welcome.ejs", 
-    { receiver, src },
-    (err, data) => {
-      if (err) {
-        console.log(err)
-        return res.status(400).json({
-          statusId: "FAILED",
-          message: "Something went wrong!!",
-        });
-      }
-      try {
-        const mailOptions = {
-          from: "corporateacc701@gmail.com",
-          to: receiver,
-          subject: "New QR code for Attendance",
-          html: data,
-          attachments: [{
-              filename: 'image.png',
-              path: src,
-              cid: 'unique@kreata.ee' //same cid value as in the html img src
-          }]
-          
-        
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            return console.log(error);
-          }
-          console.log("Message sent: %s", info.messageId);
-        });
-        res.status(200).json({statusId: 'SUCCESS', message: 'Email QR-code has been sent'})
-      } catch (err) {
-        console.log(err);
-        res.status(400).json({
-          statusId: "FAILED",
-          message: "An error occured, Try again later!.!",
-        });
-      }
-    }
-  );
-};
-
-
-
-// Delete below
-// POST departments
-exports.createData = async (req, res, next) => {
+// GET Events
+exports.getAllEvents = async (req, res, next) => {
   const db = getDb();
-  const { department, courses } = req.body;
+  try {
+    const eventList = await db.collection("events").find().toArray();
+    const list = await eventList;
+    res
+      .status(201)
+      .json({
+        message: "Events Fetched",
+        statusId: "SUCCESS",
+        response: list,
+      });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(400)
+      .json({
+        message: "Failed to fetch Events",
+        statusId: "UNSUCCESSFUL",
+      });
+  }
+}
 
-  // check if Department exist
-  const reg_Data = await db
-    .collection("userData")
-    .findOne({ department: department });
-  if (reg_Data) {
+// POST Events
+exports.createEvent = async (req, res, next) => {
+  const db = getDb();
+  const { date, eventFunction } = req.body;
+  // check if event exist
+  const reg_Event = await db
+    .collection("events")
+    .findOne({ eventFunction: eventFunction });
+  if (reg_Event) {
     return res.status(400).json({
-      message: "Department already exists.!",
+      message: "Event already exists.!",
       statusId: "UNSUCCESSFUL",
     });
   }
-  const new_Item = { department, courses };
+  const new_Event = { date, eventFunction };
   try {
-    const send_Data = await db.collection("userData").insertOne(new_Item);
+    const send_Data = await db.collection("events").insertOne(new_Event);
     console.log(send_Data);
-    res.status(201).json({ message: "Content Added", statusId: "SUCCESS" });
+    res.status(201).json({ message: "Event Added", statusId: "SUCCESS" });
   } catch (err) {
     console.log(err);
   }
-};
+}
 
-exports.getDepartment = async (req, res, next) => {
-  const db = getDb();
-  try {
-    // fetch all department from db
-    const deptList = await db.collection("userData").find().toArray();
-    const listData = await deptList;
-    res.status(200).json({ message: "Departments gotten", response: listData });
-  } catch (err) {
-    res.status(501).json({ message: "Getting Departments Failed.! " });
-  }
-};
-
-// Edit Departments
-exports.editDept = async (req, res, next) => {
-  const updateValues = req.body;
-  const id = req.params.uid;
-  const db = getDb();
-
-  // check if department exist
-  const checkUser = await db
-    .collection("userData")
-    .findOne({ _id: new mongodb.ObjectId(id) });
-
-  if (!checkUser) {
-    return res.status(400).json({
-      message: " This Department does not exists.!",
-      statusId: "UNSUCCESSFUL",
-    });
-  }
-  try {
-    const sendUpdate = await db
-      .collection("userData")
-      .updateOne(
-        { _id: new mongodb.ObjectId(id) },
-        { $set: { ...updateValues } }
-      );
-    console.log(sendUpdate);
-    res.status(200).json({ message: "Department Updated", statusId: "GOOD" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "An Error Occurred", statusId: "FAILED" });
-  }
-};
-
-// delete department
-exports.deleteDepartment = async (req, res, next) => {
+// DELETE Event
+exports.deleteEvent = async (req, res, next) => {
   const id = req.params.uid;
   const db = getDb();
   try {
-    await db.collection("userData").deleteOne({ _id: new ObjectId(id) });
-    res.status(200).json({ message: "Removed Department" });
+    await db.collection("events").deleteOne({ _id: new ObjectId(id) });
+    res.status(200).json({ message: "Removed Event" });
   } catch (err) {
     res.status(500).json({ message: "Delete Error", statusId: "SERVER ERROR" });
   }
-};
+}
 
-exports.updateUser = async (req, res, next) => {
-  const updateValues = req.body;
-  const id = req.params.uid;
+// GET All admin
+exports.getAllAdmins = async (req, res, next) => {
   const db = getDb();
+  if(req.type_Value != "superAdmin" ) {
+    return res.status(400).json({ message: "ACCESS DENIED", statusId: "UNAUTHORIZED" });
+  }
+  try {
+    const adminList = await db.collection("admin").find().toArray();
+    const list = await adminList;
+    res
+      .status(201)
+      .json({
+        message: "Admins Fetched",
+        statusId: "SUCCESS",
+        response: list,
+      });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(400)
+      .json({
+        message: "Failed to fetch Admin",
+        statusId: "UNSUCCESSFUL",
+      });
+  }
+}
 
-  // check if user exists
-  const checkUser = await db
-    .collection("users")
+
+// GET ONE Admin
+exports.getAdminById = async (req, res, next) => {
+  const userId = req.params.uid;
+  if(req.type_Value != "superAdmin" ) {
+    return res.status(400).json({ message: "ACCESS DENIED", statusId: "UNAUTHORIZED" });
+  }
+  try {
+    // find admin from db
+    const adminData = await Admin.findById(userId);
+    res.status(200).json({ message: "Admin gotten", response: [adminData] });
+  } catch (err) {
+    res.status(501).json({ message: "Getting Admin Failed.!! " });
+  }
+}
+
+
+// POST Admin
+exports.createAdmin = async (req, res, next) => {
+                 
+  const db = getDb();
+  if(req.type_Value != "superAdmin" ) {
+    return res.status(400).json({ message: "ACCESS DENIED", statusId: "UNAUTHORIZED" });
+  }
+  try {  
+                   
+    const { firstName, lastName, email, gender, id, address, contact, password, title, accessLevel, adminType } = req.body;
+
+    //   Check if Email  exist
+    const admin_Email = await db.collection("admin").findOne({ email: email });
+    if (admin_Email) {
+      //  A admin exists with this email,
+      return res.status(400).json({
+        statusId: "Email Exists",
+        message: "Email Address exists on Admin account, Kindly login. !!!",
+      });
+    }
+      // bcrypt password
+      const hashedPassword = await bcrypt.hash(password, 12);
+                  
+    // save adminData to admin database model
+    const AdminData = new Admin( firstName, lastName, email, gender, id, address, contact, hashedPassword, title, accessLevel, adminType );
+    const saveUserData = await AdminData.saveToDB();
+    const adminId = saveUserData?.insertedId.toString();
+    console.log(adminId, "NA Here");
+    res.status(201).json({ message: "Admin Created!!,", response: saveUserData });
+  } catch (err) {
+    console.log("Something went wrong. Please try again");
+  }
+}
+
+// UPDATE Admin
+exports.updateAdmin = async (req, res, next) => {
+  const updateValues = req.body;
+  const id = req.user_id; 
+
+  if(req.type_Value != "superAdmin" ) {
+    return res.status(400).json({ message: "ACCESS DENIED", statusId: "UNAUTHORIZED" });
+  }
+  
+  const db = getDb();
+  // check if admin exists
+  const checkAdmin = await db
+    .collection("admin")
     .findOne({ _id: new mongodb.ObjectId(id) });
 
-  if (!checkUser) {
+  if (!checkAdmin) {
     return res.status(400).json({
-      message: " User Id does not exists.!",
+      message: " Admin Id does not exists.!",
       statusId: "UNSUCCESSFUL",
     });
   }
-
   try {
     const sendUpdate = await db
       .collection("users")
@@ -239,26 +178,33 @@ exports.updateUser = async (req, res, next) => {
         { $set: { ...updateValues } }
       );
     console.log(sendUpdate);
-    res.status(200).json({ message: "Users Updated", statusId: "GOOD" });
+    res.status(200).json({ message: "Admin Updated", statusId: "GOOD" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An Error Occurred", statusId: "FAILED" });
   }
-};
+}
 
-exports.deleteUser = async (req, res, next) => {
-  const id = req.params.uid;
+// DELETE Admin
+exports.deleteAdmin = async (req, res, next) => {
   const db = getDb();
+  const id = req.params.uid;
+  if(req.type_Value != "superAdmin" ) {
+    return res.status(400).json({ message: "ACCESS DENIED", statusId: "UNAUTHORIZED" });
+  }
+
   try {
-    await db.collection("users").deleteOne({ _id: new ObjectId(id) });
-    res.status(200).json({ message: "User deleted" });
+    await db.collection("admin").deleteOne({ _id: new ObjectId(id) });
+    res.status(200).json({ message: "Admin deleted" });
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Delete User Error", statusId: "SERVER ERROR" });
+      .json({ message: "Delete Admin Error", statusId: "SERVER ERROR" });
   }
-};
+}
 
+
+// QR COde verification
 exports.getUserbyId = async (req, res, next) => {
   const db = getDb();
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Stack, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
+import ScanQRCode from '../../components/ScanQR/ScanQRCode';
 import { useHttpClient } from '../../hooks/http-hook';
 import LoadingSpinner from '../../UIElement/LoadingSpinner';
 import ErrorModal from '../../UIElement/Modal/ErrorModal';
@@ -16,14 +17,16 @@ const AddUserAtt = ({ value, open, onClose, updateContent }) => {
   
   const { isLoading, error, sendRequest, clearError, resMessage } = useHttpClient();
   const [token, setToken ] = useState();
+  const [scan, setScan ] = useState(false);
   const [data, setData] = useState();
 
  const getTokenHandler = async () => {
   setToken("63bfb92918b006cec536f282")
+  setScan(true)
   // find the user
   try {
     if (token) {
-      const send = await sendRequest(`https://biometric-node.vercel.app/users/getUser/${token}`);
+      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/getUser/${token}`);
     setData(send.response[0]);
     }
     
@@ -46,7 +49,7 @@ console.log(data)
     
     if (token) {
        try {
-        const sendToken = await sendRequest(`https://biometric-node.vercel.app/admin/getuserId/${token}`, 'POST', userAtt);
+        const sendToken = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/getuserId/${token}`, 'POST', userAtt);
         console.log(sendToken);
         updateContent(sendToken.response)
         
@@ -56,6 +59,16 @@ console.log(data)
     }
       onClose()
   };
+  const getQRtoken = async (userId) => {
+    try {
+      if(userId.length >= 8) {
+    // send fetch request
+    onClose()
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
 
   return (
@@ -63,19 +76,16 @@ console.log(data)
       {isLoading && <LoadingSpinner asOverlay />}
       <ErrorModal error={error} open={error} onClose={clearError} response={resMessage}  /> 
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Add Student Attendance</DialogTitle>
-        <DialogContent>
+        <DialogTitle>Add Church Attendance</DialogTitle>
+        <DialogContent sx={{width: '100%', padding:'0'}}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" m={5}>
-           { data ? <div>
-             <h2>Student Id :{data?.studentId}</h2>
-             <p>First Name : {data?.firstName}</p>
-             <p>Last Name : {data?.lastName}</p>
-           </div> : <h3>verify fingerprint</h3> }
+           { scan ? <ScanQRCode getQR={getQRtoken} />
+            : <h3>Scan QR Code</h3> }
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>CANCEL</Button>
-          <Button onClick={getTokenHandler}>GENERATE</Button>
+          <Button onClick={onClose}>CLOSE</Button>
+          <Button onClick={getTokenHandler}>SCAN</Button>
           <Button type="submit" onClick={onSubmitHandler}>
             CONFIRM
           </Button>

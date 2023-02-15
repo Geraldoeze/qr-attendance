@@ -31,14 +31,16 @@ const ErrorModal = ({ open, onClose, error, response }) => {
       <Typography variant="h5">{error.message}</Typography>
     </Container>
   ) : (
-    <Typography variant="h6">Something went wrong try again.!!</Typography>
+    <Typography variant="h6">Error.!!</Typography>
   );
 
   return (
     <div>
       <Dialog open={!!open} onClose={onClose}>
         <DialogTitle>RESPONSE</DialogTitle>
-        <DialogContent>{error ? err : res}</DialogContent>
+        <DialogContent>{error ? err : res}
+        <Typography variant="h6">Something went wrong try again.!!</Typography>
+        </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Close</Button>
         </DialogActions>

@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { useEffect, useState, useContext } from 'react';
 import { Container, Typography, Stack, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Iconify from '../components/iconify';
 
-import { useHttpClient } from '../hooks/http-hook';
-import LoadingSpinner from '../UIElement/LoadingSpinner';
-import ErrorModal from '../UIElement/Modal/ErrorModal';
+import { useHttpClient } from '../../../hooks/http-hook';
+import LoadingSpinner from '../../../UIElement/LoadingSpinner';
+import ErrorModal from '../../../UIElement/Modal/ErrorModal';
+
+import { AuthContext } from '../../../context/auth-context';
+import DeleteAdmin from './DeleteAdmin';
+
 
 const StyledDiv = styled('div')(({ theme }) => ({
   margin: '0',
@@ -14,61 +17,66 @@ const StyledDiv = styled('div')(({ theme }) => ({
   width: '100%',
   padding: '1rem',
   backgroundColor: '#14162F',
-color: 'white',
+  color: 'white',
   borderRadius: '5px',
 }));
 
-const UserssPage = () => {
+export default function AdminProfile() {
+  const auth = useContext(AuthContext);
   const [data, setData] = useState();
+  const [openDelete, setOpenDelete] = useState(false);
   const { isLoading, sendRequest, error, clearError, resMessage } = useHttpClient();
   const getUserId = window.location.pathname.split('/');
   const userId = getUserId[getUserId.length - 1];
-  const  navigate = useNavigate();
 
   useEffect(() => {
-    const studentData = async () => {
-      try {
-        const send = await sendRequest(`https://biometric-node.vercel.app/users/getUser/${userId}`);
-        setData(send.response);
-      } catch (err) {
-        console.log(err);
+    const getAdmin = async () => {
+      if (!!auth.token) {
+        try {
+          const send = await sendRequest(
+            `${process.env.REACT_APP_BACKEND_URL}/admin/single/admin/${userId}`,
+            'GET',
+            null,
+            {
+              Authorization: 'Bearer ' + auth.token,
+            }
+          );
+          console.log(send);
+          setData(send.response);
+        } catch (err) {
+          console.log(err);
+        }
       }
     };
-    studentData();
-  }, []);
-console.log(data)
-  const deleteUserHandler = async () => {
-    try {
-      const deleteUser = await sendRequest(`https://biometric-node.vercel.app/admin/delete/${userId}`, 'DELETE');
-      console.log(deleteUser)
-      navigate('/dashboard', {replace: true});
-    } catch(err) {
-      console.log(err);
-    }
+    getAdmin();
+  }, [auth.token]);
+
+  const OpenDeleteUser = () => setOpenDelete(true);
+  const CloseDeleteUser = () => setOpenDelete(false);
+  let currentId;
+  if (!!data) {
+    currentId = data?.[0]._id;
   }
+
+
   return (
     <>
+      <Helmet>
+        <title> Profile </title>
+      </Helmet>
+      {openDelete && <DeleteAdmin open={openDelete} onClose={CloseDeleteUser} adminId={currentId} />}
       {isLoading && <LoadingSpinner />}
       <ErrorModal open={error} onClose={clearError} error={error} response={null} />
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography sx={{color: '#000080'}} variant="h4" gutterBottom>
-            Student Details
+          <Typography sx={{ color: '#000080' }} variant="h3" gutterBottom>
+            Admin Profile
           </Typography>
-          <Button
-            onClick={deleteUserHandler}
-            sx={{px:3, backgroundColor: 'rgb(200,0,0)' }}
-            variant="contained"
-            
-          >
+          <Button onClick={OpenDeleteUser} sx={{ px: 3, backgroundColor: 'rgb(200,0,0)' }} variant="contained">
             Delete
           </Button>
-          <Button
-            href={`/admin/editStudent/${userId}`}
-            sx={{ backgroundColor: '#14162F' }}
-            variant="contained"
-            
-          >
+          
+          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F' }} variant="contained">
             Edit Details
           </Button>
         </Stack>
@@ -78,6 +86,7 @@ console.log(data)
           data?.map((val, ide) => {
             return (
               <StyledDiv key={val._id}>
+                <Stack>{/* Avatar Image gotten from be */}</Stack>
                 <Stack direction="row" alignItems="start" my={1}>
                   <Typography variant="h6" gutterBottom width="45%" my={1}>
                     First Name : {val.firstName}
@@ -87,19 +96,13 @@ console.log(data)
                   </Typography>
                 </Stack>
                 <Typography variant="h6" gutterBottom my={2}>
-                  Matric No : {val.matric}
-                </Typography>
-                <Typography variant="h6" gutterBottom my={2}>
-                  Department : {val.department.toUpperCase()}
-                </Typography>
-                <Typography variant="h6" gutterBottom my={2}>
-                  Courses : {val.courses.toString().split(',').join(', ')}
-                </Typography>
-                <Typography variant="h6" gutterBottom my={2}>
-                  Level : {val.levelId}
+                  Access Level : {val.accessLevel}
                 </Typography>
                 <Typography variant="h6" gutterBottom my={2}>
                   Email : {val.email}
+                </Typography>
+                <Typography variant="h6" gutterBottom my={2}>
+                  Title : {val.title}
                 </Typography>
                 <Typography variant="h6" gutterBottom my={2}>
                   Contact No : {val.contact}
@@ -107,14 +110,9 @@ console.log(data)
                 <Typography variant="h6" gutterBottom my={2}>
                   Gender : {val.gender}
                 </Typography>
-                <Typography variant="h6" gutterBottom my={2}>
-                  State of Origin : {val.origin}
-                </Typography>
+
                 <Typography variant="h6" gutterBottom my={2}>
                   Address : {val.address}
-                </Typography>
-                <Typography variant="h6" gutterBottom my={2}>
-                  Country : {val.country}
                 </Typography>
               </StyledDiv>
             );
@@ -122,6 +120,4 @@ console.log(data)
       </Container>
     </>
   );
-};
-
-export default UserssPage;
+}

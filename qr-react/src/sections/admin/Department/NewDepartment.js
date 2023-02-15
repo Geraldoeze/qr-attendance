@@ -45,7 +45,7 @@ const NewDepartment = ({ open, onClose, updateContent }) => {
       updateContent(newCourse);
     }
     try {
-      const send = await sendRequest(`https://biometric-node.vercel.app/admin/createData`, 'POST', newDepartmentData);
+      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/createData`, 'POST', newDepartmentData);
       console.log(send);
     } catch (err) {
       console.log(err);

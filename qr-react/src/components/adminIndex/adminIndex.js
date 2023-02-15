@@ -34,10 +34,11 @@ import { UserListHead, UserListToolbar } from '../../sections/dashboard/user';
 const TABLE_HEAD = [
   { id: 'firstname', label: 'First Name', alignItems: true },
   { id: 'lastname', label: 'Last Name', alignItems: true },
-  { id: 'studentId', label: 'Matric', alignItems: true },
-  { id: 'department', label: 'Department', alignItems: true },
   { id: 'gender', label: 'Gender', alignItems: true },
-  { id: 'level', label: 'Level', alignItems: true },
+  { id: 'access', label: 'AccessLevel', alignItems: true },
+  { id: 'title', label: 'Title', alignItems: true },
+  { id: 'contact', label: 'Contact', alignItems: true },
+  { id: 'address', label: 'Address', alignItems: true },
   {id: ''}
 ];
 
@@ -151,7 +152,7 @@ export default function AdminIndex({ responseData, deleteUser }) {
   };
 
   const handleEditHandler = () => {
-    navigate(`/dashboard/student/${userInfo}`, { replace: true });
+    navigate(`/admin/profile/${userInfo}`, { replace: true });
   }
 
   const handleDeleteHandler = async () => {
@@ -184,9 +185,9 @@ export default function AdminIndex({ responseData, deleteUser }) {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id, firstName, lastName, matric, department, gender, levelId } = row;
+                    const { _id, firstName, lastName, title, accessLevel, gender, contact, address } = row;
                     const selectedUser = selected.indexOf(firstName) !== -1;
-                    const dept = department.toUpperCase();
+                    
                     return (
                       <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
@@ -201,15 +202,17 @@ export default function AdminIndex({ responseData, deleteUser }) {
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="center">{lastName}</TableCell>
+                        <TableCell align="center">{lastName?.toUpperCase()}</TableCell>
 
-                        <TableCell align="center">{matric}</TableCell>
+                        <TableCell align="center">{gender?.toUpperCase()}</TableCell>
 
-                        <TableCell align="center">{dept}</TableCell>
+                        <TableCell align="center">{accessLevel}</TableCell>
 
-                        <TableCell align="center">{gender}</TableCell>
+                        <TableCell align="center">{title?.toUpperCase()}</TableCell>
 
-                        <TableCell align="center">{levelId}</TableCell>
+                        <TableCell align="center">{contact}</TableCell>
+
+                        <TableCell align="center">{address}</TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, _id)}>

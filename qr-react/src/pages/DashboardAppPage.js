@@ -27,19 +27,19 @@ export default function DashboardAppPage() {
 
   // fetch students data
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const send = await sendRequest(`https://biometric-node.vercel.app/users`);
-        const getAttendance = await sendRequest(`https://biometric-node.vercel.app/users/attendanceList`);
-        const getCourses = await sendRequest(`https://biometric-node.vercel.app/admin/getDept`);
-        setDepart(getCourses.response);
-        setAttendance(getAttendance.response);
-        setResponse(send.response);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getData();
+    // const getData = async () => {
+    //   try {
+    //     const send = await sendRequest(`https://biometric-node.vercel.app/users`);
+    //     const getAttendance = await sendRequest(`https://biometric-node.vercel.app/users/attendanceList`);
+    //     const getCourses = await sendRequest(`https://biometric-node.vercel.app/admin/getDept`);
+    //     setDepart(getCourses.response);
+    //     setAttendance(getAttendance.response);
+    //     setResponse(send.response);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // getData();
   }, []);
 
   const getDepartment = () => {
@@ -58,10 +58,10 @@ export default function DashboardAppPage() {
       </Helmet>
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography sx={{ color: '#000080' }} variant="h4" gutterBottom>
+          <Typography sx={{ color: '#2065D1' }} variant="h4" gutterBottom>
             Dashboard
           </Typography>
-          <Typography sx={{ color: '#000080' }} variant="h5">
+          <Typography sx={{ color: '#2065D1' }} variant="h5">
             All Info
           </Typography>
         </Stack>

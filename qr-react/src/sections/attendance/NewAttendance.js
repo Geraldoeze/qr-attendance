@@ -48,7 +48,7 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
   const auth = useContext(AuthContext);
   const [inputState, dispatch] = useReducer(inputReducer, {
     lecturer: auth?.userDetails.name,
-    location: '',
+    time: '',
     attValue: 'open',
     attendance: []
   });
@@ -57,7 +57,7 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const send = await sendRequest(`https://biometric-node.vercel.app/admin/getDept`);
+        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/getDept`);
         setDept(send.response);
         console.log(send);
       } catch (err) {
@@ -69,11 +69,11 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
 
   const onSubmitHandler = async () => {
     const refinedDate = date.toDate().toString().slice(0, 25);
-    const newDepartmentData = { ...inputState, course, refinedDate };
+    const newDepartmentData = { ...inputState, refinedDate };
     
    
     try {
-      const send = await sendRequest(`https://biometric-node.vercel.app/users/attendance`, 'POST', newDepartmentData);
+      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/attendance`, 'POST', newDepartmentData);
       console.log(send);
       if (newDepartmentData?.course?.length >= 1) {
         updateContent(newDepartmentData);
@@ -131,38 +131,18 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
             </LocalizationProvider>
            
             
-              <FormControl sx={{ m: 1, width: 200 }}>
-                <InputLabel id="demo-simple-select-helper-label" name="course">
-                  Select Course
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="course"
-                  label="Course"
-                  value={course}
-                  size="small"
-                  onChange={handleChangeCourse}
-                  input={<OutlinedInput label="Courses" />}
-                >
-                 {allCourse.map((val, idx) => (
-                      <MenuItem value={val} key={idx}>
-                      <Checkbox checked={course.indexOf(val) > -1} />
-                      <ListItemText primary={val} />
-                    </MenuItem>
-                    ) )}
-                </Select>
-              </FormControl>
+              
             
             <TextField
               autoFocus
-              sx={{ m: 1, width: 150 }}
-              name="location"
-              id="location"
-              label="Location"
+              sx={{ m: 1, width: 350 }}
+              name="time"
+              id="time"
+              label="Time of Service"
               type="text"
-              value={inputState.location}
+              value={inputState.time}
               onChange={(e) => changeHandler(e)}
-              size="small"
+              size="medium"
               variant="outlined"
             />
           </Box>

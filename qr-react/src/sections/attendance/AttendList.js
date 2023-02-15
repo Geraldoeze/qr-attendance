@@ -33,7 +33,7 @@ const inputReducer = (state, action) => {
 
 
 const AttendList = ({ value, openList, closeList, addNewUser }) => {
-  console.log(value)
+  
     const [ openAdd, setOpenAdd ] = useState(false);
 
     const [inputState, dispatch] = useReducer(inputReducer, {
@@ -72,7 +72,6 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
         <table className="customers" >
                     <thead>
                         <tr>
-                            <th>Student ID</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             
@@ -81,7 +80,7 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
                     <tbody>
                     {inputState?.attendance?.map(emp => (
                             <tr key={emp._id}>
-                                <td>{emp.studentId}</td>
+              
                                 <td>{emp.firstName}</td>
                                 <td>{emp.lastName}</td>
                              
@@ -92,7 +91,7 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
         </Box>
         {(inputState?.attendance?.length === 0) && (
         <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 0.1, p: 1 }}>
-        <Typography variant="h5">No Student Attended this Course</Typography>
+        <Typography variant="h5">No Member Attended this Event</Typography>
         </Stack>
         )}
       </StyledDiv>

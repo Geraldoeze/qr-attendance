@@ -1,22 +1,20 @@
 const express = require('express');
 const userControllers = require('../../controllers/user/user-controllers');
-const { check } = require("express-validator");
-const { validateUserUpdate } = require('../../middleware/userValidation')
+const auth = require("../../middleware/auth");
+const { validateUserUpdate } = require('../../middleware/userValidation');
+const fileUpload = require("../../middleware/file-upload");
 
 const router = express.Router();
 
-router.get("/", userControllers.getAllUsers);
+router.get("/", auth, userControllers.getAllUsers);
 
-router.get("/getUser/:uid", userControllers.findUserbyId);
+router.get("/getuser/:uid", auth, userControllers.findUserbyId);
 
-router.get("/attendanceList", userControllers.getAllAttendance);
+router.post("/create", fileUpload.single("image"), validateUserUpdate, userControllers.createUser);
 
-router.post("/create", validateUserUpdate, userControllers.createUser)
+router.put("/update/:uid", auth, validateUserUpdate, userControllers.updateUser);
 
-router.post("/attendance", userControllers.createAttendance);
-    
-router.patch("/closeAtt/:uid", userControllers.closeAttendance);
-
+router.delete("/delete/:uid", auth, userControllers.deleteUser);
 
  
 module.exports = router;

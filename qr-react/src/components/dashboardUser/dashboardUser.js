@@ -10,7 +10,11 @@ import {
   Table,
   Stack,
   Paper,
+  IconButton,
+  Popover,
+  Checkbox,
   TableRow,
+  MenuItem,
   TableBody,
   TableCell,
   Container,
@@ -20,9 +24,10 @@ import {
 } from '@mui/material';
 // components
 
-// import Iconify from '../iconify';
+import Iconify from '../iconify';
 import Scrollbar from '../scrollbar';
 // sections
+
 import { UserListHead, UserListToolbar } from '../../sections/dashboard/user';
 
 // ----------------------------------------------------------------------
@@ -30,12 +35,12 @@ import { UserListHead, UserListToolbar } from '../../sections/dashboard/user';
 const TABLE_HEAD = [
   { id: 'firstname', label: 'First Name', alignItems: true },
   { id: 'lastname', label: 'Last Name', alignItems: true },
-  { id: 'matric', label: 'Matric', alignItems: true },
-  { id: 'department', label: 'Department', alignItems: true },
   { id: 'gender', label: 'Gender', alignItems: true },
-  { id: 'level', label: 'Level', alignItems: true },
+  { id: 'status', label: 'Status', alignItems: true },
+  { id: 'contact', label: 'Contact', alignItems: true },
+  { id: 'area', label: 'Area', alignItems: true },
+  {id: ''}
 ];
-
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +61,7 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
+  
   const stabilizedThis = array?.map((el, index) => [el, index]);
   stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -72,10 +78,10 @@ DashboardUser.propTypes = {
   responseData: PropTypes.array,
 };
 
-export default function DashboardUser({ responseData }) {
-  const navigate = useNavigate();
 
-  // const [open, setOpen] = useState(null);
+export default function DashboardUser({ responseData, deleteUser }) {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
 
@@ -89,6 +95,20 @@ export default function DashboardUser({ responseData }) {
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const [ openDelete, setOpenDelete ] = useState(false); 
+
+  const [ userInfo, setUserInfo ] = useState(null);
+
+
+  const handleOpenMenu = (event, id) => {
+    setUserInfo(id);
+    setOpen(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setOpen(null);
+  };
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -97,11 +117,26 @@ export default function DashboardUser({ responseData }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = responseData.map((n) => n._id);
+      const newSelecteds = responseData.map((n) => n.firstName);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
+  };
+
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    }
+    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -114,27 +149,36 @@ export default function DashboardUser({ responseData }) {
   };
 
   const handleFilterByName = (event) => {
+    console.log(event)
     setPage(0);
     setFilterName(event.target.value);
   };
 
-  const userHandler = (e, id) => {
-    navigate(`/dashboard/student/${id}`, { replace: true });
-  };
+  const handleEditHandler = () => {
+    navigate(`/user/profile/${userInfo}`, { replace: true });
+  }
+
+
+  const handleDeleteHandler = async () => {
+    deleteUser(userInfo)
+    
+    setOpen(null);
+  }
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - responseData.length) : 0;
 
   const filteredUsers = applySortFilter(responseData, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers?.length && !!filterName;
-
+  
   return (
     <>
+    
       <Container>
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800, color: '#000080' }}>
+            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -146,41 +190,39 @@ export default function DashboardUser({ responseData }) {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id, firstName, lastName, matric, department, gender, levelId } = row;
+                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { _id, firstName, lastName, gender, status, contact, area } = row;
                     const selectedUser = selected.indexOf(firstName) !== -1;
-                    const dept = department.toUpperCase();
+                    
                     return (
-                      <TableRow
-                        hover
-                        key={_id}
-                        
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={selectedUser}
-                        onClick={(e) => userHandler(e, _id)}
-                      >
+                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} /> */}
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                         </TableCell>
 
                         <TableCell component="th" alignitems="center" scope="row" padding="normal">
                           <Stack direction="row" alignItems="center" spacing={1}>
-                            <Typography variant="subtitle2" noWrap>
+                            <Typography sx={{marginX: 'auto'}} variant="subtitle2" noWrap>
                               {firstName}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="center">{lastName}</TableCell>
+                        <TableCell align="center">{lastName?.toUpperCase()}</TableCell>
 
-                        <TableCell align="center">{matric}</TableCell>
+                        <TableCell align="center">{gender?.toUpperCase()}</TableCell>
 
-                        <TableCell align="center">{dept}</TableCell>
+                        <TableCell align="center">{status}</TableCell>
 
-                        <TableCell align="center">{gender}</TableCell>
+                        <TableCell align="center">{contact}</TableCell>
 
-                        <TableCell align="center">{levelId}</TableCell>
+                        <TableCell align="center">{area}</TableCell>
+
+                        <TableCell align="right">
+                          <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, _id)}>
+                            <Iconify icon={'eva:more-vertical-fill'} /> 
+                          </IconButton>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -229,34 +271,34 @@ export default function DashboardUser({ responseData }) {
           />
         </Card>
       </Container>
-      {/* <Popover
-      open={Boolean(open)}
-      anchorEl={open}
-      onClose={handleCloseMenu}
-      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      PaperProps={{
-        sx: {
-          p: 1,
-          width: 140,
-          '& .MuiMenuItem-root': {
-            px: 1,
-            typography: 'body2',
-            borderRadius: 0.75,
+      <Popover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleCloseMenu}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{
+          sx: {
+            p: 1,
+            width: 140,
+            '& .MuiMenuItem-root': {
+              px: 1,
+              typography: 'body2',
+              borderRadius: 0.75,
+            },
           },
-        },
-      }}
-    >
-      <MenuItem>
-        <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-        Edit
-      </MenuItem>
+        }}
+      >
+        <MenuItem onClick={ handleEditHandler}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Edit
+        </MenuItem>
 
-      <MenuItem sx={{ color: 'error.main' }}>
-        <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-        Delete
-      </MenuItem>
-    </Popover> */}
+        <MenuItem onClick={ handleDeleteHandler } sx={{ color: 'error.main' }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          Delete
+        </MenuItem>
+      </Popover>
     </>
   );
 }

@@ -41,7 +41,7 @@ const DepartmentList = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const send = await sendRequest(`https://biometric-node.vercel.app/admin/getDept`);
+        const send = await sendRequest(`${process.env.BACKEND_URL}/admin/getDept`);
         setResponse(send.response);
         
       } catch (err) {

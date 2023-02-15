@@ -3,15 +3,13 @@ const authControllers = require('../../controllers/auth/auth-controller')
 
 const router = express.Router();
 
-router.get("/verify/:userId/:uniqueString", authControllers.verifyEmail);
+router.post("/create/super", authControllers.createSuperAdmin);
 
-router.post("/login", authControllers.loginAdmin);
-
-router.post("/register", authControllers.signupAdmin);
+router.post("/login", authControllers.loginAccount);
 
 router.post("/passwordReset", authControllers.forgotPassword);
 
-router.post("/resetPassword", authControllers.resetPassword)
+router.post("/resetPassword", authControllers.resetPassword);
 
 module.exports = router;
 

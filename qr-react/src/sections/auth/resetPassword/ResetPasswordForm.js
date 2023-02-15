@@ -45,7 +45,7 @@ const ResetPasswordForm = () => {
     const data = { ...values, userId, resetString };
     console.log(data);
     try {
-      await sendRequest(`https://biometric-node.vercel.app/auth/resetPassword`, 'POST', data);
+      await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/resetPassword`, 'POST', data);
     } catch (err) {
       console.log(err.message, err.response);
     }

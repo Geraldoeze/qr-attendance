@@ -11,7 +11,7 @@ const CloseAttendance = ({ open, onClose, values, updateContent }) => {
     const newVal = { ...values, attValue: 'close'};
     const newValue = {...values}
     updateContent(newVal);
-    const send = await sendRequest(`http://localhost:7000/users/closeAtt/${id}`, 'PATCH', newValue);
+    const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/closeAtt/${id}`, 'PATCH', newValue);
 
     onClose();
   };

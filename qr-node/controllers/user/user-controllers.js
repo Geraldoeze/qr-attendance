@@ -1,12 +1,48 @@
 const { validationResult } = require("express-validator");
 const { getDb } = require("../../database/mongoConnect");
-const nodemailer = require("nodemailer");
+
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 const mongodb = require("mongodb");
 const ObjectId = mongodb.ObjectId;
 const User = require("../../models/user");
-const req = require("express/lib/request");
+const generateQRCodeImage  = require("../../utils/generateQR");
+
+const bcrypt = require("bcryptjs/dist/bcrypt");
+// const jwt = require("jsonwebtoken");
+
+const UniqueCode = 100000 + Math.floor(Math.random() * 900000).toString();
+
+
+exports.createUser = async (req, res, next) => {
+  const db = await getDb();
+  try {                 
+    const { firstName, lastName, email, gender, id, origin, address, contact, area, password, status, dob } = req.body;
+
+    //   Check if Email  exist
+    const user_Email = await db.collection("users").findOne({ email: email });
+    if (user_Email) {
+      //  A user exists with this email,
+      return res.status(400).json({
+        statusId: "Email Exists",
+        message: "Email Address exists on a User's account, Kindly login. !!!",
+      });
+    }
+    // bcrypt password
+    const hashedPassword = await bcrypt.hash(password, 12);
+    // save user data to user database model
+    const UserData = new User( firstName, lastName, email, gender, id, origin, address, contact, area, hashedPassword, status, dob);
+    const saveUserData = await UserData.saveToDB();
+    const userId = saveUserData?.insertedId.toString();
+    
+    // await generateQRCodeImage(userId, email, res);
+    res.status(201).json({ message: "Users Created, Kindly Check Email address", response: saveUserData });
+  } catch (err) {
+    console.log("Something went wrong. Please try again");
+  }
+};
+ 
+ 
 
 exports.getAllUsers = async (req, res, next) => {
   try {
@@ -18,62 +54,6 @@ exports.getAllUsers = async (req, res, next) => {
   }
 };
 
-exports.createUser = async (req, res, next) => {
-  const db = await getDb();
-
-  // const RandomId = 100000 + Math.floor(Math.random() * 900000);
-  
-  
-  try {
-    const {
-      firstName,
-      lastName,
-      email,
-      gender,
-      id,
-      matric,
-      origin,
-      department,
-      courses,
-      address,
-      contact,
-      levelId, ninNumber, country
-    } = req.body;
-
-    //   Check if RegId  exist
-    const _regUser = await db
-      .collection("users")
-      .findOne({ matric: matric });
-
-    if (_regUser) {
-      //  A user exists with this RegId,
-      return res.status(400).json({
-        statusId: "Matric No",
-        message: "Matric No exists already, change it or Try again. !!!",
-      });
-    }
-
-    // save user data to user database model
-    const UserData = new User(
-      firstName,
-      lastName,
-      email,
-      gender,
-      id,
-      matric,
-      origin,
-      department,
-      courses,
-      address,
-      contact, levelId, ninNumber, country
-    );
-    const saveUserData = await UserData.saveToDB();
-
-    res.status(201).json({ message: "Users Created", response: saveUserData });
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 exports.findUserbyId = async (req, res, next) => {
   const userId = req.params.uid;
@@ -87,86 +67,51 @@ exports.findUserbyId = async (req, res, next) => {
   }
 };
 
-exports.getAllAttendance = async (req, res, next) => {
-  const db = await getDb();
-  try {
-    const attendanceList = await db.collection("attendance").find().toArray();
-    const list = await attendanceList;
-    res
-      .status(201)
-      .json({
-        message: "Attendance Fetched",
-        statusId: "SUCCESS",
-        response: list,
-      });
-  } catch (err) {
-    console.log(err);
-    res
-      .status(400)
-      .json({
-        message: "Failed to fetch Attendance List",
-        statusId: "UNSUCCESSFUL",
-      });
-  }
-};
 
-exports.createAttendance = async (req, res, next) => {
-  const db = await getDb();
-  const { department, course, lecturer, refinedDate, location, attValue, attendance } =
-    req.body;
-  const new_Item = {
-    department,
-    course,
-    lecturer,
-    refinedDate,
-    location,
-    attValue,
-    attendance
-  };
-  try {
-    const send_Data = await db.collection("attendance").insertOne(new_Item);
-    console.log(send_Data);
-    res.status(201).json({ message: "Attendance Added", statusId: "SUCCESS" });
-  } catch (err) {
-    console.log(err);
-    res
-      .status(400)
-      .json({
-        message: "Failed to create Attendance",
-        statusId: "UNSUCCESSFUL",
-      });
-  }
-};
-
-exports.closeAttendance = async (req, res, next) => {
+exports.updateUser = async (req, res, next) => {
+  const updateValues = req.body;
+  const id = req.params.uid;
   const db = getDb();
-  const userId = req.params.uid.trim();
 
-  // check if attendance exist
-  const checkAtt = await db
-    .collection("attendance")
-    .findOne({ _id: ObjectId(userId) });
-console.log(checkAtt, userId)
-  if (!checkAtt) {
-    return res 
-      .status(400)
-      .json({
-        message: " This Attendance does not exists.!",
-        statusId: "UNSUCCESSFUL",
-      });
+  // check if user exists
+  const checkUser = await db
+    .collection("users")
+    .findOne({ _id: new mongodb.ObjectId(id) });
+
+  if (!checkUser) {
+    return res.status(400).json({
+      message: " User Id does not exists.!",
+      statusId: "UNSUCCESSFUL",
+    });
   }
-  try { 
-    const attVal = "close";
+
+  try {
     const sendUpdate = await db
-      .collection("attendance")
+      .collection("users")
       .updateOne(
-        { _id: new mongodb.ObjectId(userId) },
-        { $set: { attValue: attVal } }
+        { _id: new mongodb.ObjectId(id) },
+        { $set: { ...updateValues } }
       );
     console.log(sendUpdate);
-    res.status(200).json({ message: "Attendance Closed ", statusId: "GOOD" });
+    res.status(200).json({ message: "Users Updated", statusId: "GOOD" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An Error Occurred", statusId: "FAILED" });
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  const id = req.params.uid;
+  const db = getDb();
+  if(req.type_Value == "users" ) {
+    return res.status(400).json({ message: "ACCESS DENIED", statusId: "UNAUTHORIZED" });
+  }
+  try {
+    await db.collection("users").deleteOne({ _id: new ObjectId(id) });
+    res.status(200).json({ message: "User deleted" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Delete User Error", statusId: "SERVER ERROR" });
   }
 };

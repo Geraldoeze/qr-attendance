@@ -1,3 +1,4 @@
+
 // routes
 import Router from './routes';
 // theme
@@ -12,7 +13,8 @@ import { AuthContext } from './context/auth-context';
 
 export default function App() {
 
-  const { token, login, logout, userDetails, userId } = useAuth();
+  
+  const { token, login, logout, userDetails, userId, accountType } = useAuth();
 
   return (
     <AuthContext.Provider value={{
@@ -20,6 +22,7 @@ export default function App() {
       token,
       userId,
       userDetails,
+      accountType,
       login,
       logout}}>  
     <ThemeProvider>

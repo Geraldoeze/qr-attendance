@@ -1,31 +1,58 @@
 const bcrypt = require("bcryptjs/dist/bcrypt");
 const jwt = require("jsonwebtoken");
 const { getDb } = require("../../database/mongoConnect");
-const nodemailer = require("nodemailer");
+const sendMailHandler = require("../../utils/sendEmail");
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 const mongodb = require("mongodb");
 const ObjectId = mongodb.ObjectId;
+const transporter = sendMailHandler();
 
-// nodemailer Treans
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.AUTH_EMAIL,
-    pass: process.env.AUTH_PASSWORD,
-  },
-});
+// SUPER ADMIN signUp
+exports.createSuperAdmin = async (req, res, next) => {
+  const db = await getDb();
+  const { email, password, name } = req.body;
+  try {
+    // check if super admin already exist with email and username.
+    const oldUser = await db
+      .collection("superAdmin")
+      .find({ $or: [{ email: email }, { name: name }] });
+    const _inValidReg = await oldUser.toArray();
+    if (_inValidReg.length > 0) {
+      let message;
+      _inValidReg.every((elem) => {
+        if (
+          elem.email.toString().trim().toLowerCase() ===
+          email.toString().trim().toLowerCase()
+        ) {
+          message = "Email already used";
+          return false;
+        } else if (elem.name === name) {
+          message = "Username already used";
+          return false;
+        }
+      });
+      if (message.length != 0)
+        return res.status(400).json({ message, statusId: "FAILED!!" });
+    }
+      // creating new superAdmin
+      const hashedPassword = await bcrypt.hash(password, 12);
 
-// test
-transporter.verify((error, success) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(success);
-    console.log("Ready for message");
+      const data = {
+        email: email,
+        password: hashedPassword,
+        name: name,
+        type: 'superAdmin'
+      };
+      const result = await db.collection("superAdmin").insertOne(data);
+      console.log(result);
+      res.status(200).json({message: "Created Super"})
+  } catch (err) {
+    console.log("Super Admin Something went wrong. Please try again");
   }
-});
+};
 
+// use some contents f
 exports.signupAdmin = async (req, res, next) => {
   const db = await getDb();
   try {
@@ -36,31 +63,33 @@ exports.signupAdmin = async (req, res, next) => {
 
     const signUpCode = 100000 + Math.floor(Math.random() * 900000);
     const code = signUpCode.toString();
-    await db.collection("signUpToken").insertOne({adminNumber: code})
+    await db.collection("signUpToken").insertOne({ adminNumber: code });
     // return res.json({message: "inserted"})
 
     const signUpToken = await db
       .collection("signUpToken")
       .findOne({ adminNumber: adminNumber });
-    
+
     if (!signUpToken) {
-      return res.status(400).json({message: "Admin Number is not correct. Contact Administrator!"})
+      return res
+        .status(400)
+        .json({
+          message: "Admin Number is not correct. Contact Administrator!",
+        });
     }
-    await db.collection("signUpToken").deleteOne({ adminNumber: adminNumber});
+    await db.collection("signUpToken").deleteOne({ adminNumber: adminNumber });
 
     // Validate user input
     if (!(email && password && name)) {
-      return res
-        .status(403)
-        .json({
-          message: "All input fields are required!",
-          statusId: "CHECK INPUTS",
-        });
+      return res.status(403).json({
+        message: "All input fields are required!",
+        statusId: "CHECK INPUTS",
+      });
     }
 
     // check if user already exist with email and username.
     const oldUser = await db
-      .collection("userAdmin")
+      .collection("admin")
       .find({ $or: [{ email: email }, { name: name }] });
     const _inValidReg = await oldUser.toArray();
     if (_inValidReg.length > 0) {
@@ -83,211 +112,143 @@ exports.signupAdmin = async (req, res, next) => {
 
     // creating new userAdmin
     const hashedPassword = await bcrypt.hash(password, 12);
-   
+
     const data = {
       email: email,
       password: hashedPassword,
       name: name,
       emailVerified: false,
     };
-    const result = await db.collection("userAdmin").insertOne(data);
+    const result = await db.collection("admin").insertOne(data);
     console.log(result);
-
-    // send verification link to
-    // sendVerificationEmail(data, result, res);
   } catch (err) {
     console.log("Something went wrong. Please try again");
   }
 };
 
-// send email for verification
-const sendVerificationEmail = async ({ email }, { insertedId }, res) => {
-  // extract _id from insertedId
-  const id = insertedId.toString();
-  const db = await getDb();
-  // url to be used in the email verification
-  const currentUrl = process.env.CURRENTURL;
-
-  const uniqueString = uuidv4() + id;
-
-  // mail options
-  const mailOptions = {
-    from: "flickyfeiveur7@gmail.com", // sender address
-    to: email, // list of receivers
-    subject: "Verify Your Email", // Subject line
-    html: `<p>Please verify your email address to complete the signup process and login into your account.</p>
-            <p>This link <b>expires in 6 hours</b>.</p> <p>Press <a href=${
-              currentUrl + "auth/verify/" + id + "/" + uniqueString
-            }>here</a> to proceed.</p>`, // plain text body
-  };
-
-  // hash the password using bycrpt
-  const saltRounds = 10;
-  let hashedPassword;
-  try {
-    hashedPassword = await bcrypt.hash(uniqueString, saltRounds);
-  } catch (err) {
-    res.status(400).json({
-      statusId: "FAILED",
-      message: "Something went wrong. Please try again!!!",
-    });
-  }
-  // set values in userVerification collection
-  const newVerification = {
-    userId: id,
-    uniqueString: hashedPassword,
-    createdAt: Date.now(),
-    expiresAt: Date.now() + 21600000,
-  };
-  try {
-    const saveUserVerify = await db
-      .collection("userVerify")
-      .insertOne(newVerification);
-    console.log(saveUserVerify);
-    const sendVerification = await transporter.sendMail(mailOptions);
-    console.log(sendVerification, "Na here");
-    res.status(202).json({
-      statusId: "PENDING",
-      message: "Verification email has been sent",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      statusId: "FAILED",
-      message: "An error occured, Try again later!.!",
-    });
-  }
-};
-
-// verify email
-// route = get currentUrl + /auth/verify/:userId/:uniqueString
-exports.verifyEmail = async (req, res, next) => {
-  const db = getDb();
-  let { userId, uniqueString } = req.params;
-
-  try {
-    // find a user with the userId
-    const getUser = await db.collection("userVerify").find({ userId: userId });
-    const _ValidUser = await getUser.toArray();
-    if (_ValidUser.length > 0) {
-      let message;
-      // user verification record exists
-      const { expiresAt } = _ValidUser[0];
-      const hashedUniqueString = _ValidUser[0].uniqueString;
-
-      // checking for expired unique string
-      if (expiresAt < Date.now()) {
-        //  record has expired so we delete it
-        const deleteUserVerify = await db
-          .collection("userVerify")
-          .deleteOne({ userId: userId });
-
-        // delete user from userAdmin since he/she has not verified their email
-        const deleteUser = await db
-          .collection("userAdmin")
-          .deleteOne({ _id: new ObjectId(userId) });
-        console.log(deleteUser, deleteUserVerify);
-
-        return res.status(400).json({
-          statusId: "EXPIRED LINK",
-          message: "LInk has expired. Please sign up again.",
-        });
-      } else {
-        //    valid record exist, so we validate the user string
-        // first compare the hashed unique string
-        const uniqueID = await bcrypt.compare(uniqueString, hashedUniqueString);
-        if (uniqueID) {
-          // string match
-          const response = await db
-            .collection("userAdmin")
-            .updateOne(
-              { _id: new ObjectId(userId) },
-              { $set: { emailVerified: true } }
-            );
-          await db.collection("userVerify").deleteOne({ userId: userId });
-
-          console.log(response);
-          return res.json({
-            statusId: "SUCCESS",
-            message: "Email has been verified. Kindly Login",
-          });
-        } else {
-          // existing record but incorrect verification details passed
-          return res.status(401).json({
-            statusId: "UNKNOWN",
-            message: "Incorrect Verification Link, Check Inbox again",
-          });
-        }
-      }
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      statusId: "FAILED",
-      message: "Error occured when verifying User Server Error",
-    });
-  }
-};
-
-exports.loginAdmin = async (req, res, next) => {
+exports.loginAccount = async (req, res, next) => {
   const db = getDb();
   try {
     const { email, password } = req.body;
-
     // Validate user input
     if (!(email && password)) {
       return res
         .status(400)
         .json({ message: "All input is required", statusId: "FAILED" });
     }
-    const adminContent = await db
-      .collection("userAdmin")
+    // checking superAdmin db
+    const superAdmin_content = await db
+      .collection("superAdmin")
       .findOne({ email: email });
-    if (!adminContent) {
-      return res
-        .status(400)
-        .json({
-          message: "Incorrect email or password.",
-          statusId: "BAD REQUEST",
-        });
-    }
-
-    try {
-      // check if user is verified
-      if (!adminContent.emailVerified) {
-        return res.status(400).json({
-          message: "Email has not been Verified!. Check your Inbox",
-          statusId: "FAILED",
-        });
-      } else {
+    if (superAdmin_content) {
+      try {
         // comparing password
         const isPasswordCorrect = await bcrypt.compare(
           password,
-          adminContent.password
+          superAdmin_content.password
         );
         if (!isPasswordCorrect)
           return res.status(400).json({
             message: "Incorrect Password!!",
             statusId: "FAILED",
           });
-
         // setting up token
         const token = jwt.sign(
-          { userId: adminContent._id.toString(), email: adminContent.email },
+          {
+            userId: superAdmin_content._id.toString(),
+            type: superAdmin_content.type,
+          },
           process.env.JSONWEB_TOKEN,
-          { expiresIn: "12h" }
+          { expiresIn: "6h" }
         );
         return res.status(200).json({
-          message: "LoginAdmin successful",
+          message: "Login successful",
           statusId: "SUCCESS!",
           token: token,
-          userDetails: adminContent,
+          userDetails: superAdmin_content,
+        });
+      } catch (err) {
+        res.status(501).json({
+          message: "Error Verifying superAdmin !!",
+          statusId: "FAILED",
         });
       }
-    } catch (err) {
-      res.status(501).json({
-        message: "Error Verifying User !!",
-        statusId: "FAILED",
+    }
+
+    // checking admin db
+    const admin_content = await db
+      .collection("admin")
+      .findOne({ email: email });
+    if (admin_content) {
+      try {
+        // comparing password
+        const isPasswordCorrect = await bcrypt.compare(
+          password,
+          admin_content.password
+        );
+        if (!isPasswordCorrect)
+          return res.status(400).json({
+            message: "Incorrect Password!!",
+            statusId: "FAILED",
+          });
+        // setting up token
+        const token = jwt.sign(
+          { userId: admin_content._id.toString(), type: admin_content.type },
+          process.env.JSONWEB_TOKEN,
+          { expiresIn: "6h" }
+        );
+        return res.status(200).json({
+          message: "Login successful",
+          statusId: "SUCCESS!",
+          token: token,
+          userDetails: admin_content,
+        });
+      } catch (err) {
+        res.status(501).json({
+          message: "Error Verifying Admin !!",
+          statusId: "FAILED",
+        });
+      }
+    }
+
+    // checking user db
+    const user_content = await db.collection("users").findOne({ email: email });
+    if (user_content) {
+      try {
+        // comparing password
+        const isPasswordCorrect = await bcrypt.compare(
+          password,
+          user_content.password
+        );
+        if (!isPasswordCorrect)
+          return res.status(400).json({
+            message: "Incorrect Password!!",
+            statusId: "FAILED",
+          });
+        // setting up token
+        const token = jwt.sign(
+          { userId: user_content._id.toString(), type: user_content.type },
+          process.env.JSONWEB_TOKEN,
+          { expiresIn: "6h" }
+        );
+        return res.status(200).json({
+          message: "Login successful",
+          statusId: "SUCCESS!",
+          token: token,
+          userDetails: user_content,
+        });
+      } catch (err) {
+        res.status(501).json({
+          message: "Error Verifying User !!",
+          statusId: "FAILED",
+        });
+      }
+    }
+
+    if (!superAdmin_content && !admin_content && !user_content) {
+      return res.status(501).json({
+        message: "Login Details does not exist on database!!",
+        statusId: "UNKNOWN",
       });
     }
   } catch (err) {
@@ -320,12 +281,10 @@ exports.forgotPassword = async (req, res, next) => {
       sendResetEmail(_regUser, redirectUrl, res);
     }
   } else {
-    return res
-      .status(400)
-      .json({
-        message: "Email does not exist on any Account.",
-        statusId: "TRY AGAIN",
-      });
+    return res.status(400).json({
+      message: "Email does not exist on any Account.",
+      statusId: "TRY AGAIN",
+    });
   }
 };
 
@@ -464,12 +423,10 @@ exports.resetPassword = async (req, res) => {
         } catch (err) {}
       }
     } else {
-      return res
-        .status(400)
-        .json({
-          message: "Password reset request not found.",
-          statusId: "STRANGE",
-        });
+      return res.status(400).json({
+        message: "Password reset request not found.",
+        statusId: "STRANGE",
+      });
     }
   } catch (err) {}
 };

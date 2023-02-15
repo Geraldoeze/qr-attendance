@@ -15,10 +15,11 @@ NavSection.propTypes = {
 
 export default function NavSection({ data, ...other }) {
   const newData = data();
+  
   return (
     <Box {...other}>
       <List disablePadding sx={{ p: 1 }}>
-        {newData.map((item) => (
+        {newData?.map((item) => (
           <NavItem key={item.title} item={item} />
         ))}
       </List>

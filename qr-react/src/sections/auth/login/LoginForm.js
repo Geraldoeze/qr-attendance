@@ -6,6 +6,7 @@ import { useEffect, useContext } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router-dom';
 
+
 import { AuthContext } from '../../../context/auth-context';
 import { useHttpClient } from '../../../hooks/http-hook';
 
@@ -46,9 +47,9 @@ import LoadingSpinner from '../../../UIElement/LoadingSpinner';
     const onSubmitHandler = async (values) => {
       try {
         
-        const send = await sendRequest(`https://biometric-node.vercel.app/auth/login`, 'POST', values);
+        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, 'POST', values);
         console.log(send);
-        auth.login(send.userDetails._id, send.token, send.userDetails)
+        auth.login(send?.userDetails._id, send?.token, send?.userDetails, send?.userDetails.type)
         navigate('/dashboard', { replace: true });
       } catch (err) {
         console.log(err);

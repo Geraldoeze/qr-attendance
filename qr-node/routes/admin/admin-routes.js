@@ -1,26 +1,25 @@
 const express = require('express');
 const adminControllers = require('../../controllers/admin/admin-controllers');
 const {validateUserUpdate, validateDepartment} = require('../../middleware/userValidation');
+const auth = require("../../middleware/auth");
 
 const router = express.Router();
 
-router.post("/create", adminControllers.createMember);
+router.get("/events", auth, adminControllers.getAllEvents);
 
+router.get("/get", auth, adminControllers.getAllAdmins);
 
-// delete these below
-router.get("/getDept", adminControllers.getDepartment);
+router.get("/single/admin/:uid", auth, adminControllers.getAdminById);
 
-router.post("/getuserId/:uid", adminControllers.getUserbyId);
+router.post("/events/create", auth, adminControllers.createEvent);
 
-router.post("/createData", adminControllers.createData);
+router.post("/create", auth, adminControllers.createAdmin);
 
-router.put("/editDept/:uid", validateDepartment, adminControllers.editDept);
+router.put("/update/:uid", auth, adminControllers.updateAdmin);
 
-router.put("/update/:uid", validateUserUpdate, adminControllers.updateUser);
+router.delete("/delete/:uid", auth, adminControllers.deleteAdmin);
 
-router.delete("/deleteDept/:uid", adminControllers.deleteDepartment);
-
-router.delete("/delete/:uid", adminControllers.deleteUser);
+router.delete("/events/delete/:uid", auth, adminControllers.deleteEvent);
 
 
 module.exports = router;
