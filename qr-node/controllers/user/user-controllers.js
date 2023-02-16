@@ -54,7 +54,7 @@ exports.createUser = async (req, res, next) => {
     const saveUserData = await UserData.saveToDB();
     const userId = saveUserData?.insertedId.toString();
     
-    // await generateQRCodeImage(userId, email, res);
+    await generateQRCodeImage(userId, email, res);
     res.status(201).json({ message: "Users Created, Kindly Check Email address", response: saveUserData });
   } catch (err) {
     console.log("Something went wrong. Please try again!");
