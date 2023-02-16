@@ -14,13 +14,13 @@ const UserAttendancePage = () => {
         <>
         
         <Helmet>
-        <title> Attendance </title>
+        <title>QR Attendance </title>
       </Helmet>
 
       <Container maxWidth="xl">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography sx={{color: '#000080'}} variant="h4" gutterBottom>
-          Attendance
+         QR Attendance
           </Typography>
           <Typography sx={{color: '#000080'}} variant="h5" gutterBottom>
             All Attendance

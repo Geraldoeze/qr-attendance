@@ -1,6 +1,6 @@
 const express = require('express');
 const adminControllers = require('../../controllers/admin/admin-controllers');
-const {validateUserUpdate, validateDepartment} = require('../../middleware/userValidation');
+const {validateUserUpdate,  validateAdminUpdate} = require('../../middleware/userValidation');
 const auth = require("../../middleware/auth");
 
 const router = express.Router();
@@ -13,7 +13,7 @@ router.get("/single/admin/:uid", auth, adminControllers.getAdminById);
 
 router.post("/events/create", auth, adminControllers.createEvent);
 
-router.post("/create", auth, adminControllers.createAdmin);
+router.post("/create", auth, validateAdminUpdate, adminControllers.createAdmin);
 
 router.put("/update/:uid", auth, adminControllers.updateAdmin);
 

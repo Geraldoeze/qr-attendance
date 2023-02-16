@@ -28,19 +28,17 @@ import Scrollbar from '../../components/scrollbar';
 
 import { UserListHead, UserListToolbar } from '../dashboard/user';
 
-
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    
-   
-    {id: 'course', label: 'Course', alignItems: true},
-    {id: 'lecturer', label: 'Lecturer', alignItems: true},
-  
-  {id: 'location', label: 'Location', alignitems: true},
-  {id: 'date', label: 'Date/Time', alignItems: true},
-  {id: 'current', label: 'Current', alignItems: true},
-  {id: 'addStudent', label: 'Student', alignItems: true}
+  { id: 'creator', label: 'Creator', alignItems: true },
+  { id: 'event', label: 'Event', alignItems: true },
+  { id: 'time', label: 'Time/Date', alignItems: true },
+  { id: 'place', label: 'Place', alignitems: true },
+  { id: 'access', label: 'AccessLevel', alignitems: true },
+  { id: 'current', label: 'Current', alignItems: true },
+  { id: 'addMember', label: 'Members', alignItems: true },
+  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -85,7 +83,7 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('firstname');
+  const [orderBy, setOrderBy] = useState('event');
 
   const [filterName, setFilterName] = useState('');
 
@@ -100,7 +98,7 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = responseData.map((n) => n.firstName);
+      const newSelecteds = responseData.map((n) => n.creator);
       setSelected(newSelecteds);
       return;
     }
@@ -121,8 +119,8 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
     setFilterName(event.target.value);
   };
 
-  const userHandler = (e, val) => {    
-    if (val.attValue === 'open') {
+  const userHandler = (e, val) => {
+    if (val.attValue === 'Open') {
       closeAtt(e, val);
     }
   };
@@ -130,8 +128,6 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
   const showAttHandler = (e, val) => {
     showAtt(val);
   };
-  
-  
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - responseData.length) : 0;
 
@@ -143,9 +139,8 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
     <>
       <Container>
         <Card>
-         
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800, color: '#000080'}}>
+            <TableContainer sx={{ minWidth: 800, color: '#000080' }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -158,41 +153,45 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
                 />
                 <TableBody>
                   {filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id, course, location, refinedDate, attValue, attendance } = row;
-                    const selectedUser = selected.indexOf(course) !== -1;
-                    
+                    const { _id, creator, event, time, place, access, refinedDate, attValue, attendance } = row;
+                    const selectedUser = selected.indexOf(event) !== -1;
+
                     return (
-                      <TableRow
-                        hover
-                        key={_id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        selected={selectedUser}
-                       
-                      >
+                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} /> */}
                         </TableCell>
 
                         <TableCell component="th" alignitems="center" scope="row" padding="normal">
                           <Stack direction="row" alignItems="center" spacing={1}>
-                            <Typography sx={{cursor: 'pointer'}} variant="subtitle2" noWrap onClick={(e) => showAttHandler(e, row)}>
-                              {course}
+                            <Typography
+                              sx={{ cursor: 'pointer' }}
+                              variant="subtitle2"
+                              noWrap
+                              onClick={(e) => showAttHandler(e, row)}
+                            >
+                              {creator}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell sx={{cursor: 'pointer'}} align="center" onClick={(e) => showAttHandler(e, row)}>{auth?.userDetails?.name}</TableCell>
+                        <TableCell sx={{ cursor: 'pointer' }} align="center" onClick={(e) => showAttHandler(e, row)}>
+                          {event}
+                        </TableCell>
 
-                        <TableCell align="center">{location}</TableCell>
+                        <TableCell align="center">{time}, {refinedDate} </TableCell>
 
+                        <TableCell align="center">{place}</TableCell>
 
-                        <TableCell align="center" >{refinedDate}</TableCell>
+                        <TableCell align="center">{access}</TableCell>
 
-                        <TableCell sx={{cursor: 'pointer'}} align="right"  onClick={(e) => userHandler(e, row)}>{attValue}</TableCell>
+                        <TableCell sx={{ cursor: 'pointer' }} align="right" onClick={(e) => userHandler(e, row)}>
+                          {attValue}
+                        </TableCell>
 
-                        <TableCell sx={{cursor: 'pointer'}} align="center"  >{attendance?.length}</TableCell>
-
+                        <TableCell sx={{ cursor: 'pointer' }} align="center">
+                          {attendance?.length}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -241,7 +240,6 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
           />
         </Card>
       </Container>
-    
     </>
   );
 }

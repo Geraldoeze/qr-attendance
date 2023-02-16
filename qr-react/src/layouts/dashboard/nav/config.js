@@ -66,11 +66,11 @@ const NavConfig = () => {
       path: '/create/event',
       icon: <EventNoteIcon/>,
     },
-    {
-      title: 'Profile',
-      path: '/user/profile',
-      icon: <ManageAccountsIcon/>,
-    },
+    // {
+    //   title: 'Profile',
+    //   path: '/user/profile',
+    //   icon: <ManageAccountsIcon/>,
+    // },
     {
       title: 'attendance',
       path: '/attendance',

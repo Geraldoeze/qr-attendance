@@ -110,7 +110,9 @@ export default function AdminProfile() {
                 <Typography variant="h6" gutterBottom my={2}>
                   Gender : {val.gender}
                 </Typography>
-
+                <Typography variant="h6" gutterBottom my={2}>
+                  Access Level : {val.accessLevel}
+                </Typography>
                 <Typography variant="h6" gutterBottom my={2}>
                   Address : {val.address}
                 </Typography>

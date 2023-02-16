@@ -40,43 +40,48 @@ const inputReducer = (state, action) => {
 const NewAttendance = ({ open, onClose, updateContent }) => {
   const now = dayjs();
   const [date, setDate] = useState(now);
-  const [dept, setDept] = useState();
-  const [course, setCourse] = useState('');
-  const [depart, setDepart] = useState('');
+  const [event, setEvent] = useState('');
+  const [allEvent, setAllEvent] = useState([]);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const auth = useContext(AuthContext);
   const [inputState, dispatch] = useReducer(inputReducer, {
-    lecturer: auth?.userDetails.name,
+    creator: auth?.userDetails.firstName,
+    access: auth?.userDetails.type,
     time: '',
-    attValue: 'open',
-    attendance: []
+    place: '',
+    attendance: [],
   });
 
-  // fetch department data
+  // fetch event data
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/getDept`);
-        setDept(send.response);
-        console.log(send);
-      } catch (err) {
-        console.log(err);
-      }
+    const getEvent = async () => {
+      // try {
+      //   const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/getDept`);
+      //   setAllEvent(send.response);
+      //   console.log(send);
+      // } catch (err) {
+      //   console.log(err);
+      // }
     };
-    getData();
+    // getData();
   }, []);
 
   const onSubmitHandler = async () => {
-    const refinedDate = date.toDate().toString().slice(0, 25);
-    const newDepartmentData = { ...inputState, refinedDate };
-    
-   
+    const refinedDate = date.toDate().toString().slice(0, 16);
+    const newAttData = { ...inputState, refinedDate, attValue: 'Open' };
+    console.log(newAttData);
+
     try {
-      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/attendance`, 'POST', newDepartmentData);
+      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/attendance/create`, 'POST', newAttData,
+      {
+        Authorization: 'Bearer ' + auth.token,
+      }
+      );
       console.log(send);
-      if (newDepartmentData?.course?.length >= 1) {
-        updateContent(newDepartmentData);
+    
+      if (newAttData?.place?.length >= 1) {
+        updateContent(newAttData);
       }
     } catch (err) {
       console.log(err);
@@ -92,31 +97,17 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
     });
   };
 
-  // const handleChangeDept = (event) => {
-  //   setDepart(event.target.value);
-  // };
 
-  const handleChangeCourse = (event) => {
+
+  const handleChangeEvent = (event) => {
     setCourse([event.target.value]);
   };
 
-  function getCor() {
-    const devo = dept?.map((val) => val.courses);
-    let allCourses = [];
-    for (const i in devo) {
-      for (const j in devo[i]) {
-        allCourses.push( `${devo[i][j]}`);
-      }
-    }
-    return allCourses;
-  }
-
-  const allCourse = getCor();
   return (
     <div>
       {isLoading && <LoadingSpinner asOverlay />}
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Create Attendance</DialogTitle>
+        <DialogTitle>Create Attendance for an Event</DialogTitle>
         <DialogContent>
           <Box>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -129,10 +120,29 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-           
-            
-              
-            
+
+            <FormControl sx={{ m: 1, width: 200 }}>
+              <InputLabel id="demo-simple-select-helper-label" name="event">
+                Select Event 
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-helper-label"
+                id="event"
+                label="Event"
+                value={event}
+                
+                onChange={handleChangeEvent}
+                input={<OutlinedInput label="Courses" />}
+              >
+                {allEvent?.map((val, idx) => (
+                  <MenuItem value={val} key={idx}>
+                    <Checkbox checked={course.indexOf(val) > -1} />
+                    <ListItemText primary={val} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <TextField
               autoFocus
               sx={{ m: 1, width: 350 }}
@@ -141,6 +151,18 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
               label="Time of Service"
               type="text"
               value={inputState.time}
+              onChange={(e) => changeHandler(e)}
+              size="medium"
+              variant="outlined"
+            />
+            <TextField
+              autoFocus
+              sx={{ m: 1, width: 350 }}
+              name="place"
+              id="place"
+              label="Place of Service"
+              type="text"
+              value={inputState.place}
               onChange={(e) => changeHandler(e)}
               size="medium"
               variant="outlined"

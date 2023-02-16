@@ -4,7 +4,6 @@ import {
   Container,
   Typography,
   InputLabel,
-  Select,
   MenuItem,
   Button,
   Stack,
@@ -14,6 +13,7 @@ import {
   FormControl,
   FormLabel,
 } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { useContext, useState, useReducer } from 'react';
 import { LoadingButton } from '@mui/lab';
@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useHttpClient } from '../../../hooks/http-hook';
 import { AuthContext } from '../../../context/auth-context';
 
+import LoadingSpinner from '../../../UIElement/LoadingSpinner';
 import ErrorModal from '../../../UIElement/Modal/ErrorModal';
 
 // initial reducer state
@@ -42,8 +43,7 @@ const inputReducer = (state, action) => {
   }
 };
 
-export default function EditAdmin({user}) {
-    
+export default function EditAdmin({ user }) {
   const [inputState, dispatch] = useReducer(inputReducer, {
     firstName: user?.firstName,
     lastName: user?.lastName,
@@ -53,34 +53,37 @@ export default function EditAdmin({user}) {
     gender: user?.gender,
     contact: user?.contact,
     title: user?.title,
-    accessLevel: user?.accessLevel,
   });
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
+  const [accessLevel, setAccessLevel] = useState(user?.accessLevel);
 
   const { isLoading, error, sendRequest, clearError, resMessage } = useHttpClient();
 
   const adminId = user?._id;
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(inputState);
+    const editData = {...inputState, accessLevel};
     try {
       // send  Request to update admin
-      //   const sendData = await sendRequest(
-      //     `${process.env.REACT_APP_BACKEND_URL}/admin/update/${adminId}`,
-      //     "PUT",
-      //     inputState,
-      //     {
-      //       Authorization: 'Bearer ' + auth.token,
-      //     }
-      //   );
-      //   console.log(sendData);
+      const sendData = await sendRequest(
+        `${process.env.REACT_APP_BACKEND_URL}/admin/update/${adminId}`,
+        'PUT',
+        editData,
+        {
+          Authorization: 'Bearer ' + auth.token,
+        }
+      );
+      console.log(sendData);
     } catch (err) {
       console.log(err);
     }
     navigate('/admin', { replace: true });
   };
 
+  const handleChange = (event: SelectChangeEvent) => {
+    setAccessLevel(event.target.value);
+  };
   const changeHandler = (e) => {
     dispatch({
       type: 'HANDLE_INPUT',
@@ -134,16 +137,15 @@ export default function EditAdmin({user}) {
             />
 
             <Stack sx={{ mb: 2 }} direction="row" width="100%" alignItems="center" justifyContent="space-between">
-              
-            <TextField
-              sx={{ mb: 2 }}
-              id="contact"
-              name="contact"
-              label="Phone No"
-              variant="outlined"
-              onChange={(e) => changeHandler(e)}
-              value={inputState.contact}
-            />
+              <TextField
+                sx={{ mb: 2 }}
+                id="contact"
+                name="contact"
+                label="Phone No"
+                variant="outlined"
+                onChange={(e) => changeHandler(e)}
+                value={inputState.contact}
+              />
 
               <TextField
                 sx={{ mb: 2 }}
@@ -166,15 +168,22 @@ export default function EditAdmin({user}) {
                 </RadioGroup>
               </FormControl>
 
-              <TextField
-                sx={{ mb: 2 }}
-                id="accessLevel"
-                name="accessLevel"
-                label="Access Level"
-                variant="outlined"
-                onChange={(e) => changeHandler(e)}
-                value={inputState.accessLevel}
-              />
+              <Box sx={{ minWidth: 180 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Access Level</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={accessLevel}
+                    label="Access Level"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="Junior">Junior</MenuItem>
+                    <MenuItem value="Intermediate">Intermediate</MenuItem>
+                    <MenuItem value="Professional">Professional</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </Stack>
             <TextField
               sx={{ mb: 2 }}

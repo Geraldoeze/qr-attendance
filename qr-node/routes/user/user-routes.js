@@ -10,7 +10,8 @@ router.get("/", auth, userControllers.getAllUsers);
 
 router.get("/getuser/:uid", auth, userControllers.findUserbyId);
 
-router.post("/create", fileUpload.single("image"), validateUserUpdate, userControllers.createUser);
+// fileUpload.single("image"),
+router.post("/create",  validateUserUpdate, userControllers.createUser);
 
 router.put("/update/:uid", auth, validateUserUpdate, userControllers.updateUser);
 

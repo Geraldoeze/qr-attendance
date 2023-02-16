@@ -14,11 +14,11 @@ const DeleteUser = ({ open, onClose, userId }) => {
   
   const deleteUserHandler = async () => {
     try {
-    //   const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/delete/${userId}`, 'DELETE', null,
-    //     {
-    //         Authorization: 'Bearer ' + auth.token
-    //     }
-    //   );
+      const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/delete/${userId}`, 'DELETE', null,
+        {
+            Authorization: 'Bearer ' + auth.token
+        }
+      );
       console.log(deleteAccount);
       navigate('/dashboard', {replace: true});
       auth.logout();

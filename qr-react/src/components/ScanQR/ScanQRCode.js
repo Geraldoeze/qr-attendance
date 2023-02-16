@@ -14,7 +14,7 @@ export default function ScanQRCode({getQR}) {
     const handleScan = (data) => {
       console.log(data?.text)
       if(data?.text?.length > 8) {
-        getQR(result?.text)
+        getQR(data?.text)
       }
       
     };

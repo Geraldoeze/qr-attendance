@@ -25,21 +25,9 @@ export default function DashboardAppPage() {
   const [attendance, setAttendance] = useState();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  // fetch students data
+  
   useEffect(() => {
-    // const getData = async () => {
-    //   try {
-    //     const send = await sendRequest(`https://biometric-node.vercel.app/users`);
-    //     const getAttendance = await sendRequest(`https://biometric-node.vercel.app/users/attendanceList`);
-    //     const getCourses = await sendRequest(`https://biometric-node.vercel.app/admin/getDept`);
-    //     setDepart(getCourses.response);
-    //     setAttendance(getAttendance.response);
-    //     setResponse(send.response);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-    // getData();
+  
   }, []);
 
   const getDepartment = () => {
@@ -67,11 +55,11 @@ export default function DashboardAppPage() {
         </Stack>
 
         <Grid container spacing={7} sx={{ justifyContent: 'space-around', marginY: '2rem' }}>
-          <Grid item xs={12} sm={6} md={4} sx={{ cursor: 'pointer' }} onClick={getDepartment}>
+          <Grid item xs={12} sm={6} md={4} sx={{ cursor: 'pointer' }} >
             <AppWidgetSummary title="Departments" total={depart?.length} color="success" icon={<LocalLibraryIcon />} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} sx={{ cursor: 'pointer' }} onClick={getAttendance}>
+          <Grid item xs={12} sm={6} md={4} sx={{ cursor: 'pointer' }} >
             <AppWidgetSummary
               title="Attendance"
               total={attendance?.length}
@@ -80,7 +68,7 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} sx={{ cursor: 'pointer' }} onClick={getUsers}>
+          <Grid item xs={12} sm={6} md={4} sx={{ cursor: 'pointer' }} >
             <AppWidgetSummary title="Users" total={response?.length} color="info" icon={<GroupAddIcon />} />
           </Grid>
         </Grid>

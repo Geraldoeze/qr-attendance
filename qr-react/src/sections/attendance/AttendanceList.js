@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Stack, Button, Typography, Container } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
 import { useHttpClient } from '../../hooks/http-hook';
 import LoadingSpinner from '../../UIElement/LoadingSpinner';
+import { AuthContext } from '../../context/auth-context';
 
 import AttenDance from './Atten-dance';
 import NewAttendance from './NewAttendance';
@@ -32,19 +33,27 @@ const AttendanceList = () => {
   const [openModal, setOpenModal] = useState(false);
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
 
+  const auth = useContext(AuthContext);
+  
   // fetch attendance data
   useEffect(() => {
     const getAttendance = async () => {
+      if (!!auth.token) {
       try {
-        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/attendanceList`);
+        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/attendance`, "GET", null, 
+          {
+            Authorization: 'Bearer ' + auth.token,
+          }
+        );
         setResponse(send.response);
         console.log(send);
       } catch (err) {
         console.log(err);
       }
+    }
     };
     getAttendance();
-  }, [refresh]);
+  }, [auth.token]);
 
   const handleClickOpen = () => {
     setOpenModal(true);

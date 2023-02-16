@@ -20,6 +20,7 @@ import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
+import LoadingSpinner from '../../UIElement/LoadingSpinner';
 import { useHttpClient } from '../../hooks/http-hook';
 import { AuthContext } from '../../context/auth-context';
 
@@ -101,7 +102,7 @@ export default function EditUser({ user }) {
       } catch (err) {
         console.log(err)
       }
-    
+      // navigate("/dashboard", { replace: true });
   };
 
   const changeHandler = (e) => {

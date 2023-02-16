@@ -50,12 +50,12 @@ export default function UsersPage( ) {
     const deleteUserInfo = async (userId) => {
         setResponse((response) => response?.filter((del) => del._id !== userId));
         
-        // const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/delete/${userId}`, "DELETE", null,
-        //     {
-        //         Authorization: 'Bearer ' + auth.token
-        //     }
-        //   );
-        // console.log(deleteAccount)
+        const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/delete/${userId}`, "DELETE", null,
+            {
+                Authorization: 'Bearer ' + auth.token
+            }
+          );
+        console.log(deleteAccount)
       }
     
     return (

@@ -9,7 +9,7 @@ const path = require("path");
 const authRoutes = require("./routes/auth/auth-routes");
 const adminRoutes = require("./routes/admin/admin-routes");
 const userRoutes = require("./routes/user/user-routes");
-
+const attRoutes = require("./routes/attendance/attendance-routes");
 
 
 const app = express();
@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use("/users", userRoutes);
+app.use("/attendance", attRoutes);
 
 mongoConnect(() => {
     app.listen(PORT);

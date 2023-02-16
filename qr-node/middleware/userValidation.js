@@ -37,8 +37,9 @@ exports.validateAdminUpdate = (req, res, next) => {
 
 // user input 
 exports.validateUserUpdate = (req, res, next) => {
+    
     let data = req.body;
-
+    console.log(data)
     const data_Types = ['firstName', 'lastName', 'email', 'gender', 'id', 'origin', 'dob',
                  'area', 'address', 'contact', 'password', 'status', 'image', 'type'
     ]

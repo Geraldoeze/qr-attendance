@@ -74,7 +74,8 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            
+                            <th>Gender</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +84,8 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
               
                                 <td>{emp.firstName}</td>
                                 <td>{emp.lastName}</td>
+                                <td>{emp.gender}</td>
+                                <td>{emp.status}</td>
                              
                             </tr>
                         ))}
@@ -91,13 +94,13 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
         </Box>
         {(inputState?.attendance?.length === 0) && (
         <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 0.1, p: 1 }}>
-        <Typography variant="h5">No Member Attended this Event</Typography>
+        <Typography variant="h5">No Church Member Attended this Event</Typography>
         </Stack>
         )}
       </StyledDiv>
       <Stack sx={{m:1}} direction="row" alignItems="center" justifyContent="space-between">
       <Button onClick={closeList}>Close</Button>
-      {value?.attValue === 'open' && (<Button onClick={onOpenAdd}>Add </Button> )}
+      {value?.attValue === 'Open' && (<Button onClick={onOpenAdd}>Add </Button> )}
       </Stack> 
       
      </Modal> 

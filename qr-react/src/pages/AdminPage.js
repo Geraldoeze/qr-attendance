@@ -38,22 +38,17 @@ const AdminPage = () => {
     userProfile();
   }, [auth.token]);
 
-  const newSudentHandler = () => {
-    navigate("/new/user", { replace: true });
-  };
-
-  const newDepartmentHandler = () => {
-    navigate("/create/dept", { replace: true });
-  };
+  
 
   const deleteUserInfo = async (userId) => {
     setResponse((response) => response?.filter((del) => del._id !== userId));
-    // const send =await sendRequest(`${process.env.BACKEND_URL}/admin/delete/${userId}`, "DELETE", null,
-    // {
-//          Authorization: 'Bearer ' + auth.token
-    // }
-    // )
-    // console.log(send)
+    
+    const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/delete/${userId}`, "DELETE", null,
+        {
+            Authorization: 'Bearer ' + auth.token
+        }
+      );
+    console.log(deleteAccount)
   }
 
   

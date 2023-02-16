@@ -88,7 +88,7 @@ exports.loginAccount = async (req, res, next) => {
             type: superAdmin_content.type,
           },
           process.env.JSONWEB_TOKEN,
-          { expiresIn: "6h" }
+          { expiresIn: "12h" }
         );
         return res.status(200).json({
           message: "Login successful",

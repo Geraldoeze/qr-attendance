@@ -186,7 +186,8 @@ exports.createAdmin = async (req, res, next) => {
 // UPDATE Admin
 exports.updateAdmin = async (req, res, next) => {
   const updateValues = req.body;
-  const id = req.user_id;
+  const id = req.params.uid;
+console.log(updateValues.accessLevel)
 
   if (req.type_Value != "superAdmin") {
     return res
@@ -208,7 +209,7 @@ exports.updateAdmin = async (req, res, next) => {
   }
   try {
     const sendUpdate = await db
-      .collection("users")
+      .collection("admin")
       .updateOne(
         { _id: new mongodb.ObjectId(id) },
         { $set: { ...updateValues } }

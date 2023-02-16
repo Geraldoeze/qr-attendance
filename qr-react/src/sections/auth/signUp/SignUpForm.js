@@ -75,9 +75,13 @@ const SignUpForm = () => {
             error: true,
           },
         };
+        
       }
+      
     }
+    setFormValues(newFormValues);
     try {
+      
       const formData = new FormData();
       formData.append('email', formValues.email.value);
       formData.append('lastName', formValues.lastName.value);
@@ -91,17 +95,24 @@ const SignUpForm = () => {
       formData.append('origin', formValues.origin.value);
       formData.append('image', selectedImage);
       formData.append('dob', refinedDate);
-
+      
+      if (!(formValues.email.error) && !(formValues.lastName.error) && !(formValues.password.error) && !!selectedImage){
+      
       // send Request to create user
       const sendData = await sendRequest(process.env.REACT_APP_BACKEND_URL+"/users/create", "POST", formData);
       console.log(sendData);
-      
+      navigate('/dashboard', { replace: true });
+      }
     } catch (err) {
       console.log(err)
     }
-    setFormValues(newFormValues);
-    navigate('/dashboard', { replace: true });
+    
+    
   };
+
+  
+    
+  
   return (
     <>
       {isLoading && <LoadingSpinner asOverlay />}

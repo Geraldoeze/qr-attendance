@@ -14,12 +14,12 @@ const DeleteAdmin = ({ open, onClose, adminId }) => {
   
   const deleteUserHandler = async () => {
     try {
-    // const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/delete/${adminId}`, 'DELETE', null,
-    //      {
-    //          Authorization: 'Bearer ' + auth.token
-    //      }
-    //    );
-    //   console.log(deleteAccount)
+    const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/delete/${adminId}`, 'DELETE', null,
+         {
+             Authorization: 'Bearer ' + auth.token
+         }
+       );
+      console.log(deleteAccount)
       
       navigate('/dashboard', {replace: true});
       auth.logout();

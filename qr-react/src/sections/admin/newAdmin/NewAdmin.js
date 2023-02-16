@@ -4,7 +4,6 @@ import {
   Container,
   Typography,
   InputLabel,
-  Select,
   MenuItem,
   Button,
   Stack,
@@ -14,6 +13,7 @@ import {
   FormControl,
   FormLabel,
 } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { useContext, useState, useReducer } from 'react';
 import { LoadingButton } from '@mui/lab';
@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useHttpClient } from '../../../hooks/http-hook';
 import { AuthContext } from '../../../context/auth-context';
 
+import LoadingSpinner from '../../../UIElement/LoadingSpinner';
 import ErrorModal from '../../../UIElement/Modal/ErrorModal';
 
 // initial reducer state
@@ -49,34 +50,34 @@ export default function NewAdmin() {
     email: '',
     address: '',
     password: '',
+    origin: '',
     gender: '',
     contact: '',
     title: '',
-    accessLevel: '',
+    
   });
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
-
+  const [accessLevel, setAccessLevel] = useState('');
   const { isLoading, error, sendRequest, clearError, resMessage } = useHttpClient();
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(inputState);
+    const adminData = { ...inputState, accessLevel };
     try {
       // send  Request to create admin
-      //   const sendData = await sendRequest(
-      //     `${process.env.REACT_APP_BACKEND_URL}/admin/create`,
-      //     "POST",
-      //     inputState,
-      //     {
-      //       Authorization: 'Bearer ' + auth.token,
-      //     }
-      //   );
-      //   console.log(sendData);
+      const sendData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/create`, 'POST', adminData, {
+        Authorization: 'Bearer ' + auth.token,
+      });
+      console.log(sendData);
     } catch (err) {
       console.log(err);
     }
     navigate('/admin', { replace: true });
+  };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAccessLevel(event.target.value);
   };
 
   const changeHandler = (e) => {
@@ -182,15 +183,22 @@ export default function NewAdmin() {
                 </RadioGroup>
               </FormControl>
 
-              <TextField
-                sx={{ mb: 2 }}
-                id="accessLevel"
-                name="accessLevel"
-                label="Access Level"
-                variant="outlined"
-                onChange={(e) => changeHandler(e)}
-                value={inputState.accessLevel}
-              />
+              <Box sx={{ minWidth: 180 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Access Level</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={accessLevel}
+                    label="Access Level"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="Junior">Junior</MenuItem>
+                    <MenuItem value="Intermediate">Intermediate</MenuItem>
+                    <MenuItem value="Professional">Professional</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </Stack>
             <TextField
               sx={{ mb: 2 }}
@@ -204,7 +212,7 @@ export default function NewAdmin() {
             />
 
             <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem' }}>
-              Update
+              Submit
             </LoadingButton>
           </Box>
         </Box>

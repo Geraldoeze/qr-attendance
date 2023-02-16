@@ -16,9 +16,11 @@ const UniqueCode = 100000 + Math.floor(Math.random() * 900000).toString();
 
 exports.createUser = async (req, res, next) => {
   const db = await getDb();
+  
   try {                 
     const { firstName, lastName, email, gender, id, origin, address, contact, area, password, status, dob } = req.body;
-
+   console.log(firstName)
+   
    // check if user already exist with email and username.
    const oldUser = await db
    .collection("users")
@@ -46,16 +48,16 @@ exports.createUser = async (req, res, next) => {
     // bcrypt password
     const hashedPassword = await bcrypt.hash(password, 12);
     // get image from path
-    const image = req.file.path;
+    const image = req?.file ? req.file?.path : ' ';
     // save user data to user database model
     const UserData = new User( firstName, lastName, email, gender, id, origin, address, contact, area, hashedPassword, status, dob, image);
     const saveUserData = await UserData.saveToDB();
     const userId = saveUserData?.insertedId.toString();
     
-    await generateQRCodeImage(userId, email, res);
+    // await generateQRCodeImage(userId, email, res);
     res.status(201).json({ message: "Users Created, Kindly Check Email address", response: saveUserData });
   } catch (err) {
-    console.log("Something went wrong. Please try again");
+    console.log("Something went wrong. Please try again!");
   }
 };
  
@@ -89,6 +91,8 @@ exports.updateUser = async (req, res, next) => {
   const updateValues = req.body;
   const id = req.params.uid;
   const db = getDb();
+  console.log(req.body)
+  console.log(updateValues)
 
   // check if user exists
   const checkUser = await db

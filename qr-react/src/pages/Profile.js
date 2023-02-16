@@ -125,17 +125,18 @@ const Profile = () => {
                   Gender : {val.gender}
                 </Typography>
                 <Typography variant="h6" gutterBottom my={2}>
-                  
+                  Area: {val.area}
                 </Typography>
-                <Typography variant="h6" gutterBottom my={2}>
-                  
-                </Typography>
+               
                 <Typography variant="h6" gutterBottom my={2}>
                   State of Origin : {val.origin}
                 </Typography>
                 <Typography variant="h6" gutterBottom my={2}>
                   Address : {val.address}
                 </Typography>
+                <Typography variant="h6" gutterBottom my={2}>
+                  Account Type: {val.type}
+                  </Typography>
                 
               </StyledDiv>
             );

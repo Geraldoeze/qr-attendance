@@ -73,7 +73,7 @@ export default function Nav({ openNav, onCloseNav }) {
               </Typography>
 
               <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-              {auth.userDetails?.type}
+              Access : {auth.userDetails?.type}
               </Typography>
             </Box>
           </StyledAccount>
