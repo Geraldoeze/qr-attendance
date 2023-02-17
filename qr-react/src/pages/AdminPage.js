@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect, useContext } from 'react';
-import { Container, Typography, Stack, Button } from '@mui/material';
+import { Container, Typography, Stack, Button, Box } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -68,28 +68,39 @@ const AdminPage = () => {
             <Typography variant="h6">{auth?.userDetails?.email}</Typography>
           </Stack>
         </Stack>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+   
+   
+         
+        <Box sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          p: 1,
+          m: 1,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+        }}>
           <Button  
             href='/dashboard/members'
-            sx={{ backgroundColor: '#14162F', p:2 }} variant="contained">
+            sx={{ backgroundColor: '#14162F', p:2, px:5, my:2 }} variant="contained">
             Members List
           </Button>
-          <Button  sx={{ backgroundColor: '#14162F', p:2, px:5  }} variant="contained">
+          <Button  sx={{ backgroundColor: '#14162F', p:2, px:5, my:2  }} variant="contained">
             Events List
           </Button>
           <Button
             href='/new/user'
-            sx={{ backgroundColor: '#14162F', p:2 }}
+            sx={{ backgroundColor: '#14162F', p:2, px:5, my:2 }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             Create Member
           </Button>
-        </Stack>
+        </Box>
         <Stack direction="row" alignItems="center" justifyContent="center" mb={5}>
         <Button
             href='/admin/create'
-            sx={{ backgroundColor: '#14162F', p:2, width: '40%' }}
+            sx={{ backgroundColor: '#14162F', p:2, px:5, width: '50%' }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >

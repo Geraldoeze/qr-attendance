@@ -13,6 +13,7 @@ import {
   FormControl,
   FormLabel,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { useContext, useState, useReducer } from 'react';
@@ -24,6 +25,23 @@ import { AuthContext } from '../../../context/auth-context';
 
 import LoadingSpinner from '../../../UIElement/LoadingSpinner';
 import ErrorModal from '../../../UIElement/Modal/ErrorModal';
+
+
+const StyledRoot = styled('div')(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+  },
+}));
+
+const StyledSection = styled('div')(({ theme }) => ({
+  width: '100%',
+  maxWidth: 750,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  boxShadow: theme.customShadows.card,
+  backgroundColor: theme.palette.background.default,
+}));
 
 // initial reducer state
 const inputReducer = (state, action) => {
@@ -66,7 +84,9 @@ export default function NewAdmin() {
     const adminData = { ...inputState, accessLevel };
     try {
       // send  Request to create admin
-      const sendData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/create`, 'POST', adminData, {
+      const sendData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/admin/create`, 'POST', JSON.stringify(adminData),
+       {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + auth.token,
       });
       console.log(sendData);
@@ -92,13 +112,15 @@ export default function NewAdmin() {
     <>
       {isLoading && <LoadingSpinner asOverlay />}
       <ErrorModal error={error} open={error} onClose={clearError} response={resMessage} />
+      <StyledRoot>
+        <StyledSection>
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack sx={{ maxWidth: '32rem', alignItems: 'center', margin: 'auto' }}>
           <Typography sx={{ color: '#2065D1', my: 2 }} variant="h6" gutterBottom>
             Fill in the Form below with the right details!
           </Typography>
         </Stack>
-        <Box sx={{ maxWidth: '30rem', alignItems: 'center' }}>
+        <Box sx={{ maxWidth: '32rem', alignItems: 'center', margin: 'auto' }}>
           <Box component="form" noValidate autoComplete="off" onSubmit={(e) => submitHandler(e)}>
             <Stack direction="row" width="100%" alignItems="center" justifyContent="space-between">
               <TextField
@@ -217,6 +239,8 @@ export default function NewAdmin() {
           </Box>
         </Box>
       </Container>
+      </StyledSection>
+      </StyledRoot>
     </>
   );
 }

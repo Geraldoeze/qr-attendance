@@ -55,6 +55,20 @@ const AttendanceList = () => {
     getAttendance();
   }, [auth.token]);
 
+  const deleteAttendance = async (attId) => {
+    console.log(attId)
+    try {
+      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/attendance/delete/${attId}`, "DELETE", null, 
+      {
+        Authorization: 'Bearer ' + auth.token,
+      }
+      )
+      console.log(send)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const handleClickOpen = () => {
     setOpenModal(true);
   };
@@ -102,6 +116,8 @@ const AttendanceList = () => {
     setOpen(false);
   };
 
+
+
   return (
     <>
       {openModal && <NewAttendance open={openModal} onClose={handleClose} updateContent={getNewState} />}
@@ -132,7 +148,7 @@ const AttendanceList = () => {
 
 
         {response?.length > 0 ? (
-          <AttenDance responseData={response} closeAtt={onClickHandler} showAtt={showAttendace} />
+          <AttenDance responseData={response} closeAtt={onClickHandler} showAtt={showAttendace} deleteAtt={deleteAttendance} />
         ) : (
           <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 5, p: 4 }}>
             <Typography textAlign="center" variant="h6">

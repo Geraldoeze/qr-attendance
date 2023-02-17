@@ -47,7 +47,7 @@ const {isLoggedIn, token} = auth
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
+        { path: 'app', element: <RequireAuth><DashboardAppPage /></RequireAuth> },
         { path: 'members', element: <RequireAuth><UsersPage /></RequireAuth> },
       ],
     },

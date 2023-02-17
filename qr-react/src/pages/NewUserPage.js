@@ -1,12 +1,47 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, useEffect, useContext } from 'react';
 
-import { Container, Typography, Stack } from '@mui/material';
+// @mui
+import { styled } from '@mui/material/styles';
+import { Link, Container,  Typography, Stack } from '@mui/material';
+// hooks
+import useResponsive from '../hooks/useResponsive';
+// components
+
+// sections
 
 import { SignUpForm } from '../sections/auth/signUp';
 
+// ----------------------------------------------------------------------
+
+
+const StyledRoot = styled('div')(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+  },
+}));
+
+const StyledSection = styled('div')(({ theme }) => ({
+  width: '100%',
+  maxWidth: 750,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  boxShadow: theme.customShadows.card,
+  backgroundColor: theme.palette.background.default,
+}));
+
+const StyledContent = styled('div')(({ theme }) => ({
+  maxWidth: 480,
+  margin: 'auto',
+  minHeight: '50vh',
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  padding: theme.spacing(0.2, 0),
+}));
+
+
 const NewUserPage = () => {
-  const [response, setResponse] = useState();
 
   return (
     <>
@@ -14,17 +49,25 @@ const NewUserPage = () => {
         <title> New Member </title>
       </Helmet>
 
-      <Container maxWidth="xl">
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-          <Typography sx={{ color: '#2065D1' }} variant="h4" gutterBottom>
-            New Member
-          </Typography>
-        </Stack>
+      
+      <StyledRoot>
+        <StyledSection>
+          <Container maxWidth="sm">
+          <Typography sx={{color: '#2065D1'}} variant="h4" gutterBottom>
+              New Member
+            </Typography>
+          <StyledContent>
 
         <SignUpForm />
-      </Container>
+        
+        </StyledContent>
+        </Container>
+        </StyledSection>
+      </StyledRoot>
+      
     </>
   );
 };
 
 export default NewUserPage;
+

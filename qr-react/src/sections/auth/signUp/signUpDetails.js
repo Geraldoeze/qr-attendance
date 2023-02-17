@@ -6,17 +6,17 @@ export const InputState = {
     firstName: {
         value:'',
         error:false,
-        errorMessage:'You must enter your First Name'
+        errorMessage:'First Name is required'
     },
     lastName: {
         value:'',
       error:false,
-      errorMessage:'You must enter your Last Name'
+      errorMessage:'Last Name is required'
     },
     email: {
         value:'',
       error:false,
-      errorMessage:'You must enter a email'
+      errorMessage:'Email is required'
     },
     gender: {
         value: '',
@@ -36,7 +36,7 @@ export const InputState = {
     area: {
         value: '',
         error: false,
-        errorMessage: 'You must enter an area where you live'
+        errorMessage: 'Kindly enter an area where you live'
     },
     status: {
         value: '',
@@ -46,17 +46,17 @@ export const InputState = {
     address: {
         value:'',
       error:false,
-      errorMessage:'You must enter an address'
+      errorMessage:'Enter your address'
     },
     origin: {
         value:'',
       error:false,
-      errorMessage:'You must enter a place of Origin'
+      errorMessage:'Enter place of Origin'
     },
     contact: {
         value:'',
       error:false,
-      errorMessage:'You must enter a contact number'
+      errorMessage:'Enter contact number'
     }
     
 }

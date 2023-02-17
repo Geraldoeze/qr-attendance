@@ -38,7 +38,7 @@ const TABLE_HEAD = [
   { id: 'access', label: 'AccessLevel', alignitems: true },
   { id: 'current', label: 'Current', alignItems: true },
   { id: 'addMember', label: 'Members', alignItems: true },
-  { id: '' },
+  { id: 'deleteAtt', label: 'Attendance', alignItems: true },
 ];
 
 // ----------------------------------------------------------------------
@@ -72,7 +72,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis?.map((el) => el[0]);
 }
 
-export default function AttenDance({ responseData, closeAtt, showAtt }) {
+export default function AttenDance({ responseData, closeAtt, showAtt, deleteAtt }) {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(null);
@@ -124,6 +124,10 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
       closeAtt(e, val);
     }
   };
+
+  const deleteAttHandler = (e, attId) => {
+    deleteAtt(attId)
+  }
 
   const showAttHandler = (e, val) => {
     showAtt(val);
@@ -191,6 +195,9 @@ export default function AttenDance({ responseData, closeAtt, showAtt }) {
 
                         <TableCell sx={{ cursor: 'pointer' }} align="center">
                           {attendance?.length}
+                        </TableCell>
+                        <TableCell sx={{ cursor: 'pointer', color: 'red' }} align="center" onClick={(e) => deleteAttHandler(e, row._id)}>
+                          Delete
                         </TableCell>
                       </TableRow>
                     );

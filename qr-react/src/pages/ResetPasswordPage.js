@@ -16,6 +16,16 @@ const StyledRoot = styled('div')(({ theme }) => ({
   },
 }));
 
+const StyledSection = styled('div')(({ theme }) => ({
+  width: '100%',
+  maxWidth: 750,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  boxShadow: theme.customShadows.card,
+  backgroundColor: theme.palette.background.default,
+}));
+
 const StyledContent = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
@@ -30,6 +40,7 @@ export default function ResetPasswordPage() {
   return (
     <>
       <StyledRoot>
+        <StyledSection>
         <Container maxWidth="sm">
           <StyledContent>
             <Typography sx={{color: '#000080'}} variant="h4" gutterBottom>
@@ -47,6 +58,7 @@ export default function ResetPasswordPage() {
             </Stack>
           </StyledContent>
         </Container>
+        </StyledSection>
       </StyledRoot>
     </>
   );

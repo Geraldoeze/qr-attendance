@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Checkbox, Typography, Stack } from '@mui/material';
+import { Link, Container,  Typography, Stack } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -22,7 +22,7 @@ const StyledRoot = styled('div')(({ theme }) => ({
 
 const StyledSection = styled('div')(({ theme }) => ({
   width: '100%',
-  maxWidth: 480,
+  maxWidth: 750,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -64,14 +64,14 @@ export default function LoginPage() {
 
       
 
-      <StyledDiv>
-     
-     
-        <Container maxWidth="sm">
-          <StyledContent>
-            <Typography sx={{color: '#2065D1'}} variant="h4" gutterBottom>
+      <StyledRoot>
+        <StyledSection>
+          <Container maxWidth="sm">
+          <Typography sx={{color: '#2065D1'}} variant="h4" gutterBottom>
               {switchPage ? 'Signup' : 'Login'}
             </Typography>
+          <StyledContent>
+            
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }} />
               
@@ -88,7 +88,12 @@ export default function LoginPage() {
             </Stack>
           </StyledContent>
         </Container>
-      </StyledDiv>
+        </StyledSection>
+      </StyledRoot>
+     
+     
+        
+      
     </>
   );
 }

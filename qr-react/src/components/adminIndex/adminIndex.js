@@ -155,6 +155,10 @@ export default function AdminIndex({ responseData, deleteUser }) {
     navigate(`/admin/profile/${userInfo}`, { replace: true });
   }
 
+  const handleProfileHandler = () => {
+    navigate(`/admin/profile/${userInfo}`, {replace: true});
+  }
+
   const handleDeleteHandler = async () => {
     deleteUser(userInfo)
     setOpen(null);
@@ -285,6 +289,10 @@ export default function AdminIndex({ responseData, deleteUser }) {
           },
         }}
       >
+        <MenuItem onClick={ handleProfileHandler}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Profile
+        </MenuItem>
         <MenuItem onClick={ handleEditHandler}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit

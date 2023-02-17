@@ -41,7 +41,11 @@ import LoadingSpinner from '../../../UIElement/LoadingSpinner';
     const onSubmitHandler = async (values) => {
       const data = {...values, redirectUrl: `${window.location.origin}/auth/resetPassword`}
       try {
-        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/passwordReset`, 'POST', data);
+        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/passwordReset`, 'POST', JSON.stringify(data),
+          {
+            'Content-Type': 'application/json',
+          }
+        );
           
         } catch (err) {
           console.log(err.message, err.response)

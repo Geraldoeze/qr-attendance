@@ -68,6 +68,7 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
         <Typography variant="h5"> Attendance List for {value?.course}</Typography>
       </Stack>
       <StyledDiv>
+      {(inputState?.attendance?.length >= 0) && (
         <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
         <table className="customers" >
                     <thead>
@@ -92,12 +93,13 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
                     </tbody>
                 </table>
         </Box>
-        {(inputState?.attendance?.length === 0) && (
+      )}
+      </StyledDiv>
+      {/* {(inputState?.attendance?.length === 0) && (
         <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 0.1, p: 1 }}>
         <Typography variant="h5">No Church Member Attended this Event</Typography>
         </Stack>
-        )}
-      </StyledDiv>
+        )} */}
       <Stack sx={{m:1}} direction="row" alignItems="center" justifyContent="space-between">
       <Button onClick={closeList}>Close</Button>
       {value?.attValue === 'Open' && (<Button onClick={onOpenAdd}>Add </Button> )}

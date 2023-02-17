@@ -45,7 +45,11 @@ const ResetPasswordForm = () => {
     const data = { ...values, userId, resetString };
     console.log(data);
     try {
-      await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/resetPassword`, 'POST', data);
+      await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/resetPassword`, 'POST', JSON.stringify(data),
+        {
+          'Content-Type': 'application/json'
+        }
+      );
     } catch (err) {
       console.log(err.message, err.response);
     }

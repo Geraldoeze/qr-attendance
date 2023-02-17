@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useContext } from 'react';
-import { Container, Typography, Stack, Button } from '@mui/material';
+import { Container, Typography, Stack, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { useHttpClient } from '../../../hooks/http-hook';
@@ -9,7 +9,6 @@ import ErrorModal from '../../../UIElement/Modal/ErrorModal';
 
 import { AuthContext } from '../../../context/auth-context';
 import DeleteAdmin from './DeleteAdmin';
-
 
 const StyledDiv = styled('div')(({ theme }) => ({
   margin: '0',
@@ -58,7 +57,6 @@ export default function AdminProfile() {
     currentId = data?.[0]._id;
   }
 
-
   return (
     <>
       <Helmet>
@@ -68,19 +66,43 @@ export default function AdminProfile() {
       {isLoading && <LoadingSpinner />}
       <ErrorModal open={error} onClose={clearError} error={error} response={null} />
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            p: 1,
+            m: 1,
+            bgcolor: 'background.paper',
+            borderRadius: 1,
+          }}
+        >
           <Typography sx={{ color: '#000080' }} variant="h3" gutterBottom>
             Admin Profile
           </Typography>
-          <Button onClick={OpenDeleteUser} sx={{ px: 3, backgroundColor: 'rgb(200,0,0)' }} variant="contained">
-            Delete
-          </Button>
-          
-          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F' }} variant="contained">
+
+          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%' }} variant="contained">
             Edit Details
           </Button>
+          <Button
+            onClick={OpenDeleteUser}
+            sx={{ px: 3, backgroundColor: 'rgb(200,0,0)', width: '15%' }}
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </Box>
+        <Stack
+          direction="column"
+          sx={{ p: 5 }}
+          borderRadius={2}
+          boxShadow={5}
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h6">Admin User Profile.!!</Typography>
         </Stack>
-
         {isLoading && <LoadingSpinner asOverlay />}
         {data &&
           data?.map((val, ide) => {

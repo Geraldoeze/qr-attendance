@@ -12,9 +12,9 @@ const AddUserAtt = ({ value, open, onClose, updateContent }) => {
   const auth = useContext(AuthContext);
 
   const { isLoading, error, sendRequest, clearError, resMessage } = useHttpClient();
-  // const [token, setToken] = useState();
+  
   const [scan, setScan] = useState(false);
-  // const [data, setData] = useState();
+  
 
    const getTokenHandler = async () => {
     setScan(true)

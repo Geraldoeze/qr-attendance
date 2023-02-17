@@ -1,17 +1,26 @@
 import { Button, Typography, Stack, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/auth-context';
 
 import { useHttpClient } from '../../hooks/http-hook';
 import LoadingSpinner from '../../UIElement/LoadingSpinner';
 
 const CloseAttendance = ({ open, onClose, values, updateContent }) => {
+  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const closeHandler = async () => {
     const id = values?._id;
-    const newVal = { ...values, attValue: 'close'};
+    const newVal = { ...values, attValue: 'Close'};
     const newValue = {...values}
     updateContent(newVal);
-    const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/closeAtt/${id}`, 'PATCH', newValue);
+    const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/attendance/closeAtt/${id}`, "PATCH", JSON.stringify(newValue),
+    {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + auth.token,
+    }
+    );
+    console.log(send)
 
     onClose();
   };

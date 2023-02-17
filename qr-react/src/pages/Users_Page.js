@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 
-import { Container, Typography, Stack, Grid } from '@mui/material';
+import { Container, Typography, Stack } from '@mui/material';
 
 import { DashboardUser } from '../components/dashboardUser';
 
@@ -18,52 +18,51 @@ import ErrorModal from '../UIElement/Modal/ErrorModal';
 
 // ----------------------------------------------------------------------
 
+export default function UsersPage() {
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const [response, setResponse] = useState();
 
-export default function UsersPage( ) {
-    
-    const navigate = useNavigate();
-    const auth = useContext(AuthContext);
-    const [response, setResponse] = useState();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-    const { isLoading, error, sendRequest, clearError } = useHttpClient();
-
-    // fetch all users
-    useEffect(() => {
-        const getUsers = async () => {
-            if (!!auth.token) {
-                   try {
-                const send = await sendRequest(process.env.REACT_APP_BACKEND_URL+"/users", "GET", null,
-                  {
-                    Authorization: 'Bearer ' + auth.token
-                  }
-                );
-                console.log(send);
-                setResponse(send.response);
-            } catch (err) {
-                console.log(err)
-            }
+  // fetch all users
+  useEffect(() => {
+    const getUsers = async () => {
+      if (!!auth.token) {
+        try {
+          const send = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/users', 'GET', null, {
+            Authorization: 'Bearer ' + auth.token,
+          });
+          console.log(send);
+          setResponse(send.response);
+        } catch (err) {
+          console.log(err);
         }
-        }
-        getUsers();
-    }, [auth.token])
-
-    const deleteUserInfo = async (userId) => {
-        setResponse((response) => response?.filter((del) => del._id !== userId));
-        
-        const deleteAccount = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/delete/${userId}`, "DELETE", null,
-            {
-                Authorization: 'Bearer ' + auth.token
-            }
-          );
-        console.log(deleteAccount)
       }
-    
-    return (
-        <>
-          <Helmet>
-            <title> Members </title>
-          </Helmet>
-          <Container maxWidth="xl">
+    };
+    getUsers();
+  }, [auth.token]);
+
+  const deleteUserInfo = async (userId) => {
+    setResponse((response) => response?.filter((del) => del._id !== userId));
+
+    const deleteAccount = await sendRequest(
+      `${process.env.REACT_APP_BACKEND_URL}/users/delete/${userId}`,
+      'DELETE',
+      null,
+      {
+        Authorization: 'Bearer ' + auth.token,
+      }
+    );
+    console.log(deleteAccount);
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title> Members </title>
+      </Helmet>
+      <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography sx={{ color: '#2065D1' }} variant="h4" gutterBottom>
             Members List
@@ -72,13 +71,13 @@ export default function UsersPage( ) {
             All Info
           </Typography>
         </Stack>
-        </Container>
+      </Container>
 
-        <Container maxWidth="xl">
+      <Container maxWidth="xl">
         {isLoading && <LoadingSpinner asOverlay />}
         <ErrorModal open={error} error={error} onClose={clearError} response={null} />
         {response && <DashboardUser responseData={response} deleteUser={deleteUserInfo} />}
       </Container>
-        </>
-    )
+    </>
+  );
 }

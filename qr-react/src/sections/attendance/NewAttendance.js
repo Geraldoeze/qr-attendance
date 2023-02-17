@@ -70,11 +70,11 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
   const onSubmitHandler = async () => {
     const refinedDate = date.toDate().toString().slice(0, 16);
     const newAttData = { ...inputState, refinedDate, attValue: 'Open' };
-    console.log(newAttData);
 
     try {
-      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/attendance/create`, 'POST', newAttData,
+      const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/attendance/create`, 'POST', JSON.stringify(newAttData),
       {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + auth.token,
       }
       );

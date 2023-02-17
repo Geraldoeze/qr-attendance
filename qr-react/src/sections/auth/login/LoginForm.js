@@ -46,8 +46,14 @@ import LoadingSpinner from '../../../UIElement/LoadingSpinner';
   
     const onSubmitHandler = async (values) => {
       try {
+
+        const data = JSON.stringify(values)
         
-        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, 'POST', values);
+        const send = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, 'POST', data, 
+          {
+            'Content-Type': 'application/json'
+          }
+        );
         console.log(send);
         auth.login(send?.userDetails._id, send?.token, send?.userDetails, send?.userDetails.type)
         navigate('/dashboard', { replace: true });

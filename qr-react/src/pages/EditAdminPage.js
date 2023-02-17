@@ -11,8 +11,8 @@ import { useHttpClient } from '../hooks/http-hook';
 export default function EditAdminPage() {
     const auth = useContext(AuthContext);
     const [ response, setResponse ] = useState(); 
-    // const [ responseData, setResponseData ] = useState(); 
-    const { isLoading, error, sendRequest } = useHttpClient();
+    
+    const {  sendRequest } = useHttpClient();
     const  getUserId = window.location.pathname.split('/');
     const userId = getUserId[getUserId.length - 1];
      

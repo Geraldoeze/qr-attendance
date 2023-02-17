@@ -44,7 +44,6 @@ exports.createUser = async (req, res, next) => {
      return res.status(400).json({ message, statusId: "FAILED!!" });
  }
 
-
     // bcrypt password
     const hashedPassword = await bcrypt.hash(password, 12);
     // get image from path

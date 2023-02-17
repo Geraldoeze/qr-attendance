@@ -7,7 +7,9 @@
 .customers td, #customers th {
     border: 1px solid #ddd;
     padding: 8px;
+    
   }
+
   
 .customers tr:nth-child(even){background-color: #f2f2f2;}
   
@@ -16,7 +18,9 @@
 .customers th {
     padding-top: 12px;
     padding-bottom: 12px;
-    text-align: left;
-    background-color: #015a8d;
-    color: white;
+    text-align: center;
+    
+    overflow: hidden;
+    background-color: #02024d;
+    color: goldenrod;
 }

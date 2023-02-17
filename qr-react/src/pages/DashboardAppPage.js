@@ -30,15 +30,6 @@ export default function DashboardAppPage() {
   
   }, []);
 
-  const getDepartment = () => {
-    navigate(`/create/dept`, { replace: true });
-  };
-  const getAttendance = () => {
-    navigate(`/attendance`, { replace: true });
-  };
-  const getUsers = () => {
-    // navigate(`/create/dept`, { replace: true });
-  };
   return (
     <>
       <Helmet>

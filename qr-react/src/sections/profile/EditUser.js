@@ -20,6 +20,7 @@ import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
+import ErrorModal from '../../UIElement/Modal/ErrorModal';
 import LoadingSpinner from '../../UIElement/LoadingSpinner';
 import { useHttpClient } from '../../hooks/http-hook';
 import { AuthContext } from '../../context/auth-context';
@@ -77,23 +78,24 @@ export default function EditUser({ user }) {
     const refinedDate = value?.toDate().toString().slice(0, 16);
 
     try {
-        const formData = new FormData();
-        formData.append('email', inputState.email);
-        formData.append('lastName', inputState.lastName);
-        formData.append('firstName', inputState.firstName);
-        formData.append('password', inputState.password);
-        formData.append('area', inputState.area);
-        formData.append('address', inputState.address);
-        formData.append('gender', inputState.gender);
-        formData.append('contact', inputState.contact);
-        formData.append('status', inputState.status);
-        formData.append('origin', inputState.origin);
-        formData.append('image', selectedImage);
-        formData.append('dob', refinedDate);
-  
+      const formDataSend = new FormData()
+      formDataSend.append('email', inputState.email);
+      formDataSend.append('lastName', inputState.lastName);
+      formDataSend.append('firstName', inputState.firstName);
+      formDataSend.append('password', inputState.password);
+      formDataSend.append('area', inputState.area);
+      formDataSend.append('address', inputState.address);
+      formDataSend.append('gender', inputState.gender);
+      formDataSend.append('contact', inputState.contact);
+      formDataSend.append('status', inputState.status);
+      formDataSend.append('origin', inputState.origin);
+      formDataSend.append('image', selectedImage);
+      formDataSend.append('dob', refinedDate);
+      
         // send  Request to update user
-        const sendData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/update/${userId}`, "PUT", formData, 
+        const sendData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/update/${userId}`, "PUT", JSON.stringify(formDataSend), 
           {
+            'Content-Type': 'application/json',
             Authorization: 'Bearer ' + auth.token
           }
         );
@@ -102,7 +104,7 @@ export default function EditUser({ user }) {
       } catch (err) {
         console.log(err)
       }
-      // navigate("/dashboard", { replace: true });
+      navigate("/dashboard", { replace: true });
   };
 
   const changeHandler = (e) => {
@@ -117,6 +119,7 @@ export default function EditUser({ user }) {
   return (
     <>
       {isLoading && <LoadingSpinner asOverlay />}
+      <ErrorModal error={error} open={error} onClose={clearError} response={resMessage} />
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between">

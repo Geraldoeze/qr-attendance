@@ -158,11 +158,11 @@ const NavConfig = () => {
   ]
 
   const notLoggedIn = [
-    {
-      title: 'dashboard',
-      path: '/dashboard/app',
-      icon: <GridViewIcon />,
-    },
+    // {
+    //   title: 'dashboard',
+    //   path: '/dashboard/app',
+    //   icon: <GridViewIcon />,
+    // },
     {
       title: 'login',
       path: '/auth',

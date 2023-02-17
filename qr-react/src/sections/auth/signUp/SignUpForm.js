@@ -34,6 +34,7 @@ const SignUpForm = () => {
 
   const [formValues, setFormValues] = useState(InputState);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imgError, setImgError ] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
   const { isLoading, error, sendRequest, clearError, resMessage } = useHttpClient();
@@ -41,6 +42,7 @@ const SignUpForm = () => {
   useEffect(() => {
     if (selectedImage) {
       setImageUrl(URL.createObjectURL(selectedImage));
+      setImgError(false);
     }
   }, [selectedImage]);
 
@@ -81,25 +83,27 @@ const SignUpForm = () => {
     }
     setFormValues(newFormValues);
     try {
+      const formDataSend = new FormData()
+      formDataSend.append('email', formValues.email.value);
+      formDataSend.append('lastName', formValues.lastName.value);
+      formDataSend.append('firstName', formValues.firstName.value);
+      formDataSend.append('password', formValues.password.value);
+      formDataSend.append('area', formValues.area.value);
+      formDataSend.append('address', formValues.address.value);
+      formDataSend.append('gender', formValues.gender.value);
+      formDataSend.append('contact', formValues.contact.value);
+      formDataSend.append('status', formValues.status.value);
+      formDataSend.append('origin', formValues.origin.value);
+      formDataSend.append('image', selectedImage);
+      formDataSend.append('dob', refinedDate);
       
-      const formData = new FormData();
-      formData.append('email', formValues.email.value);
-      formData.append('lastName', formValues.lastName.value);
-      formData.append('firstName', formValues.firstName.value);
-      formData.append('password', formValues.password.value);
-      formData.append('area', formValues.area.value);
-      formData.append('address', formValues.address.value);
-      formData.append('gender', formValues.gender.value);
-      formData.append('contact', formValues.contact.value);
-      formData.append('status', formValues.status.value);
-      formData.append('origin', formValues.origin.value);
-      formData.append('image', selectedImage);
-      formData.append('dob', refinedDate);
-      
+      if(!selectedImage) {
+       return setImgError(true)
+      }
       if (!(formValues.email.error) && !(formValues.lastName.error) && !(formValues.password.error) && !!selectedImage){
       
       // send Request to create user
-      const sendData = await sendRequest(process.env.REACT_APP_BACKEND_URL+"/users/create", "POST", formData);
+      const sendData = await sendRequest(process.env.REACT_APP_BACKEND_URL+"/users/create", "POST", formDataSend);
       console.log(sendData);
       navigate('/dashboard', { replace: true });
       }
@@ -107,20 +111,17 @@ const SignUpForm = () => {
       console.log(err)
     }
     
-    
   };
 
-  
-    
   
   return (
     <>
       {isLoading && <LoadingSpinner asOverlay />}
       <ErrorModal error={error} open={error} onClose={clearError} response={resMessage} />
      
-      <Container>
+      
         <form noValidate onSubmit={handleSubmit}>
-          <Typography sx={{ marginY: '1rem' }} variant="h5">
+          <Typography sx={{ marginY: '1rem', color: '#2065D1' }} variant="h5">
             Please enter your data
           </Typography>
 
@@ -220,7 +221,7 @@ const SignUpForm = () => {
               />
             </LocalizationProvider>
 
-            <FormControl sx={{ mb: 2, mx: 2 }}>
+            <FormControl sx={{ mb: 2, ml: 8   }}>
               <FormLabel>Status</FormLabel>
               <RadioGroup row name="status" value={formValues.status.value} onChange={handleChange}>
                 <FormControlLabel value="Single" control={<Radio />} label="Single" />
@@ -245,6 +246,7 @@ const SignUpForm = () => {
                 </Button>
               </label>
             </Container>
+            {imgError && <div style={{color:"red", padding:'1rem'}}>Kindly Upload Image..</div>}
             {imageUrl && selectedImage && (
               <Box m={2}>
                 <div>Image Preview:</div>
@@ -282,7 +284,7 @@ const SignUpForm = () => {
             Submit
           </Button>
         </form>
-      </Container>
+      
     </>
   );
 };

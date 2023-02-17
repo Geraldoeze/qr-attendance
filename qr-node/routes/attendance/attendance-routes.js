@@ -9,7 +9,7 @@ router.get("/", auth, attControllers.getAllAttendance);
 
 router.post("/create", auth, attControllers.createAttendance);
 
-router.patch("/closeAtt/:uid", auth, attControllers.closeAttendance);
+router.patch("/closeatt/:uid", auth, attControllers.closeAttendance);
 
 router.delete("/delete/:uid", auth, attControllers.deleteAttendance);
 

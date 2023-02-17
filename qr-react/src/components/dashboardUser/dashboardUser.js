@@ -155,25 +155,25 @@ export default function DashboardUser({ responseData, deleteUser }) {
   };
 
   const handleEditHandler = () => {
-    navigate(`/user/profile/${userInfo}`, { replace: true });
+    navigate(`/user/edit/${userInfo}`, { replace: true });
+    
   }
 
+  const handleProfileHandler = () => {
+    navigate(`/user/profile/${userInfo}`, {replace: true});
+  }
 
   const handleDeleteHandler = async () => {
     deleteUser(userInfo)
-    
     setOpen(null);
   }
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - responseData.length) : 0;
-
   const filteredUsers = applySortFilter(responseData, getComparator(order, orderBy), filterName);
-
   const isNotFound = !filteredUsers?.length && !!filterName;
   
   return (
     <>
-    
       <Container>
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
@@ -289,6 +289,10 @@ export default function DashboardUser({ responseData, deleteUser }) {
           },
         }}
       >
+        <MenuItem onClick={ handleProfileHandler}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Profile
+        </MenuItem>
         <MenuItem onClick={ handleEditHandler}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit

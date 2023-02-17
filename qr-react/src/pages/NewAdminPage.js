@@ -1,9 +1,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { Container, Typography, Stack, Grid } from '@mui/material';
+import { Container, Typography, Stack  } from '@mui/material';
 
 import NewAdmin from '../sections/admin/newAdmin/NewAdmin';
 
