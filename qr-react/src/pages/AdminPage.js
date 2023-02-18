@@ -55,16 +55,16 @@ const AdminPage = () => {
   return (
     <>
       <Helmet>
-        <title> Admin </title>
+        <title> Pastor </title>
       </Helmet>
 
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-           Super Admin
+           Regional Pastor
           </Typography>
           <Stack direction="column" alignItems="flex-end">
-            <Typography variant="h6">{auth?.userDetails?.name}</Typography>
+            <Typography variant="h6">{auth?.userDetails?.firstName}</Typography>
             <Typography variant="h6">{auth?.userDetails?.email}</Typography>
           </Stack>
         </Stack>
@@ -82,33 +82,33 @@ const AdminPage = () => {
         }}>
           <Button  
             href='/dashboard/members'
-            sx={{ backgroundColor: '#14162F', p:2, px:5, my:2 }} variant="contained">
-            Members List
+            sx={{ backgroundColor: '#4A0404', p:2, px:5, my:2 }} variant="contained">
+            Minister List
           </Button>
-          <Button  sx={{ backgroundColor: '#14162F', p:2, px:5, my:2  }} variant="contained">
+          <Button  sx={{ backgroundColor: '#4A0404', p:2, px:5, my:2  }} variant="contained">
             Events List
           </Button>
           <Button
             href='/new/user'
-            sx={{ backgroundColor: '#14162F', p:2, px:5, my:2 }}
+            sx={{ backgroundColor: '#4A0404', p:2, px:5, my:2 }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
-            Create Member
+            Create Minister
           </Button>
         </Box>
         <Stack direction="row" alignItems="center" justifyContent="center" mb={5}>
         <Button
             href='/admin/create'
-            sx={{ backgroundColor: '#14162F', p:2, px:5, width: '50%' }}
+            sx={{ backgroundColor: '#4A0404', p:2, px:5, width: '50%' }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
-            Create Admin
+            Create Regional Pastor
           </Button>
         </Stack>
       <Stack direction="column"  sx={{p:2}} borderRadius={2} boxShadow={5} alignItems="center" justifyContent="space-between" mb={5}>
-      <Typography variant="h6">Admin List.!!</Typography>
+      <Typography variant="h6">Regional Pastor List.!!</Typography>
       </Stack>
 
         <Stack direction="column" alignItems="center" justifyContent="space-between" mb={5}>

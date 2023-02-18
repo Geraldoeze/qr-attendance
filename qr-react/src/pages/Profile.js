@@ -15,7 +15,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   border: '10px',
   width: '100%',
   padding: '1rem',
-  backgroundColor: '#14162F',
+  backgroundColor: '#4d0013',
   color: 'white',
   borderRadius: '5px',
 }));
@@ -60,7 +60,7 @@ const Profile = () => {
   return (
     <>
       <Helmet>
-        <title> Profile </title>
+        <title>Minister Profile </title>
       </Helmet>
       {openDelete && <DeleteUser open={openDelete} onClose={CloseDeleteUser} userId={currentId} />}
       {isLoading && <LoadingSpinner asOverlay />}
@@ -77,14 +77,14 @@ const Profile = () => {
             borderRadius: 1,
           }}
         >
-          <Typography sx={{ color: '#000080' }} variant="h3" gutterBottom>
-            User Profile
+          <Typography sx={{ color: '#900C3F' }} variant="h3" gutterBottom>
+            Minister Profile
           </Typography>
 
           <Button href={`/user/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%' }} variant="contained">
             Edit Details
           </Button>
-          <Button onClick={OpenDeleteUser} sx={{ backgroundColor: 'rgb(200,0,0)', width: '15%' }} variant="contained">
+          <Button onClick={OpenDeleteUser} sx={{ backgroundColor: '#4A0404', width: '15%' }} variant="contained">
             Delete
           </Button>
         </Box>
@@ -97,7 +97,7 @@ const Profile = () => {
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h6">User Profile.!!</Typography>
+          <Typography variant="h6">Minister Profile.!!</Typography>
         </Stack>
         {isLoading && <LoadingSpinner asOverlay />}
         {data &&

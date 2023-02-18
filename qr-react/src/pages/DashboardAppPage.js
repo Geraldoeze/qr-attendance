@@ -37,10 +37,10 @@ export default function DashboardAppPage() {
       </Helmet>
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography sx={{ color: '#2065D1' }} variant="h4" gutterBottom>
+          <Typography sx={{ color: '#900C3F' }} variant="h4" gutterBottom>
             Dashboard
           </Typography>
-          <Typography sx={{ color: '#2065D1' }} variant="h5">
+          <Typography sx={{ color: '#900C3F' }} variant="h5">
             All Info
           </Typography>
         </Stack>

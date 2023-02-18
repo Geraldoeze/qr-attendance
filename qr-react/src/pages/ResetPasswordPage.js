@@ -43,16 +43,16 @@ export default function ResetPasswordPage() {
         <StyledSection>
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography sx={{color: '#000080'}} variant="h4" gutterBottom>
+            <Typography sx={{color: '#900C3F'}} variant="h4" gutterBottom>
               Reset Password
             </Typography>
-            <Typography sx={{color: '#000080'}} variant="subtitle1" gutterBottom>
+            <Typography sx={{color: '#900C3F'}} variant="subtitle1" gutterBottom>
               Enter new password
             </Typography>
             {/* reset form */}
             <ResetPasswordForm />
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
-              <Link href="/auth/login" variant="subtitle2" underline="hover">
+              <Link href="/auth/login" variant="subtitle2" underline="hover" sx={{color: '#900C3F'}}>
                 Login
               </Link>
             </Stack>

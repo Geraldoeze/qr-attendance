@@ -15,7 +15,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   border: '10px',
   width: '100%',
   padding: '1rem',
-  backgroundColor: '#14162F',
+  backgroundColor: '#4A0404',
   color: 'white',
   borderRadius: '5px',
 }));
@@ -77,8 +77,8 @@ export default function AdminProfile() {
             borderRadius: 1,
           }}
         >
-          <Typography sx={{ color: '#000080' }} variant="h3" gutterBottom>
-            Admin Profile
+          <Typography sx={{ color: '#900C3F' }} variant="h3" gutterBottom>
+            Pastor Profile
           </Typography>
 
           <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%' }} variant="contained">
@@ -86,7 +86,7 @@ export default function AdminProfile() {
           </Button>
           <Button
             onClick={OpenDeleteUser}
-            sx={{ px: 3, backgroundColor: 'rgb(200,0,0)', width: '15%' }}
+            sx={{ px: 3, backgroundColor: '#4A0404', width: '15%' }}
             variant="contained"
           >
             Delete
@@ -101,7 +101,7 @@ export default function AdminProfile() {
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h6">Admin User Profile.!!</Typography>
+          <Typography variant="h6">Regional Pastor Profile.!!</Typography>
         </Stack>
         {isLoading && <LoadingSpinner asOverlay />}
         {data &&

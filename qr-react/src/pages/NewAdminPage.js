@@ -9,15 +9,15 @@ export default function NewAdminPage() {
   return (
     <>
     <Helmet>
-        <title> Create Admin </title>
+        <title> Create Pastor </title>
       </Helmet>
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography sx={{ color: '#2065D1' }} variant="h4" gutterBottom>
-            Create New Admin
+          <Typography sx={{ color: '#900C3F' }} variant="h4" gutterBottom>
+            Create New Regional Pastor
           </Typography>
-          <Typography sx={{ color: '#2065D1' }} variant="h5">
-            Sub Admin
+          <Typography sx={{ color: '#900C3F' }} variant="h5">
+            Reg Pastor
           </Typography>
         </Stack>
 

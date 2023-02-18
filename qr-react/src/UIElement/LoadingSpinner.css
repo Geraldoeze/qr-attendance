@@ -2,7 +2,7 @@
   display: inline-block;
   width: 64px;
   height: 64px;
-  color:cornflowerblue
+  color: '#900C3F'
 }
 
 .lds-dual-ring:after {
@@ -13,7 +13,7 @@
   margin: 1px;
   border-radius: 50%;
   border: 5px solid rgb(141, 135, 135);
-  border-color: rgb(5, 46, 107) transparent rgb(33, 108, 158) transparent;
+  border-color: rgb(99, 2, 34) transparent rgb(63, 2, 2) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 

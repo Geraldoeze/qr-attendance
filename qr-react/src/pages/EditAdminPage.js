@@ -39,13 +39,13 @@ export default function EditAdminPage() {
   return (
     <>
        <Helmet>
-        <title> Edit Admin Details </title>
+        <title> Edit Pastor Details </title>
       </Helmet>
 
       <Container maxWidth="xl">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-          <Typography sx={{color: '#2065D1'}} variant="h4" gutterBottom>
-            Edit Admin Information
+          <Typography sx={{color: '#900C3F'}} variant="h4" gutterBottom>
+            Edit Pastor Information
           </Typography>
         </Stack>
        { !!response && <EditAdmin user={response}  />}

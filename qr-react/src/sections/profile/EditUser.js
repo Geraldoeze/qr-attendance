@@ -123,7 +123,7 @@ export default function EditUser({ user }) {
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography sx={{ color: '#2065D1', my:2 }} variant="h6" gutterBottom>
+          <Typography sx={{ color: '#900C3F', my:2 }} variant="h6" gutterBottom>
             Update the Form below with the right details!
           </Typography>
         </Stack>
@@ -214,7 +214,7 @@ export default function EditUser({ user }) {
                 onChange={(e) => setSelectedImage(e.target.files[0])}
               />
               <label htmlFor="select-image">
-                <Button variant="contained" color="primary" component="span">
+                <Button variant="contained" component="span" sx={{backgroundColor: '#4A0404'}}>
                   Upload New Image
                 </Button>
               </label>
@@ -259,7 +259,7 @@ export default function EditUser({ user }) {
                 value={inputState.area}
               />
 
-              <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem' }}>
+              <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404' }}>
                 Update
               </LoadingButton>
             </Box>

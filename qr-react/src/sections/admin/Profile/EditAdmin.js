@@ -118,7 +118,7 @@ export default function EditAdmin({ user }) {
         <StyledSection>
           <Container>
             <Stack sx={{ maxWidth: '32rem', alignItems: 'center', margin: 'auto' }}>
-              <Typography sx={{ color: '#2065D1', my: 2 }} variant="h6" gutterBottom>
+              <Typography sx={{ color: '#900C3F', my: 2 }} variant="h6" gutterBottom>
                 Update the Form below with the right details!
               </Typography>
             </Stack>
@@ -216,7 +216,7 @@ export default function EditAdmin({ user }) {
                   value={inputState.title}
                 />
 
-                <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem' }}>
+                <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor:'#4A0404' }}>
                   Update
                 </LoadingButton>
               </Box>

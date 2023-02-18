@@ -60,15 +60,15 @@ export default function UsersPage() {
   return (
     <>
       <Helmet>
-        <title> Members </title>
+        <title> Ministers </title>
       </Helmet>
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography sx={{ color: '#2065D1' }} variant="h4" gutterBottom>
-            Members List
+          <Typography sx={{ color: '#900C3F' }} variant="h4" gutterBottom>
+            Ministers List
           </Typography>
-          <Typography sx={{ color: '#2065D1' }} variant="h5">
-            All Info
+          <Typography sx={{ color: '#900C3F' }} variant="h5">
+            All Information
           </Typography>
         </Stack>
       </Container>
