@@ -60,7 +60,7 @@ const AdminPage = () => {
 
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom sx={{color: '#FF0000'}}>
            Regional Pastor
           </Typography>
           <Stack direction="column" alignItems="flex-end">
@@ -82,15 +82,15 @@ const AdminPage = () => {
         }}>
           <Button  
             href='/dashboard/members'
-            sx={{ backgroundColor: '#4A0404', p:2, px:5, my:2, color: 'goldenrod', "&:hover":{backgroundColor:'#900C3F'} }} variant="contained">
+            sx={{ backgroundColor: '#FF0000', p:2, px:5, my:2, color: 'white', "&:hover":{backgroundColor:'#4A0404'} }} variant="contained">
             Minister List
           </Button>
-          <Button  sx={{ backgroundColor: '#4A0404', p:2, px:5, my:2, color: 'goldenrod', "&:hover":{backgroundColor:'#900C3F'}  }} variant="contained">
+          <Button  sx={{ backgroundColor: '#FF0000', p:2, px:5, my:2, color: 'white', "&:hover":{backgroundColor:'#4A0404'}  }} variant="contained">
             Events List
           </Button>
           <Button
             href='/new/user'
-            sx={{ backgroundColor: '#4A0404', p:2, px:5, my:2, color: 'goldenrod', "&:hover":{backgroundColor:'#900C3F'} }}
+            sx={{ backgroundColor: '#FF0000', p:2, px:5, my:2, color: 'white', "&:hover":{backgroundColor:'#4A0404'} }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
@@ -100,7 +100,7 @@ const AdminPage = () => {
         <Stack direction="row" alignItems="center" justifyContent="center" mb={5}>
         <Button
             href='/admin/create'
-            sx={{ backgroundColor: '#4A0404', p:2, px:5, width: '50%', color: 'goldenrod', "&:hover":{backgroundColor:'#900C3F'} }}
+            sx={{ backgroundColor: '#FF0000', p:2, px:5, width: '50%', color: 'white', "&:hover":{backgroundColor:'#4A0404'} }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >

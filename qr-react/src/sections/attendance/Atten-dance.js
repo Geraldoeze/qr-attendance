@@ -189,7 +189,7 @@ export default function AttenDance({ responseData, closeAtt, showAtt, deleteAtt 
 
                         <TableCell align="center">{access}</TableCell>
 
-                        <TableCell sx={{ cursor: 'pointer' }} align="right" onClick={(e) => userHandler(e, row)}>
+                        <TableCell sx={{ cursor: 'pointer', color: 'blue', fontWeight: 'bold' }} align="right" onClick={(e) => userHandler(e, row)}>
                           {attValue}
                         </TableCell>
 

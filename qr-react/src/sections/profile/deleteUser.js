@@ -35,17 +35,17 @@ const DeleteUser = ({ open, onClose, userId }) => {
       <ErrorModal error={error} open={error} onClose={clearError} response={resMessage} />
 
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle sx={{color: '#ff4382'}}>Delete Account</DialogTitle>
+        <DialogTitle sx={{color: '#FF0000'}}>Delete Account</DialogTitle>
         <DialogContent>
           <Stack>
-            <Typography sx={{ color: '#900C3F' }} variant="h5" gutterBottom>
+            <Typography sx={{ color: '#000' }} variant="h5" gutterBottom>
               Are you sure you want to delete your Account? This will remove your Account from our Database..
             </Typography>
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>CANCEL</Button>
-          <Button sx={{color: '#ff4382'}} type="submit" onClick={deleteUserHandler}>
+          <Button sx={{color: '#FF0000'}} type="submit" onClick={deleteUserHandler}>
             DELETE
           </Button>
         </DialogActions>

@@ -15,7 +15,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   border: '10px',
   width: '100%',
   padding: '1rem',
-  backgroundColor: '#4d0013',
+  backgroundColor: '#FF0000',
   color: 'white',
   borderRadius: '5px',
 }));
@@ -77,14 +77,14 @@ const Profile = () => {
             borderRadius: 1,
           }}
         >
-          <Typography sx={{ color: '#900C3F' }} variant="h3" gutterBottom>
+          <Typography sx={{ color: '#FF0000' }} variant="h3" gutterBottom>
             Minister Profile
           </Typography>
 
-          <Button href={`/user/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#900C3F'} }} variant="contained">
+          <Button href={`/user/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#FF0000'} }} variant="contained">
             Edit Details
           </Button>
-          <Button onClick={OpenDeleteUser} sx={{ backgroundColor: '#4A0404', width: '15%', "&:hover":{backgroundColor:'#900C3F'} }} variant="contained">
+          <Button onClick={OpenDeleteUser} sx={{ backgroundColor: '#FF0000', width: '15%', "&:hover":{backgroundColor:'#4A0404'} }} variant="contained">
             Delete
           </Button>
         </Box>

@@ -92,17 +92,18 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
                         ))}
                     </tbody>
                 </table>
+                {(inputState?.attendance?.length === 0) && (
+        <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 0.1, p: 1 }}>
+        <Typography variant="h5">No Minister Attended this Event</Typography>
+        </Stack>
+        )}
         </Box>
       )}
       </StyledDiv>
-      {/* {(inputState?.attendance?.length === 0) && (
-        <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 0.1, p: 1 }}>
-        <Typography variant="h5">No Church Member Attended this Event</Typography>
-        </Stack>
-        )} */}
+      
       <Stack sx={{m:1}} direction="row" alignItems="center" justifyContent="space-between">
       <Button onClick={closeList}>Close</Button>
-      {value?.attValue === 'Open' && (<Button sx={{color:'#900C3F'}} onClick={onOpenAdd}>Add </Button> )}
+      {value?.attValue === 'Open' && (<Button style={{color:'red', }} sx={{"&:hover":{backgroundColor:'#4A0404'} }} onClick={onOpenAdd}>Add </Button> )}
       </Stack> 
       
      </Modal> 

@@ -49,7 +49,7 @@ exports.createUser = async (req, res, next) => {
     // get image from path
     const image = req?.file ? req.file?.path : ' ';
     // save user data to user database model
-    const UserData = new User( firstName, lastName, email, gender, id, origin, address, contact, area, hashedPassword, status, dob, image);
+    const UserData = new User( firstName, lastName, email, gender, id, origin, address, contact, area, hashedPassword, status, dob );
     const saveUserData = await UserData.saveToDB();
     const userId = saveUserData?.insertedId.toString();
     

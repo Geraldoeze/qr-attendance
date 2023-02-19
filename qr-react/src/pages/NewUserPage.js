@@ -53,7 +53,7 @@ const NewUserPage = () => {
       <StyledRoot>
         <StyledSection>
           <Container maxWidth="sm">
-          <Typography sx={{color: '#900C3F'}} variant="h4" gutterBottom>
+          <Typography sx={{color: '#FF0000'}} variant="h4" gutterBottom>
               New Minister
             </Typography>
           <StyledContent>

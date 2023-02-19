@@ -44,16 +44,16 @@ export default function ForgotPasswordPage() {
         <StyledSection>
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography sx={{color: '#900C3F'}} variant="h4" gutterBottom>
+            <Typography sx={{color: '#FF0000'}} variant="h4" gutterBottom>
               Forgot Password
             </Typography>
 
-            <Typography variant="h5" sx={{ mb: 5, color: '#900C3F' }}>
+            <Typography variant="h5" sx={{ mb: 5, color: '#FF0000' }}>
               Enter your Email Address
             </Typography>
             <ForgotPasswordForm />
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
-              <Link href="login" variant="subtitle2" underline="hover" sx={{color: '#900C3F'}}>
+              <Link href="login" variant="subtitle2" underline="hover" sx={{color: '#FF0000'}}>
                 Login
               </Link>
             </Stack>

@@ -15,7 +15,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   border: '10px',
   width: '100%',
   padding: '1rem',
-  backgroundColor: '#4A0404',
+  backgroundColor: '#FF0000',
   color: 'white',
   borderRadius: '5px',
 }));
@@ -77,16 +77,16 @@ export default function AdminProfile() {
             borderRadius: 1,
           }}
         >
-          <Typography sx={{ color: '#900C3F' }} variant="h3" gutterBottom>
+          <Typography sx={{ color: '#FF0000' }} variant="h3" gutterBottom>
             Pastor Profile
           </Typography>
 
-          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#900C3F'} }} variant="contained">
+          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#4A0404'} }} variant="contained">
             Edit Details
           </Button>
           <Button
             onClick={OpenDeleteUser}
-            sx={{ px: 3, backgroundColor: '#4A0404', width: '15%', "&:hover":{backgroundColor:'#900C3F'} }}
+            sx={{ px: 3, backgroundColor: '#FF0000', width: '15%', "&:hover":{backgroundColor:'#4A0404'} }}
             variant="contained"
           >
             Delete

@@ -171,7 +171,7 @@ const NewAttendance = ({ open, onClose, updateContent }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" onClick={onSubmitHandler}>
+          <Button type="submit" sx={{color: '#FF0000'}} onClick={onSubmitHandler}>
             Create
           </Button>
         </DialogActions>

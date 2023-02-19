@@ -82,7 +82,7 @@ const ResetPasswordForm = () => {
             helperText={errors.passwordConfirm ? errors.passwordConfirm.message : ''}
             {...register('passwordConfirm')}
           />
-          <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404',"&:hover":{backgroundColor:'#900C3F'} }}>
+          <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#FF0000',"&:hover":{backgroundColor:'#4A0404'} }}>
             Submit
           </LoadingButton>
         </Box>

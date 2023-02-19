@@ -20,19 +20,7 @@ const AddUserAtt = ({ value, open, onClose, updateContent }) => {
     setScan(true)
   };
 
-  // console.log(data)
-
-  const onSubmitHandler = async (e) => {
-    const userAtt = {
-      attId: value?._id,
-      department: value?.department,
-      course: value?.course
-    }
-
-    console.log(userAtt)
-    // token should be sent with the request or it could be added to the POST body
-
-  }
+  
   const getQRtoken = async (userId) => {
     try {
       if (userId?.length >= 8) {
@@ -65,10 +53,8 @@ const AddUserAtt = ({ value, open, onClose, updateContent }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>CLOSE</Button>
-          <Button onClick={getTokenHandler}>SCAN</Button>
-          <Button type="submit" onClick={onSubmitHandler}>
-            CONFIRM
-          </Button>
+          <Button style={{color:'red'}} onClick={getTokenHandler}>SCAN</Button>
+          
         </DialogActions>
       </Dialog>
     </div>

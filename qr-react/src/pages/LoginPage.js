@@ -67,7 +67,7 @@ export default function LoginPage() {
       <StyledRoot>
         <StyledSection>
           <Container maxWidth="sm">
-          <Typography sx={{color: '#900C3F'}} variant="h4" gutterBottom>
+          <Typography sx={{color: '#FF0000'}} variant="h4" gutterBottom>
               {switchPage ? 'Signup' : 'Login'}
             </Typography>
           <StyledContent>
@@ -78,10 +78,10 @@ export default function LoginPage() {
             
             {switchPage ? <SignUpForm /> : <LoginForm />}
             <Stack direction="row" alignItems="end" justifyContent="space-between" sx={{ my: 2 }}>
-            <Link href='#' variant="subtitle2" underline="hover" onClick={switchPageHandler} sx={{color: '#900C3F'}}>
+            <Link href='#' variant="subtitle2" underline="hover" onClick={switchPageHandler} sx={{color: '#FF0000'}}>
                 {switchPage ? 'Login' : 'Signup'}
               </Link>
-              {!switchPage && <Link sx={{color: '#900C3F'}} href='forgotPassword' variant="subtitle2" underline="hover">
+              {!switchPage && <Link sx={{color: '#FF0000'}} href='forgotPassword' variant="subtitle2" underline="hover">
                   Forgot password?
                   </Link> }
         

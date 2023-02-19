@@ -18,7 +18,7 @@ class Users {
         this.password = password;
         this.status = status;
         this.dob = dob;
-        this.image = image;
+        this.image = "";
         this.type = "users";
         
     }

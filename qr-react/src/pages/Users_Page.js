@@ -64,10 +64,10 @@ export default function UsersPage() {
       </Helmet>
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography sx={{ color: '#900C3F' }} variant="h4" gutterBottom>
+          <Typography sx={{ color: '#FF0000' }} variant="h4" gutterBottom>
             Ministers List
           </Typography>
-          <Typography sx={{ color: '#900C3F' }} variant="h5">
+          <Typography sx={{ color: '#FF0000' }} variant="h5">
             All Information
           </Typography>
         </Stack>

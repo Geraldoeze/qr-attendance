@@ -94,7 +94,7 @@ const SignUpForm = () => {
         contact: formValues.contact.value,
         status: formValues.status.value,
         origin: formValues.origin.value,
-        image: selectedImage,
+        image: "",
         dob: refinedDate
       }
      
@@ -126,7 +126,7 @@ const SignUpForm = () => {
      
       
         <form noValidate onSubmit={handleSubmit}>
-          <Typography sx={{ marginY: '1rem', color: '#900C3F' }} variant="h5">
+          <Typography sx={{ marginY: '1rem', color: '#FF0000' }} variant="h5">
             Please enter your data
           </Typography>
 
@@ -236,7 +236,7 @@ const SignUpForm = () => {
             </FormControl>
           </Stack>
 
-          <Stack marginY="1rem" direction="column" width="100%">
+          {/* <Stack marginY="1rem" direction="column" width="100%">
             <Container>
               <input
                 accept="image/*"
@@ -246,7 +246,7 @@ const SignUpForm = () => {
                 onChange={(e) => setSelectedImage(e.target.files[0])}
               />
               <label htmlFor="select-image">
-                <Button variant="contained" component="span" sx={{backgroundColor: '#4A0404', "&:hover":{backgroundColor:'#900C3F'}}}>
+                <Button variant="contained" component="span" sx={{backgroundColor: '#FF0000', "&:hover":{backgroundColor:'#4A0404'}}}>
                   Upload Image
                 </Button>
               </label>
@@ -258,7 +258,7 @@ const SignUpForm = () => {
                 <img src={imageUrl} alt={selectedImage.name} height="100px" />
               </Box>
             )}
-          </Stack>
+          </Stack> */}
 
           <Stack direction="row" width="100%" alignItems="center" justifyContent="space-between">
             <TextField
@@ -285,7 +285,7 @@ const SignUpForm = () => {
             />
           </Stack>
 
-          <Button variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404', "&:hover":{backgroundColor:'#900C3F'} }}>
+          <Button variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#FF0000', "&:hover":{backgroundColor:'#4A0404'} }}>
             Submit
           </Button>
         </form>

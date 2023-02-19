@@ -133,10 +133,10 @@ const AttendanceList = () => {
 
       <Container>
         <Stack direction="row" justifyContent="space-between" sx={{ my: 2 }}>
-          <Typography sx={{ color: '#900C3F' }} variant="h5">
+          <Typography sx={{ color: '#FF0000' }} variant="h5">
             List of Attendance
           </Typography>
-          <Button sx={{ mb: 1, backgroundColor: '#4A0404', color:'goldenrod' }} variant="outlined" onClick={handleClickOpen}>
+          <Button sx={{ mb: 1, backgroundColor: '#FF0000', color:'white', border: 'none',"&:hover":{backgroundColor:'#4A0404', border:'none'} }} variant="outlined" onClick={handleClickOpen}>
             New Attendance
           </Button>
         </Stack>

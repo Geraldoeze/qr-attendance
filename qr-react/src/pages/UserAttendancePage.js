@@ -15,10 +15,10 @@ const UserAttendancePage = () => {
 
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography sx={{ color: '#900C3F' }} variant="h4" gutterBottom>
+          <Typography sx={{ color: '#FF0000' }} variant="h4" gutterBottom>
             QR Attendance
           </Typography>
-          <Typography sx={{ color: '#900C3F' }} variant="h5" gutterBottom>
+          <Typography sx={{ color: '#FF0000' }} variant="h5" gutterBottom>
             All Attendance
           </Typography>
         </Stack>

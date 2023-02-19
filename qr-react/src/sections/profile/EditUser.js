@@ -89,7 +89,7 @@ export default function EditUser({ user }) {
         contact: inputState.contact,
         status: inputState.status,
         origin: inputState.origin ,
-        image: selectedImage,
+        image: "",
         dob: refinedDate
       }
         // send  Request to update user
@@ -123,7 +123,7 @@ export default function EditUser({ user }) {
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography sx={{ color: '#900C3F', my:2 }} variant="h6" gutterBottom>
+          <Typography sx={{ color: '#FF0000', my:2 }} variant="h6" gutterBottom>
             Update the Form below with the right details!
           </Typography>
         </Stack>
@@ -204,7 +204,7 @@ export default function EditUser({ user }) {
             </FormControl>
           </Stack>
 
-          <Stack marginBottom="2rem" direction="column" width="100%">
+          {/* <Stack marginBottom="2rem" direction="column" width="100%">
             <Container>
               <input
                 accept="image/*"
@@ -225,7 +225,7 @@ export default function EditUser({ user }) {
                 <img src={imageUrl} alt={selectedImage.name} height="100px" />
               </Box>
             )}
-          </Stack>
+          </Stack> */}
 
               <TextField
                 sx={{ mb: 2 }}
@@ -259,7 +259,7 @@ export default function EditUser({ user }) {
                 value={inputState.area}
               />
 
-              <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404', "&:hover":{backgroundColor:'#900C3F'} }}>
+              <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#FF0000', "&:hover":{backgroundColor:'#4A0404'} }}>
                 Update
               </LoadingButton>
             </Box>

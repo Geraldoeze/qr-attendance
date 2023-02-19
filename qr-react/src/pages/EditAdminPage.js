@@ -44,7 +44,7 @@ export default function EditAdminPage() {
 
       <Container maxWidth="xl">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-          <Typography sx={{color: '#900C3F'}} variant="h4" gutterBottom>
+          <Typography sx={{color: '#FF0000'}} variant="h4" gutterBottom>
             Edit Pastor Information
           </Typography>
         </Stack>

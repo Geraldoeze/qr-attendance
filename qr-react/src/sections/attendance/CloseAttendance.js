@@ -29,17 +29,17 @@ const CloseAttendance = ({ open, onClose, values, updateContent }) => {
     <div>
       {isLoading && <LoadingSpinner overlay />}
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle sx={{ color: '#900C3F' }}>Close Attendance</DialogTitle>
+        <DialogTitle sx={{ color: '#FF0000' }}>Close Attendance</DialogTitle>
         <DialogContent>
           <Stack>
-            <Typography sx={{ color: '#000080' }} variant="h5" gutterBottom>
+            <Typography sx={{ color: '#000' }} variant="h5" gutterBottom>
               Are you sure you want to close {values?.department} Attendance?
             </Typography>
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>CANCEL</Button>
-          <Button sx={{color:"#900C3F"}} type="submit" onClick={closeHandler}>
+          <Button sx={{color:"#FF0000"}} type="submit" onClick={closeHandler}>
             CLOSE
           </Button>
         </DialogActions>
