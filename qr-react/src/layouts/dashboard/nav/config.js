@@ -35,7 +35,7 @@ const NavConfig = () => {
     },
     {
       title: 'Profile',
-      path:  `/user/profile/${userId}`,
+      path:  `/minister/profile/${userId}`,
       icon: <ManageAccountsIcon/>,
     },
     {
@@ -53,12 +53,12 @@ const NavConfig = () => {
     },
     {
       title: 'new Minister',
-      path: "/new/user",
+      path: "/new/minister",
       icon: <GroupAddIcon/>,
     },
     {
       title: 'Miniters',
-      path: '/dashboard/members',
+      path: '/dashboard/minister',
       icon: <PeopleAltIcon />,
     },
     {
@@ -91,12 +91,12 @@ const NavConfig = () => {
     },
     {
       title: 'Ministers',
-      path: '/dashboard/members',
+      path: '/dashboard/minister',
       icon: <PeopleAltIcon />,
     },
     {
       title: 'new Minister',
-      path: "/new/user",
+      path: "/new/minister",
       icon: <GroupAddIcon/>,
     },
     
@@ -114,7 +114,7 @@ const NavConfig = () => {
   
     {
       title: 'Regional Pastor',
-      path: '/admin',
+      path: '/pastor',
       icon: <AdminPanelSettingsIcon />,
     },
     {
@@ -130,8 +130,8 @@ const NavConfig = () => {
       icon: <GridViewIcon />,
     },
     {
-      title: 'new Member',
-      path: "/new/user",
+      title: 'new Minister',
+      path: "/new/minister",
       icon: <GroupAddIcon/>,
     },
 
@@ -158,11 +158,7 @@ const NavConfig = () => {
   ]
 
   const notLoggedIn = [
-    // {
-    //   title: 'dashboard',
-    //   path: '/dashboard/app',
-    //   icon: <GridViewIcon />,
-    // },
+    
     {
       title: 'login',
       path: '/auth',

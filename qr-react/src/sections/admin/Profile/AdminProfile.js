@@ -81,7 +81,7 @@ export default function AdminProfile() {
             Pastor Profile
           </Typography>
 
-          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#4A0404'} }} variant="contained">
+          <Button href={`/pastor/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#4A0404'} }} variant="contained">
             Edit Details
           </Button>
           <Button

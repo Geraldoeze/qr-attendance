@@ -153,11 +153,11 @@ export default function AdminIndex({ responseData, deleteUser }) {
   };
 
   const handleEditHandler = () => {
-    navigate(`/admin/profile/${userInfo}`, { replace: true });
+    navigate(`/pastor/profile/${userInfo}`, { replace: true });
   }
 
   const handleProfileHandler = () => {
-    navigate(`/admin/profile/${userInfo}`, {replace: true});
+    navigate(`/pastor/profile/${userInfo}`, {replace: true});
   }
 
   const handleDeleteHandler = async () => {
@@ -194,7 +194,7 @@ export default function AdminIndex({ responseData, deleteUser }) {
                     const selectedUser = selected.indexOf(firstName) !== -1;
                     
                     return (
-                      <TableRow hover key={uuidv4()} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                         </TableCell>

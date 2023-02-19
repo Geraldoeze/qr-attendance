@@ -81,7 +81,7 @@ const AdminPage = () => {
           borderRadius: 1,
         }}>
           <Button  
-            href='/dashboard/members'
+            href='/dashboard/minister'
             sx={{ backgroundColor: '#FF0000', p:2, px:5, my:2, color: 'white', "&:hover":{backgroundColor:'#4A0404'} }} variant="contained">
             Minister List
           </Button>
@@ -89,7 +89,7 @@ const AdminPage = () => {
             Events List
           </Button>
           <Button
-            href='/new/user'
+            href='/new/minister'
             sx={{ backgroundColor: '#FF0000', p:2, px:5, my:2, color: 'white', "&:hover":{backgroundColor:'#4A0404'} }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
@@ -99,7 +99,7 @@ const AdminPage = () => {
         </Box>
         <Stack direction="row" alignItems="center" justifyContent="center" mb={5}>
         <Button
-            href='/admin/create'
+            href='/pastor/create'
             sx={{ backgroundColor: '#FF0000', p:2, px:5, width: '50%', color: 'white', "&:hover":{backgroundColor:'#4A0404'} }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}

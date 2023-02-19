@@ -96,7 +96,7 @@ export default function EditAdmin({ user }) {
     } catch (err) {
       console.log(err);
     }
-    navigate('/admin', { replace: true });
+    navigate('/pastor', { replace: true });
   };
 
   const handleChange = (event: SelectChangeEvent) => {

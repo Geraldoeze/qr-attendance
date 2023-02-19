@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack, IconButton } from '@mui/material';
@@ -39,7 +39,11 @@ export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
   const auth = useContext(AuthContext);
   const isDesktop = useResponsive('up', 'lg');
-
+  const navigate = useNavigate();
+  
+  const homeHandler = () => {
+    navigate('/dashboard', { replace: true });
+  }
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -57,7 +61,7 @@ export default function Nav({ openNav, onCloseNav }) {
     >
       <Box sx={{ px: 2.5, py: 3, display: 'flex', justifyContent:'space-between' }}>
         <FitbitIcon />
-        <img style={{ margin: 'auto' }} width="30rem" src="/assets/icons/navbar/livingFaith.png" />
+        <img onClick={homeHandler} style={{ margin: 'auto', cursor:'pointer' }} width="30rem" src="/assets/icons/navbar/livingFaith.png" />
       </Box>
       {auth.isLoggedIn && (
       <Box sx={{ mb: 2, mx: 1 }}>

@@ -33,20 +33,7 @@ export default function ScanQRCode({getQR}) {
           onScan={(data) => handleScan(data)}
           />
         <p>{scan.result}</p>
-      {/* <QrReader
-        onResult={(result, error) => {
-          if (!!result) {
-            setData(result?.text);
-            getQR(result?.text)
-          }
-
-          if (!!error) {
-            console.info(error);
-          }
-        }}
-        style={{ width: '100%' }}
-      /> */}
-      <Typography>Place QR Code close to the camera.</Typography>
+      <Typography variant="h4">Place QR Code close to the camera.</Typography>
       </Container>
     </>
   )

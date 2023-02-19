@@ -30,7 +30,7 @@ import UserAttendancePage from './pages/UserAttendancePage';
 import AdminPage from './pages/AdminPage';
 import NewUserPage from './pages/NewUserPage';
 
-import DepartmentPage from './pages/DepartmentPage';
+
 import DashboardAppPage from './pages/DashboardAppPage';
 import Profile from './pages/Profile';
 
@@ -48,7 +48,7 @@ const {isLoggedIn, token} = auth
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <RequireAuth><DashboardAppPage /></RequireAuth> },
-        { path: 'members', element: <RequireAuth><UsersPage /></RequireAuth> },
+        { path: 'minister', element: <RequireAuth><UsersPage /></RequireAuth> },
       ],
     },
     {
@@ -65,10 +65,10 @@ const {isLoggedIn, token} = auth
     },
 
     {
-      path: '/user',
+      path: '/minister',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/user/profile" />, index: true },
+        { element: <Navigate to="/minister/profile" />, index: true },
         { path: 'profile/:id', element: <RequireAuth><Profile /></RequireAuth> },
         { path: 'edit/:id', element: <RequireAuth><EditUserPage /></RequireAuth> },
       ],
@@ -93,24 +93,17 @@ const {isLoggedIn, token} = auth
       path: '/new',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/new/user" />, index: true },
-        { path: 'user', element: <RequireAuth><NewUserPage /></RequireAuth> },
+        { element: <Navigate to="/new/minister" />, index: true },
+        { path: 'minister', element: <RequireAuth><NewUserPage /></RequireAuth> },
       ],
     },
-    {
-      path: '/create',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/create/dept" />, index: true },
-        { path: 'dept', element: <RequireAuth><DepartmentPage /></RequireAuth> },
-      ],
-    },
+
     
     {
-      path: '/admin',
+      path: '/pastor',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/admin/index" />, index: true },
+        { element: <Navigate to="/pastor/index" />, index: true },
         { path: 'index', element: <RequireAuth> <AdminPage /> </RequireAuth> },
         { path: 'create', element: <RequireAuth> <NewAdminPage /> </RequireAuth> },
         { path: 'profile/:id', element: <RequireAuth><AdminProfile /></RequireAuth> },

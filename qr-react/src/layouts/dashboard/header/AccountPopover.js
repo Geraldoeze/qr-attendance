@@ -50,9 +50,8 @@ export default function AccountPopover() {
   };
 
   const account = {
-    displayName: auth.userDetails?.name,
+    displayName: auth.userDetails?.firstName,
     email: auth.userDetails?.email,
-    emailVeri: auth.userDetails?.emailVerified,
   };
 
   return (
@@ -104,9 +103,7 @@ export default function AccountPopover() {
             <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
               {account.email}
             </Typography>
-            {/* <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-              Verified : {account.emailVeri.toString()}
-            </Typography> */}
+            
           </Box>
         )}
 

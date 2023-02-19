@@ -30,6 +30,7 @@ import Scrollbar from '../scrollbar';
 // sections
 
 import { UserListHead, UserListToolbar } from '../../sections/dashboard/user';
+import { sub } from 'date-fns';
 
 // ----------------------------------------------------------------------
 
@@ -156,12 +157,12 @@ export default function DashboardUser({ responseData, deleteUser }) {
   };
 
   const handleEditHandler = () => {
-    navigate(`/user/edit/${userInfo}`, { replace: true });
+    navigate(`/minister/edit/${userInfo}`, { replace: true });
     
   }
 
   const handleProfileHandler = () => {
-    navigate(`/user/profile/${userInfo}`, {replace: true});
+    navigate(`/minister/profile/${userInfo}`, {replace: true});
   }
 
   const handleDeleteHandler = async () => {
@@ -196,7 +197,7 @@ console.log(uuidv4())
                     const selectedUser = selected.indexOf(firstName) !== -1;
                     
                     return (
-                      <TableRow hover key={uuidv4()} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                         </TableCell>
@@ -220,10 +221,11 @@ console.log(uuidv4())
                         <TableCell align="center">{area}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, _id)}>
+                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, _id)}>
                             <Iconify icon={'eva:more-vertical-fill'} /> 
                           </IconButton>
                         </TableCell>
+              
                       </TableRow>
                     );
                   })}
@@ -272,6 +274,7 @@ console.log(uuidv4())
           />
         </Card>
       </Container>
+     
       <Popover
         open={Boolean(open)}
         anchorEl={open}

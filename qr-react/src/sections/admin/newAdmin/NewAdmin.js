@@ -93,7 +93,7 @@ export default function NewAdmin() {
     } catch (err) {
       console.log(err);
     }
-    navigate('/admin', { replace: true });
+    navigate('/pastor', { replace: true });
   };
 
   const handleChange = (event: SelectChangeEvent) => {

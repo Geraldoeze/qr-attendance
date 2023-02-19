@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -43,6 +44,11 @@ Header.propTypes = {
 };
 
 export default function Header({ onOpenNav }) {
+  const navigate = useNavigate();
+  
+  const homeHandler = () => {
+    navigate('/dashboard', { replace: true });
+  }
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -58,8 +64,8 @@ export default function Header({ onOpenNav }) {
         </IconButton>
 
         {/* <Searchbar /> */}
-        <Box sx={{ flexGrow: 1 }}>
-          <img style={{ margin: 'auto' }} width="40rem" src="/assets/icons/navbar/livingFaith.png" />
+        <Box sx={{ flexGrow: 1 }} onClick={homeHandler}>
+          <img style={{ margin: 'auto', cursor:'pointer' }} width="40rem" src="/assets/icons/navbar/livingFaith.png" />
         </Box>
 
         <Stack

@@ -81,7 +81,7 @@ const Profile = () => {
             Minister Profile
           </Typography>
 
-          <Button href={`/user/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#FF0000'} }} variant="contained">
+          <Button href={`/minister/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#FF0000'} }} variant="contained">
             Edit Details
           </Button>
           <Button onClick={OpenDeleteUser} sx={{ backgroundColor: '#FF0000', width: '15%', "&:hover":{backgroundColor:'#4A0404'} }} variant="contained">
