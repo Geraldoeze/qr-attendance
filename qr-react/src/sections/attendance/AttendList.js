@@ -102,7 +102,7 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
         )} */}
       <Stack sx={{m:1}} direction="row" alignItems="center" justifyContent="space-between">
       <Button onClick={closeList}>Close</Button>
-      {value?.attValue === 'Open' && (<Button onClick={onOpenAdd}>Add </Button> )}
+      {value?.attValue === 'Open' && (<Button sx={{color:'#900C3F'}} onClick={onOpenAdd}>Add </Button> )}
       </Stack> 
       
      </Modal> 

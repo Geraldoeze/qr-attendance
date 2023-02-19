@@ -25,7 +25,7 @@ const StyledAccount = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: alpha(theme.palette.grey[500], 0.12),
+  backgroundColor: alpha(theme.palette.grey[900], 0.12),
 }));
 
 // ----------------------------------------------------------------------
@@ -55,8 +55,9 @@ export default function Nav({ openNav, onCloseNav }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
+      <Box sx={{ px: 2.5, py: 3, display: 'flex', justifyContent:'space-between' }}>
         <FitbitIcon />
+        <img style={{ margin: 'auto' }} width="30rem" src="/assets/icons/navbar/livingFaith.png" />
       </Box>
       {auth.isLoggedIn && (
       <Box sx={{ mb: 2, mx: 1 }}>

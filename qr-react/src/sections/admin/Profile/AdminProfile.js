@@ -81,12 +81,12 @@ export default function AdminProfile() {
             Pastor Profile
           </Typography>
 
-          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%' }} variant="contained">
+          <Button href={`/admin/edit/${userId}`} sx={{ backgroundColor: '#14162F', width: '20%', "&:hover":{backgroundColor:'#900C3F'} }} variant="contained">
             Edit Details
           </Button>
           <Button
             onClick={OpenDeleteUser}
-            sx={{ px: 3, backgroundColor: '#4A0404', width: '15%' }}
+            sx={{ px: 3, backgroundColor: '#4A0404', width: '15%', "&:hover":{backgroundColor:'#900C3F'} }}
             variant="contained"
           >
             Delete

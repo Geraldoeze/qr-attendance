@@ -216,7 +216,7 @@ export default function EditAdmin({ user }) {
                   value={inputState.title}
                 />
 
-                <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor:'#4A0404' }}>
+                <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor:'#4A0404', "&:hover":{backgroundColor:'#900C3F'} }}>
                   Update
                 </LoadingButton>
               </Box>

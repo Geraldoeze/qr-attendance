@@ -78,20 +78,20 @@ export default function EditUser({ user }) {
     const refinedDate = value?.toDate().toString().slice(0, 16);
 
     try {
-      const formDataSend = new FormData()
-      formDataSend.append('email', inputState.email);
-      formDataSend.append('lastName', inputState.lastName);
-      formDataSend.append('firstName', inputState.firstName);
-      formDataSend.append('password', inputState.password);
-      formDataSend.append('area', inputState.area);
-      formDataSend.append('address', inputState.address);
-      formDataSend.append('gender', inputState.gender);
-      formDataSend.append('contact', inputState.contact);
-      formDataSend.append('status', inputState.status);
-      formDataSend.append('origin', inputState.origin);
-      formDataSend.append('image', selectedImage);
-      formDataSend.append('dob', refinedDate);
-      
+      const formDataSend = {
+        email: inputState.email,
+        firstName: inputState.firstName,
+        lastName: inputState.lastName,
+        password: inputState.password,
+        area: inputState.area,
+        address: inputState.address,
+        gender: inputState.gender,
+        contact: inputState.contact,
+        status: inputState.status,
+        origin: inputState.origin ,
+        image: selectedImage,
+        dob: refinedDate
+      }
         // send  Request to update user
         const sendData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/update/${userId}`, "PUT", JSON.stringify(formDataSend), 
           {
@@ -194,7 +194,7 @@ export default function EditUser({ user }) {
               />
             </LocalizationProvider>
 
-            <FormControl sx={{ mb: 2, mx: 2 }}>
+            <FormControl sx={{ mb: 2, mx: 2  }}>
               <FormLabel>Status</FormLabel>
               <RadioGroup row name="status" value={inputState.status} onChange={(e) => changeHandler(e)}>
                 <FormControlLabel value="Single" control={<Radio />} label="Single" />
@@ -214,7 +214,7 @@ export default function EditUser({ user }) {
                 onChange={(e) => setSelectedImage(e.target.files[0])}
               />
               <label htmlFor="select-image">
-                <Button variant="contained" component="span" sx={{backgroundColor: '#4A0404'}}>
+                <Button variant="contained" component="span" sx={{backgroundColor: '#4A0404', "&:hover":{backgroundColor:'#900C3F'}}}>
                   Upload New Image
                 </Button>
               </label>
@@ -259,7 +259,7 @@ export default function EditUser({ user }) {
                 value={inputState.area}
               />
 
-              <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404' }}>
+              <LoadingButton variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404', "&:hover":{backgroundColor:'#900C3F'} }}>
                 Update
               </LoadingButton>
             </Box>

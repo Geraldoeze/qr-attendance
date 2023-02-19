@@ -196,7 +196,7 @@ export default function AttenDance({ responseData, closeAtt, showAtt, deleteAtt 
                         <TableCell sx={{ cursor: 'pointer' }} align="center">
                           {attendance?.length}
                         </TableCell>
-                        <TableCell sx={{ cursor: 'pointer', color: 'red' }} align="center" onClick={(e) => deleteAttHandler(e, row._id)}>
+                        <TableCell sx={{ cursor: 'pointer', color: 'red', fontWeight: 'bold' }} align="center" onClick={(e) => deleteAttHandler(e, row._id)}>
                           Delete
                         </TableCell>
                       </TableRow>

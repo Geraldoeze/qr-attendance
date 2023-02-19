@@ -38,7 +38,7 @@ const DeleteUser = ({ open, onClose, userId }) => {
         <DialogTitle sx={{color: '#ff4382'}}>Delete Account</DialogTitle>
         <DialogContent>
           <Stack>
-            <Typography sx={{ color: '#000080' }} variant="h5" gutterBottom>
+            <Typography sx={{ color: '#900C3F' }} variant="h5" gutterBottom>
               Are you sure you want to delete your Account? This will remove your Account from our Database..
             </Typography>
           </Stack>

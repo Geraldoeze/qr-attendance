@@ -10,8 +10,6 @@ import Iconify from '../../../components/iconify';
 
 import AccountPopover from './AccountPopover';
 
-
-
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
@@ -23,6 +21,7 @@ const HEADER_DESKTOP = 92;
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   ...bgBlur({ color: theme.palette.background.default }),
   boxShadow: 'none',
+  display: 'flex',
   [theme.breakpoints.up('lg')]: {
     width: `calc(100% - ${NAV_WIDTH + 1}px)`,
   },
@@ -30,9 +29,10 @@ const StyledRoot = styled(AppBar)(({ theme }) => ({
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   minHeight: HEADER_MOBILE,
+  display: 'flex',
   [theme.breakpoints.up('lg')]: {
     minHeight: HEADER_DESKTOP,
-    padding: theme.spacing(0, 5),
+    // padding: theme.spacing(0, 5),
   },
 }));
 
@@ -58,7 +58,9 @@ export default function Header({ onOpenNav }) {
         </IconButton>
 
         {/* <Searchbar /> */}
-        <Box sx={{ flexGrow: 1 }} />
+        <Box sx={{ flexGrow: 1 }}>
+          <img style={{ margin: 'auto' }} width="40rem" src="/assets/icons/navbar/livingFaith.png" />
+        </Box>
 
         <Stack
           direction="row"
@@ -68,7 +70,6 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-        
           <AccountPopover />
         </Stack>
       </StyledToolbar>

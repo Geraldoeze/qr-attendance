@@ -83,28 +83,33 @@ const SignUpForm = () => {
     }
     setFormValues(newFormValues);
     try {
-      // const formDataSend = new FormData()
-      // formDataSend.append('email', formValues.email.value);
-      // formDataSend.append('lastName', formValues.lastName.value);
-      // formDataSend.append('firstName', formValues.firstName.value);
-      // formDataSend.append('password', formValues.password.value);
-      // formDataSend.append('area', formValues.area.value);
-      // formDataSend.append('address', formValues.address.value);
-      // formDataSend.append('gender', formValues.gender.value);
-      // formDataSend.append('contact', formValues.contact.value);
-      // formDataSend.append('status', formValues.status.value);
-      // formDataSend.append('origin', formValues.origin.value);
-      // formDataSend.append('image', selectedImage);
-      // formDataSend.append('dob', refinedDate);
-      
-      if(!selectedImage) {
-       return setImgError(true)
+      const formDataSend = {
+        email: formValues.email.value,
+        firstName: formValues.firstName.value,
+        lastName: formValues.lastName.value,
+        password: formValues.password.value,
+        area: formValues.area.value,
+        address: formValues.address.value,
+        gender: formValues.gender.value,
+        contact: formValues.contact.value,
+        status: formValues.status.value,
+        origin: formValues.origin.value,
+        image: selectedImage,
+        dob: refinedDate
       }
-      if (!(formValues.email.error) && !(formValues.lastName.error) && !(formValues.password.error) && !!selectedImage){
+     
+      // if(!selectedImage) {
+      //  return setImgError(true)
+      // }
+      if (!(formValues.email.error) && !(formValues.lastName.error) && !(formValues.password.error)){
       
       // send Request to create user
-      // const sendData = await sendRequest(process.env.REACT_APP_BACKEND_URL+"/users/create", "POST", formDataSend);
-      // console.log(sendData);
+      const sendData = await sendRequest(process.env.REACT_APP_BACKEND_URL+"/users/create", "POST", JSON.stringify(formDataSend), 
+      {
+        'Content-Type': 'application/json',
+      }
+      );
+      console.log(sendData);
       navigate('/dashboard', { replace: true });
       }
     } catch (err) {
@@ -241,7 +246,7 @@ const SignUpForm = () => {
                 onChange={(e) => setSelectedImage(e.target.files[0])}
               />
               <label htmlFor="select-image">
-                <Button variant="contained" component="span" sx={{backgroundColor: '#4A0404'}}>
+                <Button variant="contained" component="span" sx={{backgroundColor: '#4A0404', "&:hover":{backgroundColor:'#900C3F'}}}>
                   Upload Image
                 </Button>
               </label>
@@ -280,7 +285,7 @@ const SignUpForm = () => {
             />
           </Stack>
 
-          <Button variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404' }}>
+          <Button variant="contained" fullWidth type="submit" sx={{ py: '0.8rem', mt: '1rem', backgroundColor: '#4A0404', "&:hover":{backgroundColor:'#900C3F'} }}>
             Submit
           </Button>
         </form>

@@ -29,7 +29,7 @@ const NavConfig = () => {
 
   const userAccess = [
     {
-      title: 'dashboard',
+      title: 'Dashboard',
       path: '/dashboard/app',
       icon: <GridViewIcon />,
     },
@@ -47,17 +47,17 @@ const NavConfig = () => {
 
   const adminAccess = [
     {
-      title: 'dashboard',
+      title: 'Dashboard',
       path: '/dashboard/app',
       icon: <GridViewIcon />,
     },
     {
-      title: 'new Member',
+      title: 'new Minister',
       path: "/new/user",
       icon: <GroupAddIcon/>,
     },
     {
-      title: 'Members',
+      title: 'Miniters',
       path: '/dashboard/members',
       icon: <PeopleAltIcon />,
     },
@@ -90,12 +90,12 @@ const NavConfig = () => {
       icon: <GridViewIcon />,
     },
     {
-      title: 'Members',
+      title: 'Ministers',
       path: '/dashboard/members',
       icon: <PeopleAltIcon />,
     },
     {
-      title: 'new Member',
+      title: 'new Minister',
       path: "/new/user",
       icon: <GroupAddIcon/>,
     },
@@ -113,7 +113,7 @@ const NavConfig = () => {
     },
   
     {
-      title: 'admin',
+      title: 'Regional Pastor',
       path: '/admin',
       icon: <AdminPanelSettingsIcon />,
     },

@@ -92,7 +92,7 @@ const AttendanceList = () => {
     setRefresh(newValue);
     setResponse([...response, newValue]);
   };
-  console.log(response)
+  
   // get contents edited
   const getEditContent = (value) => {
     setResponse((response) => {
@@ -136,7 +136,7 @@ const AttendanceList = () => {
           <Typography sx={{ color: '#900C3F' }} variant="h5">
             List of Attendance
           </Typography>
-          <Button sx={{ mb: 1, backgroundColor: '#4A0404', color:'#fff' }} variant="outlined" onClick={handleClickOpen}>
+          <Button sx={{ mb: 1, backgroundColor: '#4A0404', color:'goldenrod' }} variant="outlined" onClick={handleClickOpen}>
             New Attendance
           </Button>
         </Stack>

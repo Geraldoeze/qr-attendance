@@ -39,7 +39,7 @@ const DeleteAdmin = ({ open, onClose, adminId }) => {
         <DialogTitle sx={{color: '#ff4382'}}>Delete Account</DialogTitle>
         <DialogContent>
           <Stack>
-            <Typography sx={{ color: '#000080' }} variant="h5" gutterBottom>
+            <Typography sx={{ color: '#900C3F' }} variant="h5" gutterBottom>
               Are you sure you want to delete this Admin Account? This will remove the Account from our Database..
             </Typography>
           </Stack>
