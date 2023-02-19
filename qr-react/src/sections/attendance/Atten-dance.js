@@ -22,7 +22,7 @@ import {
 // components
 
 import Iconify from '../../components/iconify';
-
+import { v4 as uuidv4 } from "uuid";
 import Scrollbar from '../../components/scrollbar';
 // sections
 
@@ -161,7 +161,7 @@ export default function AttenDance({ responseData, closeAtt, showAtt, deleteAtt 
                     const selectedUser = selected.indexOf(event) !== -1;
 
                     return (
-                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={uuidv4} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} /> */}
                         </TableCell>

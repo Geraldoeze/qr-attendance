@@ -79,14 +79,14 @@ exports.getAllAdmins = async (req, res, next) => {
     const adminList = await db.collection("admin").find().toArray();
     const list = await adminList;
     res.status(201).json({
-      message: "Admins Fetched",
+      message: "Pastors Fetched",
       statusId: "SUCCESS",
       response: list,
     });
   } catch (err) {
     console.log(err);
     res.status(400).json({
-      message: "Failed to fetch Admin",
+      message: "Failed to fetch Pastors",
       statusId: "UNSUCCESSFUL",
     });
   }
@@ -103,9 +103,9 @@ exports.getAdminById = async (req, res, next) => {
   try {
     // find admin from db
     const adminData = await Admin.findById(userId);
-    res.status(200).json({ message: "Admin gotten", response: [adminData] });
+    res.status(200).json({ message: "Pastors gotten", response: [adminData] });
   } catch (err) {
-    res.status(501).json({ message: "Getting Admin Failed.!! " });
+    res.status(501).json({ message: "Getting Pastors Failed.!! " });
   }
 };
 
@@ -177,7 +177,7 @@ exports.createAdmin = async (req, res, next) => {
     console.log(adminId, "NA Here");
     res
       .status(201)
-      .json({ message: "Admin Created!!,", response: saveUserData });
+      .json({ message: "Pastors Created!!,", response: saveUserData });
   } catch (err) {
     console.log("Something went wrong. Please try again");
   }
@@ -203,7 +203,7 @@ console.log(updateValues.accessLevel)
 
   if (!checkAdmin) {
     return res.status(400).json({
-      message: " Admin Id does not exists.!",
+      message: " Pastor Id does not exists.!",
       statusId: "UNSUCCESSFUL",
     });
   }
@@ -215,7 +215,7 @@ console.log(updateValues.accessLevel)
         { $set: { ...updateValues } }
       );
     console.log(sendUpdate);
-    res.status(200).json({ message: "Admin Updated", statusId: "GOOD" });
+    res.status(200).json({ message: "Pastor Updated", statusId: "GOOD" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An Error Occurred", statusId: "FAILED" });
@@ -234,89 +234,89 @@ exports.deleteAdmin = async (req, res, next) => {
 
   try {
     await db.collection("admin").deleteOne({ _id: new ObjectId(id) });
-    res.status(200).json({ message: "Admin deleted" });
+    res.status(200).json({ message: "Pastor deleted" });
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Delete Admin Error", statusId: "SERVER ERROR" });
+      .json({ message: "Delete Pastor Error", statusId: "SERVER ERROR" });
   }
 };
 
-// QR COde verification
-exports.getUserbyId = async (req, res, next) => {
-  const db = getDb();
+// // QR COde verification
+// exports.getUserbyId = async (req, res, next) => {
+//   const db = getDb();
 
-  const userId = req.params.uid;
-  const { department, course } = req.body;
+//   const userId = req.params.uid;
+//   const { department, course } = req.body;
 
-  // first check if userId exist on our db
-  const checkUser = await db
-    .collection("users")
-    .findOne({ _id: new mongodb.ObjectId(userId) });
+//   // first check if userId exist on our db
+//   const checkUser = await db
+//     .collection("users")
+//     .findOne({ _id: new mongodb.ObjectId(userId) });
 
-  if (!checkUser) {
-    return res.status(400).json({
-      message: " User Id does not exists.!",
-      statusId: "UNSUCCESSFUL",
-    });
-  }
+//   if (!checkUser) {
+//     return res.status(400).json({
+//       message: " User Id does not exists.!",
+//       statusId: "UNSUCCESSFUL",
+//     });
+//   }
 
-  // Second we check if user registered the department
-  if (checkUser?.department === department) {
-    // He/She has this department registered in db
-    // we update the attendance db to have this user details
+//   // Second we check if user registered the department
+//   if (checkUser?.department === department) {
+//     // He/She has this department registered in db
+//     // we update the attendance db to have this user details
 
-    try {
-      const attendanceList = await db
-        .collection("attendance")
-        .findOne({ course: course });
-      if (!attendanceList) {
-        return res.status(400).json({
-          message: "This course is not registered on the database",
-          statusId: "COURSE ERROR",
-        });
-      }
+//     try {
+//       const attendanceList = await db
+//         .collection("attendance")
+//         .findOne({ course: course });
+//       if (!attendanceList) {
+//         return res.status(400).json({
+//           message: "This course is not registered on the database",
+//           statusId: "COURSE ERROR",
+//         });
+//       }
 
-      // Check if the user has taken attendance already
+//       // Check if the user has taken attendance already
 
-      const checkUse = await db
-        .collection("attendance")
-        .find({ _id: attendanceList._id, attendance: { $in: [checkUser] } })
-        .count();
-      if (checkUse >= 1) {
-        return res.status(400).json({
-          message: "Student has already taken attendance",
-          statusId: "WRONG",
-        });
-      }
-      try {
-        const id = attendanceList._id;
-        const attendanceUpdate = [...attendanceList.attendance, checkUser];
-        await db
-          .collection("attendance")
-          .updateOne(
-            { _id: new mongodb.ObjectId(id) },
-            { $set: { attendance: attendanceUpdate } }
-          );
+//       const checkUse = await db
+//         .collection("attendance")
+//         .find({ _id: attendanceList._id, attendance: { $in: [checkUser] } })
+//         .count();
+//       if (checkUse >= 1) {
+//         return res.status(400).json({
+//           message: "Student has already taken attendance",
+//           statusId: "WRONG",
+//         });
+//       }
+//       try {
+//         const id = attendanceList._id;
+//         const attendanceUpdate = [...attendanceList.attendance, checkUser];
+//         await db
+//           .collection("attendance")
+//           .updateOne(
+//             { _id: new mongodb.ObjectId(id) },
+//             { $set: { attendance: attendanceUpdate } }
+//           );
 
-        res.status(200).json({
-          message: "User Attendance Recorded",
-          statusId: "CONFIRMED",
-          response: checkUser,
-        });
-      } catch (err) {
-        res.status(400).json({
-          message: "Error while recording attendance",
-          statusId: "FAILED",
-        });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    return res.status(400).json({
-      message: "Student did not register this department",
-      statusId: "WRONG",
-    });
-  }
-};
+//         res.status(200).json({
+//           message: "User Attendance Recorded",
+//           statusId: "CONFIRMED",
+//           response: checkUser,
+//         });
+//       } catch (err) {
+//         res.status(400).json({
+//           message: "Error while recording attendance",
+//           statusId: "FAILED",
+//         });
+//       }
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   } else {
+//     return res.status(400).json({
+//       message: "Student did not register this department",
+//       statusId: "WRONG",
+//     });
+//   }
+// };

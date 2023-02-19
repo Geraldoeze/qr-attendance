@@ -3,7 +3,7 @@ import { Box, Stack, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import Modal from '../../UIElement/Modal/Modal';
-
+import { v4 as uuidv4 } from "uuid";
 import AddUserAtt from './AddUserAtt';
 import './attendDance.css';
 
@@ -39,6 +39,7 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
     const [inputState, dispatch] = useReducer(inputReducer, {
         attendance: value?.attendance
       });
+      console.log(inputState.attendance);
     
     const onOpenAdd = () => {
         setOpenAdd(true);
@@ -81,7 +82,7 @@ const AttendList = ({ value, openList, closeList, addNewUser }) => {
                     </thead>
                     <tbody>
                     {inputState?.attendance?.map(emp => (
-                            <tr key={emp._id}>
+                            <tr key={uuidv4()}>
               
                                 <td>{emp.firstName}</td>
                                 <td>{emp.lastName}</td>

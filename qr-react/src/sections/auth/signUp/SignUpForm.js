@@ -93,7 +93,7 @@ const SignUpForm = () => {
         gender: formValues.gender.value,
         contact: formValues.contact.value,
         status: formValues.status.value,
-        origin: formValues.origin.value,
+        location: formValues.location.value,
         image: "",
         dob: refinedDate
       }
@@ -203,14 +203,14 @@ const SignUpForm = () => {
             </FormControl>
             <TextField
               sx={{ mb: 2 }}
-              id="origin"
-              label="State of Origin"
-              name="origin"
+              id="location"
+              label="Location"
+              name="location"
               variant="outlined"
-              value={formValues.origin.value}
+              value={formValues.location.value}
               onChange={handleChange}
-              error={formValues.origin.error}
-              helperText={formValues.origin.error ? formValues.origin.errorMessage : ''}
+              error={formValues.location.error}
+              helperText={formValues.location.error ? formValues.location.errorMessage : ''}
             />
           </Stack>
 

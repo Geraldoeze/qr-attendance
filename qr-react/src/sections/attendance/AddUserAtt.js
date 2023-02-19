@@ -12,7 +12,6 @@ const AddUserAtt = ({ value, open, onClose, updateContent }) => {
   const auth = useContext(AuthContext);
 
   const { isLoading, error, sendRequest, clearError, resMessage } = useHttpClient();
-  
   const [scan, setScan] = useState(false);
   
 
@@ -20,19 +19,22 @@ const AddUserAtt = ({ value, open, onClose, updateContent }) => {
     setScan(true)
   };
 
-  
+  console.log(value)
   const getQRtoken = async (userId) => {
+    
     try {
-      if (userId?.length >= 8) {
-        // send fetch request
-        const sendToken = await sendRequest( `${process.env.REACT_APP_BACKEND_URL}/users/getuser/${userId}`, "GET", null,
-        {
-          Authorization: 'Bearer ' + auth.token,
-        }
-        )
-        console.log(sendToken);
-        updateContent(sendToken.response);
-      }
+      // if (userId?.length >= 8) {
+      //   const attId = value._id
+      //   // send fetch request to get minister and update the attendance
+      //   const sendToken =  sendRequest( `${process.env.REACT_APP_BACKEND_URL}/attendance/getminister/${userId}/${attId}`, "POST", null,
+      //   {
+      //     Authorization: 'Bearer ' + auth.token,
+      //   }
+      //   )
+      //   const userDetails = sendToken?.response;
+      //   console.log(userDetails)
+      //   // updateContent(userDetails);
+      // }
     } catch (err) {
       console.log(err);
     }

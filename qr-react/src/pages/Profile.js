@@ -134,7 +134,7 @@ const Profile = () => {
                 </Typography>
 
                 <Typography variant="h6" gutterBottom my={2}>
-                  State of Origin : {val.origin}
+                  Location : {val.location}
                 </Typography>
                 <Typography variant="h6" gutterBottom my={2}>
                   Address : {val.address}

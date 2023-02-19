@@ -9,6 +9,8 @@ router.get("/", auth, attControllers.getAllAttendance);
 
 router.post("/create", auth, attControllers.createAttendance);
 
+router.post("/getminister/:uid/:aid", auth, attControllers.getMinisterbyId)
+
 router.patch("/closeatt/:uid", auth, attControllers.closeAttendance);
 
 router.delete("/delete/:uid", auth, attControllers.deleteAttendance);

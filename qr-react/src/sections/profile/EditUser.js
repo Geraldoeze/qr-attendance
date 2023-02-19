@@ -88,7 +88,7 @@ export default function EditUser({ user }) {
         gender: inputState.gender,
         contact: inputState.contact,
         status: inputState.status,
-        origin: inputState.origin ,
+        location: inputState.location ,
         image: "",
         dob: refinedDate
       }
@@ -173,13 +173,13 @@ export default function EditUser({ user }) {
             </FormControl>
             <TextField
                 sx={{ mb: 2 }}
-                id="origin"
-                name="origin"
-                label="State of Origin"
+                id="location"
+                name="Lcation"
+                label="Location"
                 fullWidth
                 variant="outlined"
                 onChange={(e) => changeHandler(e)}
-                value={inputState.origin}
+                value={inputState.location}
               />
           </Stack>
             <Stack sx={{ mb: 2 }} direction="row" width="100%" alignItems="center" justifyContent="space-between">

@@ -22,6 +22,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+import { v4 as uuidv4 } from "uuid";
 // components
 
 import Iconify from '../iconify';
@@ -167,7 +168,7 @@ export default function DashboardUser({ responseData, deleteUser }) {
     deleteUser(userInfo)
     setOpen(null);
   }
-
+console.log(uuidv4())
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - responseData.length) : 0;
   const filteredUsers = applySortFilter(responseData, getComparator(order, orderBy), filterName);
   const isNotFound = !filteredUsers?.length && !!filterName;
@@ -195,7 +196,7 @@ export default function DashboardUser({ responseData, deleteUser }) {
                     const selectedUser = selected.indexOf(firstName) !== -1;
                     
                     return (
-                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={uuidv4()} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                         </TableCell>

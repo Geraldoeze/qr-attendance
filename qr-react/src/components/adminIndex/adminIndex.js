@@ -22,6 +22,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+import { v4 as uuidv4 } from "uuid";
 // components
 
 import Iconify from '../iconify';
@@ -193,7 +194,7 @@ export default function AdminIndex({ responseData, deleteUser }) {
                     const selectedUser = selected.indexOf(firstName) !== -1;
                     
                     return (
-                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={uuidv4()} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                         </TableCell>
@@ -223,6 +224,38 @@ export default function AdminIndex({ responseData, deleteUser }) {
                             <Iconify icon={'eva:more-vertical-fill'} /> 
                           </IconButton>
                         </TableCell>
+                        <Popover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleCloseMenu}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{
+          sx: {
+            p: 1,
+            width: 140,
+            '& .MuiMenuItem-root': {
+              px: 1,
+              typography: 'body2',
+              borderRadius: 0.75,
+            },
+          },
+        }}
+      >
+        <MenuItem onClick={ handleProfileHandler}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Profile
+        </MenuItem>
+        <MenuItem onClick={ handleEditHandler}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Edit
+        </MenuItem>
+
+        <MenuItem onClick={ handleDeleteHandler } sx={{ color: 'error.main' }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          Delete
+        </MenuItem>
+      </Popover>
                       </TableRow>
                     );
                   })}
@@ -271,38 +304,7 @@ export default function AdminIndex({ responseData, deleteUser }) {
           />
         </Card>
       </Container>
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem onClick={ handleProfileHandler}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Profile
-        </MenuItem>
-        <MenuItem onClick={ handleEditHandler}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem onClick={ handleDeleteHandler } sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
+      
     </>
   );
 }

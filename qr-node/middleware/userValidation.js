@@ -40,7 +40,7 @@ exports.validateUserUpdate = (req, res, next) => {
     
     let data = req.body;
     console.log(data)
-    const data_Types = ['firstName', 'lastName', 'email', 'gender', 'id', 'origin', 'dob',
+    const data_Types = ['firstName', 'lastName', 'email', 'gender', 'id', 'location', 'dob',
                  'area', 'address', 'contact', 'password', 'status', 'image', 'type'
     ]
 
@@ -56,30 +56,30 @@ exports.validateUserUpdate = (req, res, next) => {
         return res.status(400).json({message: "Email is invalid", statusId:'FAILED'})
     }
 
-    if (data?.gender?.length < 3) {
+    if (data?.gender?.length < 2) {
         return res.status(400).json({message: "Kindly select Gender", statusId:'FAILED'})
     }
 
-    if (data?.status?.length < 3) {
+    if (data?.status?.length < 2) {
         return res.status(400).json({message: "Kindly elect Status", statusId:'FAILED'})
     }
   
 
-    if (data?.origin?.length < 3) {
-        return res.status(400).json({message: "Origin is too short", statusId:'FAILED'})
+    if (data?.location?.length < 2) {
+        return res.status(400).json({message: "Location is too short", statusId:'FAILED'})
     }
   
-    if (data?.address?.length < 4) {
+    if (data?.address?.length < 2) {
         return res.status(400).json({message: "Address is too short", statusId:'FAILED'})
     }
     
-    if (data?.contact?.length < 5) {
+    if (data?.contact?.length < 3) {
         return res.status(400).json({message: "Contact  must be a provided", statusId:'FAILED'})
     }
 
-    if (!!data?.image) {
-        return res.status(400).json({message: "Kindly Upload a Passport Image", statusId:'FAILED'})
-    }
+    // if (!!data?.image) {
+    //     return res.status(400).json({message: "Kindly Upload a Passport Image", statusId:'FAILED'})
+    // }
     
 
     req.body = fieldFilters(data_Types, data)

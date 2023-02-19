@@ -48,10 +48,10 @@ export const InputState = {
       error:false,
       errorMessage:'Enter your address'
     },
-    origin: {
+    location: {
         value:'',
       error:false,
-      errorMessage:'Enter place of Origin'
+      errorMessage:'Enter your location'
     },
     contact: {
         value:'',

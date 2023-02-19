@@ -4,14 +4,14 @@ const { getDb } = require('../database/mongoConnect');
 
 class Users {
     constructor(
-        firstName, lastName, email, gender, id, origin, address, contact, area, password, status, dob, image
+        firstName, lastName, email, gender, id, location, address, contact, area, password, status, dob, image
     ) {
         this.firstName = firstName;  
         this.lastName = lastName;
         this.email = email;  
         this.gender = gender;
         this._id = id ? new mongodb.ObjectId(id) : null;
-        this.origin = origin;
+        this.location = location;
         this.address = address;
         this.contact = contact;
         this.area = area;

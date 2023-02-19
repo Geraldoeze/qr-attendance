@@ -18,7 +18,7 @@ exports.createUser = async (req, res, next) => {
   const db = await getDb();
   
   try {                 
-    const { firstName, lastName, email, gender, id, origin, address, contact, area, password, status, dob } = req.body;
+    const { firstName, lastName, email, gender, id, location, address, contact, area, password, status, dob } = req.body;
    console.log(firstName)
    
    // check if user already exist with email and username.
@@ -47,14 +47,14 @@ exports.createUser = async (req, res, next) => {
     // bcrypt password
     const hashedPassword = await bcrypt.hash(password, 12);
     // get image from path
-    const image = req?.file ? req.file?.path : ' ';
+    const image = req?.file?.path ? req.file?.path : ' ';
     // save user data to user database model
-    const UserData = new User( firstName, lastName, email, gender, id, origin, address, contact, area, hashedPassword, status, dob );
+    const UserData = new User( firstName, lastName, email, gender, id, location, address, contact, area, hashedPassword, status, dob );
     const saveUserData = await UserData.saveToDB();
     const userId = saveUserData?.insertedId.toString();
     
-    await generateQRCodeImage(userId, email, res);
-    res.status(201).json({ message: "Users Created, Kindly Check Email address", response: saveUserData });
+    generateQRCodeImage(userId, email, res);
+    res.status(201).json({ message: "Minister Created, Kindly Check Email address", response: saveUserData });
   } catch (err) {
     console.log("Something went wrong. Please try again!");
   }
@@ -66,7 +66,7 @@ exports.getAllUsers = async (req, res, next) => {
   try {
     // fetch all users from db
     const allUsers = await User.getAllUsers();
-    res.status(200).json({ message: "Users gotten", response: allUsers });
+    res.status(200).json({ message: "Ministers gotten", response: allUsers });
   } catch (err) {
     res.status(501).json({ message: "Getting Users Failed.!! " });
   }
@@ -79,7 +79,7 @@ exports.findUserbyId = async (req, res, next) => {
   try {
     // find user from db
     const user = await User.findById(userId);
-    res.status(200).json({ message: "User gotten", response: [user] });
+    res.status(200).json({ message: "Minister gotten", response: [user] });
   } catch (err) {
     res.status(501).json({ message: "Getting Users Failed.!! " });
   }
@@ -100,7 +100,7 @@ exports.updateUser = async (req, res, next) => {
 
   if (!checkUser) {
     return res.status(400).json({
-      message: " User Id does not exists.!",
+      message: " Minister does not exists.!",
       statusId: "UNSUCCESSFUL",
     });
   }
@@ -113,7 +113,7 @@ exports.updateUser = async (req, res, next) => {
         { $set: { ...updateValues } }
       );
     console.log(sendUpdate);
-    res.status(200).json({ message: "Users Updated", statusId: "GOOD" });
+    res.status(200).json({ message: "Minister Updated", statusId: "GOOD" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An Error Occurred", statusId: "FAILED" });
@@ -128,7 +128,7 @@ exports.deleteUser = async (req, res, next) => {
   }
   try {
     await db.collection("users").deleteOne({ _id: new ObjectId(id) });
-    res.status(200).json({ message: "User deleted" });
+    res.status(200).json({ message: "Minister deleted" });
   } catch (err) {
     res
       .status(500)
