@@ -23,18 +23,18 @@ const AddUserAtt = ({ value, open, onClose, updateContent }) => {
   const getQRtoken = async (userId) => {
     
     try {
-      // if (userId?.length >= 8) {
-      //   const attId = value._id
-      //   // send fetch request to get minister and update the attendance
-      //   const sendToken =  sendRequest( `${process.env.REACT_APP_BACKEND_URL}/attendance/getminister/${userId}/${attId}`, "POST", null,
-      //   {
-      //     Authorization: 'Bearer ' + auth.token,
-      //   }
-      //   )
-      //   const userDetails = sendToken?.response;
-      //   console.log(userDetails)
-      //   // updateContent(userDetails);
-      // }
+      if (userId?.length >= 8) {
+        const attId = value._id
+        // send fetch request to get minister and update the attendance
+        const sendToken =  sendRequest( `${process.env.REACT_APP_BACKEND_URL}/attendance/getminister/${userId}/${attId}`, "POST", null,
+        {
+          Authorization: 'Bearer ' + auth.token,
+        }
+        )
+        const userDetails = sendToken?.response;
+        console.log(userDetails)
+        updateContent(userDetails);
+      }
     } catch (err) {
       console.log(err);
     }

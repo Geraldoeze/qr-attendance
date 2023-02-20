@@ -12,7 +12,7 @@ import NewAttendance from './NewAttendance';
 import CloseAttendance from './CloseAttendance';
 import AttendList from './AttendList';
 
-const RandomId = 100000 + Math.floor(Math.random() * 900000);
+const RandomId = 100000 + Math.floor(Math.random() * 900000).toString();
 
 const StyledDiv = styled('div')(({ theme }) => ({
   margin: '1rem',
@@ -53,7 +53,7 @@ const AttendanceList = () => {
     }
     };
     getAttendance();
-  }, [auth.token]);
+  }, [auth.token, refresh]);
 
   const deleteAttendance = async (attId) => {
     console.log(attId)
@@ -86,7 +86,6 @@ const AttendanceList = () => {
 
   // get new contents created
   const getNewState = (value) => {
-    
     const newValue = { ...value };
     console.log(newValue)
     setRefresh(newValue);

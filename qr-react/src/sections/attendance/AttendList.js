@@ -15,7 +15,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   margin: '1rem',
 }));
 
-const RandomId = 100000 + Math.floor(Math.random() * 900000);
+const RandomId = 100000 + Math.floor(Math.random() * 900000).toString();
 
 
 // initial reducer state
